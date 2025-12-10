@@ -30,7 +30,7 @@ import ExamTest from '@pages/Exam/exam-test.jsx';
 import ExamResults from '@pages/Exam/exam-results.jsx';
 import LearningPath from '@pages/LearningPath/learning-path.jsx';
 // Import About page
-import About from '@pages/about.jsx';
+import About from '@pages/About.jsx';
 import Blog from '@pages/blog/blog.jsx';
 import CreatePost from './pages/blog/CreatePost';
 // Import Blog pages
