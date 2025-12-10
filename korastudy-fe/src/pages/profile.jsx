@@ -1,13 +1,13 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import ProfileContainer from '../containers/ProfileContainer';
-import ProfileHeader from '../components/profile/ProfileHeader';
-import ProfileTabs from '../components/profile/ProfileTabs';
-import ProfileOverview from '../components/profile/ProfileOverview';
-import ProfileHistory from '../components/profile/ProfileHistory';
-import ProfileAchievements from '../components/profile/ProfileAchievements';
-import ProfileSettings from '../components/profile/ProfileSettings';
-import ConfirmationModal from '../components/profile/ConfirmationModal';
+import ProfileHeader from '../components/Profile/ProfileHeader';
+import ProfileTabs from '../components/Profile/ProfileTabs';
+import ProfileOverview from '../components/Profile/ProfileOverview';
+import ProfileHistory from '../components/Profile/ProfileHistory';
+import ProfileAchievements from '../components/Profile/ProfileAchievements';
+import ProfileSettings from '../components/Profile/ProfileSettings';
+import ConfirmationModal from '../components/Profile/ConfirmationModal';
 
 const Profile = () => {
   return (

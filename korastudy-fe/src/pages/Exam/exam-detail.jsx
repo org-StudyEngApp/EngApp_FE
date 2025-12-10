@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { examService } from '../../api/ExamService';
 import { useUser } from '../../contexts/UserContext';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 // import ExamQuestion from '../../components/ExamQuestion';
 

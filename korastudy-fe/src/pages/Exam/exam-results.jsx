@@ -17,7 +17,7 @@ import {
   RotateCcw,
   AlertCircle
 } from 'lucide-react';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 
 const ExamResults = () => {
