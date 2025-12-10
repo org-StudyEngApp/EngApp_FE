@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 // Base URLs
-const AUTH_API_URL = 'http://localhost:8080/api/v1/auth';
-const USER_API_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const AUTH_API_URL = `${API_BASE_URL}/api/v1/auth`;
+const USER_API_URL = `${API_BASE_URL}/api/v1`;
 
 // Create axios instances with default configs
 const authApi = axios.create({
