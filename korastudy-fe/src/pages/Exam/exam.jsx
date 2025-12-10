@@ -4,7 +4,7 @@ import { Search, Filter, Clock, Users, Star, ChevronLeft, ChevronRight } from 'l
 import ExamCard from '../../components/ExamComponent/ExamCard';
 import { examService } from '../../api/ExamService';
 import { useUser } from '../../contexts/UserContext';
-import Navbar from '../../components/NavBar';
+import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 
 const Exams = () => {

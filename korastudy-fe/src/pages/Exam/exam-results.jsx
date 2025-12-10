@@ -17,7 +17,7 @@ import {
   RotateCcw,
   AlertCircle
 } from 'lucide-react';
-import Navbar from '../../components/NavBar';
+import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 
 const ExamResults = () => {
@@ -279,7 +279,7 @@ const ExamResults = () => {
   if (error || !result) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        <NavBar />
         <div className="flex items-center justify-center py-20">
           <div className="text-center max-w-md">
             <div className="text-red-500 mb-4">
@@ -303,7 +303,7 @@ const ExamResults = () => {
   if (!results) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        <NavBar />
         <div className="flex items-center justify-center py-20">
           <div className="text-center max-w-md">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Không có kết quả</h2>
@@ -319,7 +319,7 @@ const ExamResults = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <NavBar />
       
       {/* Header */}
       <div className="bg-white border-b">

@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { examService } from '../../api/ExamService';
 import { useUser } from '../../contexts/UserContext';
-import Navbar from '../../components/NavBar';
+import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 // import ExamQuestion from '../../components/ExamQuestion';
 
@@ -217,7 +217,7 @@ const ExamDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        <NavBar />
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -233,7 +233,7 @@ const ExamDetail = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        <NavBar />
         <div className="flex items-center justify-center py-20">
           <div className="text-center max-w-md">
             <div className="text-red-500 mb-4">
@@ -266,7 +266,7 @@ const ExamDetail = () => {
   if (!exam) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        <NavBar />
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <p className="text-gray-600 mb-4">Không tìm thấy bài thi với ID: {id}</p>
@@ -290,7 +290,7 @@ const ExamDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <NavBar />
       
       {/* Header */}
       <section className="bg-white border-b">
