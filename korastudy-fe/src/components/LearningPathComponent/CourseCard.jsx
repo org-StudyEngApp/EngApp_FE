@@ -48,20 +48,20 @@ const CourseCard = ({ course, delay, enrollmentStatus }) => {
           <div className="absolute right-5 top-5 w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-white/20 animate-float"></div>
           <div className="absolute left-8 bottom-8 w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white/30 animate-float animation-delay-2000"></div>
           
-          <h4 className="text-xl sm:text-3xl font-bold mb-1 drop-shadow-md">TOPIK {course.level || '3'}</h4>
+          <h4 className="text-xl sm:text-3xl font-bold mb-1 drop-shadow-md">TOEIC Level {course.level || '1'}</h4>
           <p className="text-sm sm:text-lg font-medium text-white/90 mb-2 sm:mb-4 drop-shadow-md">KHÓA HỌC ONLINE</p>
           <div className="flex gap-2 sm:gap-3 text-xs sm:text-base">
             <span className="px-2 py-1 sm:px-3 sm:py-1.5 bg-white/20 backdrop-blur-sm rounded-full flex items-center transition-all duration-300 hover:bg-white/30">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-300 rounded-full mr-1 sm:mr-2"></span>
-              Nghe
+              Listening
             </span>
             <span className="px-2 py-1 sm:px-3 sm:py-1.5 bg-white/20 backdrop-blur-sm rounded-full flex items-center transition-all duration-300 hover:bg-white/30">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-300 rounded-full mr-1 sm:mr-2"></span>
-              Đọc
+              Reading
             </span>
             <span className="px-2 py-1 sm:px-3 sm:py-1.5 bg-white/20 backdrop-blur-sm rounded-full flex items-center transition-all duration-300 hover:bg-white/30">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-300 rounded-full mr-1 sm:mr-2"></span>
-              Viết
+              Grammar
             </span>
           </div>
         </div>

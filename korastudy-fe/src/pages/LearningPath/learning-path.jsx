@@ -36,8 +36,8 @@ const LearningPath = () => {
     {
       id: 'beginner',
       title: 'Lộ trình cho người mới bắt đầu',
-      subtitle: 'Từ số 0 đến TOPIK I (Level 1-2)',
-      description: 'Lộ trình học tập toàn diện dành cho người mới bắt đầu, giúp bạn xây dựng nền tảng vững chắc với tiếng Hàn và đạt được trình độ TOPIK I.',
+      subtitle: 'Từ số 0 đến TOEIC 450+ (Beginner)',
+      description: 'Lộ trình học tập toàn diện dành cho người mới bắt đầu, giúp bạn xây dựng nền tảng vững chắc với tiếng Anh và đạt được điểm TOEIC 450+.',
       duration: '6 tháng',
       courses: 5,
       students: 8500,
@@ -51,13 +51,13 @@ const LearningPath = () => {
       levels: [
         {
           id: 'level-1',
-          title: 'Cấp độ 1: Làm quen với tiếng Hàn',
+          title: 'Cấp độ 1: Làm quen với tiếng Anh cơ bản',
           duration: '4-6 tuần',
           courses: [
             {
               id: 1,
-              title: 'Bảng chữ cái Hangeul',
-              description: 'Học đọc và viết bảng chữ cái tiếng Hàn',
+              title: 'Ngữ pháp cơ bản A1-A2',
+              description: 'Học các cấu trúc ngữ pháp tiếng Anh cơ bản',
               duration: '2 tuần',
               lessons: 10,
               progress: 100,
@@ -66,8 +66,8 @@ const LearningPath = () => {
             },
             {
               id: 2,
-              title: 'Ngữ pháp cơ bản',
-              description: 'Các cấu trúc ngữ pháp cơ bản nhất',
+              title: 'Từ vựng thiết yếu',
+              description: '1000 từ vựng quan trọng nhất cho người mới bắt đầu',
               duration: '3 tuần',
               lessons: 15,
               progress: 80,
@@ -78,13 +78,13 @@ const LearningPath = () => {
         },
         {
           id: 'level-2',
-          title: 'Cấp độ 2: Giao tiếp cơ bản',
+          title: 'Cấp độ 2: Làm quen với TOEIC',
           duration: '8-10 tuần',
           courses: [
             {
               id: 3,
-              title: 'Từ vựng chủ đề hàng ngày',
-              description: 'Học từ vựng theo chủ đề thông dụng',
+              title: 'Giới thiệu cấu trúc đề thi TOEIC',
+              description: 'Tìm hiểu về format 7 phần thi TOEIC Listening & Reading',
               duration: '4 tuần',
               lessons: 20,
               progress: 0,
@@ -93,8 +93,8 @@ const LearningPath = () => {
             },
             {
               id: 4,
-              title: 'Luyện nghe cấp độ sơ cấp',
-              description: 'Phát triển kỹ năng nghe hiểu cơ bản',
+              title: 'Luyện nghe TOEIC cơ bản',
+              description: 'Phát triển kỹ năng nghe hiểu cho TOEIC Part 1-2',
               duration: '4 tuần',
               lessons: 16,
               progress: 0,
@@ -106,12 +106,12 @@ const LearningPath = () => {
       ]
     },
     
-    // TOPIK I
+    // TOEIC 550-750
     {
-      id: 'topik1',
-      title: 'Lộ trình TOPIK I',
-      subtitle: 'Luyện thi TOPIK cấp độ 1-2',
-      description: 'Khóa học chuyên sâu giúp bạn chuẩn bị tốt nhất cho kỳ thi TOPIK I. Nội dung được thiết kế sát với cấu trúc đề thi, giúp bạn đạt điểm cao.',
+      id: 'toeic-intermediate',
+      title: 'Lộ trình TOEIC 550-750',
+      subtitle: 'Trung cấp - Intermediate Level',
+      description: 'Khóa học chuyên sâu giúp bạn chuẩn bị tốt nhất để đạt điểm TOEIC 550-750. Nội dung được thiết kế sát với cấu trúc đề thi, tập trung vào 7 phần thi Listening & Reading.',
       duration: '4 tháng',
       courses: 6,
       students: 5200,
@@ -124,14 +124,14 @@ const LearningPath = () => {
       },
       levels: [
         {
-          id: 'topik1-level-1',
-          title: 'Làm quen với TOPIK I',
+          id: 'toeic-inter-level-1',
+          title: 'Ôn tập ngữ pháp TOEIC',
           duration: '3 tuần',
           courses: [
             {
               id: 101,
-              title: 'Giới thiệu cấu trúc đề thi',
-              description: 'Tìm hiểu về cấu trúc, thời gian và cách tính điểm TOPIK I',
+              title: 'Ngữ pháp trọng tâm TOEIC',
+              description: 'Các cấu trúc ngữ pháp thường xuất hiện trong đề thi TOEIC',
               duration: '1 tuần',
               lessons: 5,
               progress: 0,
@@ -140,8 +140,8 @@ const LearningPath = () => {
             },
             {
               id: 102,
-              title: 'Ôn tập ngữ pháp TOPIK I',
-              description: 'Các cấu trúc ngữ pháp quan trọng thường xuất hiện trong TOPIK I',
+              title: 'Từ vựng TOEIC theo chủ đề',
+              description: 'Business vocabulary, Office, Travel, Shopping...',
               duration: '2 tuần',
               lessons: 10,
               progress: 0,
@@ -151,14 +151,14 @@ const LearningPath = () => {
           ]
         },
         {
-          id: 'topik1-level-2',
-          title: 'Luyện kỹ năng Nghe - Đọc',
+          id: 'toeic-inter-level-2',
+          title: 'Luyện kỹ năng Listening (Part 1-4)',
           duration: '8 tuần',
           courses: [
             {
               id: 103,
-              title: 'Luyện nghe TOPIK I',
-              description: 'Luyện tập các dạng bài nghe thường gặp trong TOPIK I',
+              title: 'Part 1-2: Photographs & Question-Response',
+              description: 'Chiến thuật làm bài Part 1 và Part 2 hiệu quả',
               duration: '4 tuần',
               lessons: 12,
               progress: 0,
@@ -167,8 +167,8 @@ const LearningPath = () => {
             },
             {
               id: 104,
-              title: 'Luyện đọc TOPIK I',
-              description: 'Chiến thuật làm bài đọc hiểu trong TOPIK I',
+              title: 'Part 3-4: Conversations & Talks',
+              description: 'Kỹ năng nghe hội thoại và bài nói dài',
               duration: '4 tuần',
               lessons: 12,
               progress: 0,
@@ -178,26 +178,26 @@ const LearningPath = () => {
           ]
         },
         {
-          id: 'topik1-level-3',
-          title: 'Đề thi thử TOPIK I',
-          duration: '5 tuần',
+          id: 'toeic-inter-level-3',
+          title: 'Luyện kỹ năng Reading (Part 5-7)',
+          duration: '8 tuần',
           courses: [
             {
               id: 105,
-              title: 'Đề thi thử TOPIK I (Set 1)',
-              description: 'Bài thi thử với cấu trúc và độ khó tương đương đề thi thật',
-              duration: '2 tuần',
-              lessons: 5,
+              title: 'Part 5-6: Incomplete Sentences & Text Completion',
+              description: 'Hoàn thành câu và điền từ vào đoạn văn',
+              duration: '4 tuần',
+              lessons: 10,
               progress: 0,
               status: 'locked',
               level: 1
             },
             {
               id: 106,
-              title: 'Đề thi thử TOPIK I (Set 2)',
-              description: 'Luyện tập với bộ đề thi mới và phân tích chi tiết đáp án',
-              duration: '3 tuần',
-              lessons: 5,
+              title: 'Part 7: Reading Comprehension',
+              description: 'Đọc hiểu đơn văn bản, kép và đa văn bản',
+              duration: '4 tuần',
+              lessons: 10,
               progress: 0,
               status: 'locked',
               level: 1
@@ -207,12 +207,12 @@ const LearningPath = () => {
       ]
     },
     
-    // TOPIK II
+    // TOEIC 800-990
     {
-      id: 'topik2',
-      title: 'Lộ trình TOPIK II',
-      subtitle: 'Luyện thi TOPIK cấp độ 3-6',
-      description: 'Lộ trình học nâng cao dành cho những học viên mong muốn đạt được chứng chỉ TOPIK II với trình độ từ 3-6. Bao gồm tất cả các kỹ năng: Nghe, Đọc, Viết.',
+      id: 'toeic-advanced',
+      title: 'Lộ trình TOEIC 800-990',
+      subtitle: 'Nâng cao - Advanced Level',
+      description: 'Lộ trình học nâng cao dành cho những học viên mong muốn đạt điểm TOEIC 800-990 (Golden Certificate). Tập trung vào kỹ thuật làm bài nhanh, chính xác và chiến lược tối ưu.',
       duration: '8 tháng',
       courses: 8,
       students: 3100,
@@ -225,14 +225,14 @@ const LearningPath = () => {
       },
       levels: [
         {
-          id: 'topik2-level-1',
-          title: 'Ngữ pháp nâng cao TOPIK II',
+          id: 'toeic-adv-level-1',
+          title: 'Ngữ pháp nâng cao & Collocations',
           duration: '8 tuần',
           courses: [
             {
               id: 201,
-              title: 'Ngữ pháp trung cấp',
-              description: 'Các cấu trúc ngữ pháp trung cấp cần thiết cho TOPIK II',
+              title: 'Ngữ pháp phức tạp TOEIC',
+              description: 'Các cấu trúc ngữ pháp nâng cao và đặc biệt trong TOEIC',
               duration: '4 tuần',
               lessons: 15,
               progress: 0,
@@ -241,8 +241,8 @@ const LearningPath = () => {
             },
             {
               id: 202,
-              title: 'Ngữ pháp cao cấp',
-              description: 'Ngữ pháp cao cấp cho mức độ 5-6',
+              title: 'Advanced Vocabulary & Collocations',
+              description: 'Từ vựng nâng cao và cụm từ cố định trong tiếng Anh',
               duration: '4 tuần',
               lessons: 15,
               progress: 0,
@@ -252,14 +252,14 @@ const LearningPath = () => {
           ]
         },
         {
-          id: 'topik2-level-2',
-          title: 'Kỹ năng Nghe - Đọc TOPIK II',
+          id: 'toeic-adv-level-2',
+          title: 'Chiến lược tối ưu 7 phần thi',
           duration: '12 tuần',
           courses: [
             {
               id: 203,
-              title: 'Luyện nghe TOPIK II',
-              description: 'Phương pháp làm bài nghe hiểu trong TOPIK II',
+              title: 'Listening Strategies (Advanced)',
+              description: 'Kỹ thuật nghe và dự đoán đáp án nhanh, chính xác',
               duration: '5 tuần',
               lessons: 12,
               progress: 0,
@@ -268,8 +268,8 @@ const LearningPath = () => {
             },
             {
               id: 204,
-              title: 'Luyện đọc TOPIK II',
-              description: 'Chiến thuật làm bài đọc hiểu trong TOPIK II',
+              title: 'Reading Strategies (Advanced)',
+              description: 'Skimming, Scanning và Time Management cho Part 5-7',
               duration: '5 tuần',
               lessons: 12,
               progress: 0,
@@ -278,8 +278,8 @@ const LearningPath = () => {
             },
             {
               id: 205,
-              title: 'Từ vựng học thuật',
-              description: 'Từ vựng chuyên biệt cho các chủ đề học thuật',
+              title: 'Business English Context',
+              description: 'Hiểu sâu về ngữ cảnh kinh doanh trong TOEIC',
               duration: '2 tuần',
               lessons: 8,
               progress: 0,
@@ -289,14 +289,14 @@ const LearningPath = () => {
           ]
         },
         {
-          id: 'topik2-level-3',
-          title: 'Kỹ năng viết TOPIK II',
+          id: 'toeic-adv-level-3',
+          title: 'Đề thi thử Full Test',
           duration: '6 tuần',
           courses: [
             {
               id: 206,
-              title: 'Viết văn mô tả',
-              description: 'Kỹ năng viết văn mô tả cho phần thi viết',
+              title: 'Full Test 1 - Mock Exam',
+              description: 'Bài thi thử hoàn chỉnh 200 câu trong 120 phút',
               duration: '3 tuần',
               lessons: 6,
               progress: 0,
@@ -305,8 +305,8 @@ const LearningPath = () => {
             },
             {
               id: 207,
-              title: 'Viết văn luận',
-              description: 'Kỹ năng viết văn bàn luận cho điểm cao',
+              title: 'Full Test 2 - Mock Exam',
+              description: 'Đề thi thử khó hơn với phân tích chi tiết từng câu',
               duration: '3 tuần',
               lessons: 6,
               progress: 0,
@@ -316,14 +316,14 @@ const LearningPath = () => {
           ]
         },
         {
-          id: 'topik2-level-4',
-          title: 'Luyện đề thi TOPIK II',
+          id: 'toeic-adv-level-4',
+          title: 'Review & Target 990',
           duration: '6 tuần',
           courses: [
             {
               id: 208,
-              title: 'Đề thi thử TOPIK II',
-              description: 'Các bộ đề thi thử toàn diện cho TOPIK II',
+              title: 'Common Mistakes Analysis',
+              description: 'Phân tích lỗi sai thường gặp và cách tránh để đạt điểm tối đa',
               duration: '6 tuần',
               lessons: 10,
               progress: 0,
@@ -349,10 +349,10 @@ const LearningPath = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-              Lộ trình học tiếng Hàn
+              Lộ trình học tiếng Anh chuẩn TOEIC
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Chọn lộ trình phù hợp với mục tiêu của bạn và bắt đầu hành trình chinh phục tiếng Hàn một cách hệ thống
+              Chọn lộ trình phù hợp với mục tiêu của bạn và bắt đầu hành trình chinh phục tiếng Anh một cách hệ thống
             </p>
           </div>
         </div>
