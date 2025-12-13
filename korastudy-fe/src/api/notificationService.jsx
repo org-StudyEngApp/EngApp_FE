@@ -9,7 +9,7 @@ const notificationApi = axios.create({
   },
 });
 
-// Interceptor để thêm token vào headers
+
 notificationApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
