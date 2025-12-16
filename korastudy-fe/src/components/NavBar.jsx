@@ -7,12 +7,12 @@ import notificationService from '../api/notificationService';
 import websocketService from '../api/websocketService';
 import NotificationDropdown from './NotificationDropdown';
 import { toast } from 'react-toastify';
+import { getAvatarUrl } from '../utils/avatarUtils';
 
 const NavBar = () => {
   // Các state hiện có
   const [showTopikDropdown, setShowTopikDropdown] = useState(false);
   const [showExamDropdown, setShowExamDropdown] = useState(false);
-  const [showCourseDropdown, setShowCourseDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -200,25 +200,7 @@ useEffect(() => {
         </div>
 
         <ul className="hidden md:flex list-none m-0 p-0 gap-8 items-center">
-          {/* Course dropdown */}
-          <li className="relative" onMouseEnter={() => setShowCourseDropdown(true)} onMouseLeave={() => setShowCourseDropdown(false)}>
-            <Link to="/courses" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center">
-              Khóa học
-              <ChevronDown size={16} className="ml-1" />
-            </Link>
-            {showCourseDropdown && (
-              <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-dark-800 rounded-md shadow-lg py-1 border border-gray-200 dark:border-dark-700 z-20">
-                <Link to="/courses" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">
-                  Tất cả khóa học
-                </Link>
-                {isAuthenticated() && (
-                  <Link to="/my-courses" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">
-                    Khóa học của tôi
-                  </Link>
-                )}
-              </div>
-            )}
-          </li>
+          <li><Link to="/news" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Đọc báo</Link></li>
           <li><Link to="/flash-card" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FlashCard</Link></li>
           <li><Link to="/lo-trinh" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Lộ trình</Link></li>
 
@@ -278,7 +260,21 @@ useEffect(() => {
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                  {getAvatarUrl(user) ? (
+                    <img
+                      src={getAvatarUrl(user)}
+                      alt={getDisplayName()}
+                      className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 dark:ring-dark-600"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextElementSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div 
+                    className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+                    style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
+                  >
                     {getInitials(getDisplayName())}
                   </div>
                   <span className="text-gray-700 dark:text-gray-300 font-medium max-w-[120px] truncate">
@@ -295,12 +291,33 @@ useEffect(() => {
                   <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-dark-800 rounded-lg shadow-lg py-2 border border-gray-200 dark:border-dark-700 z-50">
                     {/* User Info */}
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-dark-700">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                        {getDisplayName()}
-                      </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                        {user?.email || 'Không có email'}
-                      </p>
+                      <div className="flex items-center gap-3 mb-2">
+                        {getAvatarUrl(user) ? (
+                          <img
+                            src={getAvatarUrl(user)}
+                            alt={getDisplayName()}
+                            className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-dark-600"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextElementSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div 
+                          className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold"
+                          style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
+                        >
+                          {getInitials(getDisplayName())}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                            {getDisplayName()}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                            {user?.email || 'Không có email'}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                     
                     {/* Menu Items */}
@@ -385,10 +402,7 @@ useEffect(() => {
               {/* Mobile Navigation */}
               <div className="flex-1 overflow-y-auto py-4">
                 <nav className="space-y-2 px-4">
-                  <Link to="/courses" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Khóa học</Link>
-                  {isAuthenticated() && (
-                    <Link to="/my-courses" onClick={closeMobileMenu} className="block px-4 py-2 ml-4 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Khóa học của tôi</Link>
-                  )}
+                  <Link to="/news" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Đọc báo</Link>
                   <Link to="/flash-card" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">FlashCard</Link>
                   <Link to="/lo-trinh" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Lộ trình</Link>
                   <Link to="/blog" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Blog</Link>
@@ -429,7 +443,21 @@ useEffect(() => {
                   <div className="space-y-3">
                     {/* User Info */}
                     <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
-                      <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      {getAvatarUrl(user) ? (
+                        <img
+                          src={getAvatarUrl(user)}
+                          alt={getDisplayName()}
+                          className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-dark-600"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextElementSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div 
+                        className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold"
+                        style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
+                      >
                         {getInitials(getDisplayName())}
                       </div>
                       <div className="flex-1 min-w-0">

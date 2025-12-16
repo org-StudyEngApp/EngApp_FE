@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import { useTheme } from '../contexts/ThemeContext';
 import authService from '../api/authService';
+import userService from '../api/userService';
 
 const ProfileContainer = ({ children }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,6 +13,7 @@ const ProfileContainer = ({ children }) => {
   
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -43,6 +45,65 @@ const ProfileContainer = ({ children }) => {
 
   const handleTabChange = (tab) => {
     setSearchParams({ tab });
+  };
+
+  // Handle avatar upload
+  const handleAvatarUpload = async (file) => {
+    if (!user?.id || !file) return;
+
+    setAvatarLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      console.log('Uploading avatar for user:', user.id);
+      
+      // Upload avatar
+      const response = await userService.uploadAvatar(user.id, file);
+      
+      console.log('Avatar upload successful:', response);
+      console.log('Received avatar URL:', response.avatarUrl);
+
+      // Update user profile with new avatar URL
+      if (response.avatarUrl) {
+        // Validate and clean avatar URL
+        let avatarUrl = response.avatarUrl;
+        try {
+          // Try to create URL object to validate
+          new URL(avatarUrl);
+          console.log('Avatar URL is valid:', avatarUrl);
+        } catch (e) {
+          console.error('Invalid avatar URL:', avatarUrl);
+          throw new Error('URL ảnh đại diện không hợp lệ');
+        }
+
+        const updatedUser = {
+          ...user,
+          avatar: avatarUrl
+        };
+        
+        // Update localStorage
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        
+        // Update context
+        await updateProfile({ avatar: avatarUrl });
+        
+        setSuccess(response.message || 'Cập nhật ảnh đại diện thành công!');
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          setSuccess('');
+        }, 3000);
+
+        // Refresh user profile to ensure consistency
+        await authService.refreshUserProfile();
+      }
+    } catch (error) {
+      console.error('Avatar upload error:', error);
+      setError(error.message || 'Không thể tải lên ảnh đại diện. Vui lòng thử lại.');
+    } finally {
+      setAvatarLoading(false);
+    }
   };
 
   const handleEditSubmit = (e) => {
@@ -172,6 +233,7 @@ const ProfileContainer = ({ children }) => {
     isEditing,
     editForm,
     loading,
+    avatarLoading,
     error,
     success,
     preferences,
@@ -184,6 +246,7 @@ const ProfileContainer = ({ children }) => {
     handleConfirmSave,
     handleInputChange,
     handlePreferenceChange,
+    handleAvatarUpload,
     getInitials,
     getFullName,
     formatDate,

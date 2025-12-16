@@ -164,6 +164,20 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const updatePreferences = (preferences) => {
+    setUser(prev => ({
+      ...prev,
+      preferences
+    }));
+    
+    // Optionally save to localStorage
+    const currentUser = authService.getCurrentUser();
+    if (currentUser) {
+      const updatedUser = { ...currentUser, preferences };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+  };
+
   const isAuthenticated = () => {
     const hasToken = !!token || !!authService.getToken();
     const hasUser = !!user || !!authService.getCurrentUser();
@@ -179,6 +193,7 @@ export const UserProvider = ({ children }) => {
     register,
     logout,
     updateProfile,
+    updatePreferences,
     forgotPassword,
     isAuthenticated
   };

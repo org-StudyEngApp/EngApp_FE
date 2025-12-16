@@ -53,6 +53,7 @@ const FlashCardPractice = () => {
         pronunciation: "",       // API không có trường này, có thể bổ sung sau
         exampleTranslation: "",  // API không có trường này, có thể bổ sung sau
         image: card.imageUrl,
+        audioUrl: card.audioUrl, // Thêm audioUrl từ API
         isKnown: card.isKnown
       }));
       
@@ -268,9 +269,12 @@ const FlashCardPractice = () => {
 
   // Play audio
   const playAudio = () => {
-    if (currentCard.audio) {
-      const audio = new Audio(currentCard.audio);
-      audio.play().catch(console.error);
+    if (currentCard.audioUrl) {
+      const audio = new Audio(currentCard.audioUrl);
+      audio.play().catch(error => {
+        console.error('Error playing audio:', error);
+        toast.error('Không thể phát âm thanh');
+      });
     }
   };
 
@@ -417,18 +421,23 @@ const FlashCardPractice = () => {
                     <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">
                       {currentCard.front}
                     </h2>
-                    <p className="text-lg text-gray-500 dark:text-gray-400 mb-6">
-                      [{currentCard.pronunciation}]
-                    </p>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        playAudio();
-                      }}
-                      className="p-3 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-300"
-                    >
-                      <Volume2 size={20} />
-                    </button>
+                    {currentCard.pronunciation && (
+                      <p className="text-lg text-gray-500 dark:text-gray-400 mb-6">
+                        [{currentCard.pronunciation}]
+                      </p>
+                    )}
+                    {currentCard.audioUrl && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playAudio();
+                        }}
+                        className="p-3 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-300"
+                        title="Phát âm thanh"
+                      >
+                        <Volume2 size={20} />
+                      </button>
+                    )}
                   </div>
                   <div className="absolute bottom-4 text-sm text-gray-400 dark:text-gray-500">
                     Nhấn để xem nghĩa

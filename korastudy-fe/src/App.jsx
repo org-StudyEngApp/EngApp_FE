@@ -14,10 +14,6 @@ import ScrollToTop from '@components/ScrollToTop.jsx';
 import Chatbox from '@components/Chatbox.jsx';
 // Import pages
 import Home from '@pages/home.jsx';
-import Courses from '@pages/User/CourseList.jsx';
-import CourseDetail from '@pages/User/CourseDetail.jsx';
-import LearningPage from '@pages/User/LearningPage.jsx';
-import MyCourses from '@pages/User/MyCourses/MyCourses.jsx';
 import Profile from '@/pages/profile.jsx';
 // Import auth pages
 import LoginPage from './pages/auth/LoginPage';
@@ -41,6 +37,9 @@ import FlashCard from '@pages/FlashCard/flash-card.jsx';
 import FlashCardPractice from '@pages/FlashCard/flash-card-practice.jsx';
 import CreateWordList from '@pages/FlashCard/create-word-list.jsx';
 import EditWordList from '@pages/FlashCard/edit-word-list.jsx';
+// Import News pages
+import NewsFeed from '@/pages/UserNews/NewsFeed.jsx';
+import ArticleDetail from '@/pages/UserNews/ArticleDetail.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -69,9 +68,8 @@ function App() {
                 {/* Layout cho các trang công khai */}
                 <Route path="/" element={<><NavBar /><Outlet /><Footer /></>}>
                   <Route index element={<Home />} />
-                  <Route path="courses" element={<Courses />} />
-                  <Route path="course/:courseId" element={<CourseDetail />} />
-                  <Route path="learning/:courseId/:lessonId" element={<LearningPage />} />
+                  <Route path="news" element={<NewsFeed />} />
+                  <Route path="news/:articleId" element={<ArticleDetail />} />
                   <Route path="flash-card" element={<FlashCard />} />
                   <Route path="ly-thuyet" element={<LyThuyet />} />
                   <Route path="lo-trinh" element={<LearningPath />} />
@@ -129,7 +127,6 @@ function App() {
                 {/* Các trang yêu cầu đăng nhập */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/profile" element={<><NavBar /><Profile /><Footer /></>} />
-                  <Route path="/my-courses" element={<><NavBar /><MyCourses /><Footer /></>} />
                 </Route>
               </Routes>
             </div>

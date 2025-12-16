@@ -1,4 +1,5 @@
 import axios from 'axios';
+import userService from './userService';
 
 // Base URLs
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
@@ -190,7 +191,7 @@ const authService = {
           lastName: profileData.lastName || response.data.lastName || '',
           phoneNumber: profileData.phoneNumber || response.data.phoneNumber || '',
           gender: profileData.gender || response.data.gender || '',
-          avatar: profileData.avatar || response.data.avatar || null,
+          avatar: (profileData.avatar ? decodeURIComponent(profileData.avatar) : null) || (response.data.avatar ? decodeURIComponent(response.data.avatar) : null),
           dateOfBirth: profileData.dateOfBirth || response.data.dateOfBirth || '',
           fullName: `${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || 
                     response.data.fullName || credentials.username,
@@ -223,7 +224,7 @@ const authService = {
           lastName: response.data.lastName || '',
           phoneNumber: response.data.phoneNumber || '',
           gender: response.data.gender || '',
-          avatar: response.data.avatar || null,
+          avatar: response.data.avatar ? decodeURIComponent(response.data.avatar) : null,
           dateOfBirth: response.data.dateOfBirth || '',
           fullName: response.data.fullName || credentials.username,
           stats: {
@@ -303,7 +304,7 @@ const authService = {
                 lastName: profileData.lastName || parsedUser.lastName || '',
                 phoneNumber: profileData.phoneNumber || parsedUser.phoneNumber || '',
                 gender: profileData.gender || parsedUser.gender || '',
-                avatar: profileData.avatar || parsedUser.avatar || null,
+                avatar: profileData.avatar ? decodeURIComponent(profileData.avatar) : (parsedUser.avatar || null),
                 dateOfBirth: profileData.dateOfBirth || parsedUser.dateOfBirth || '',
                 fullName: `${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || 
                           parsedUser.fullName || parsedUser.username
@@ -381,96 +382,26 @@ const authService = {
         throw new Error('User ID not found. Please login again.');
       }
 
-      const requestData = {
-        email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        phoneNumber: userData.phoneNumber,
-        gender: userData.gender,
-        avatar: userData.avatar || null,
-        dateOfBirth: userData.dateOfBirth || null
-      };
-
-      console.log('Updating profile for user:', userId, requestData);
+      console.log('Updating profile for user:', userId, userData);
       
-      try {
-        const response = await userApi.put(`/user/profile/${userId}`, requestData);
-        console.log('Profile updated successfully:', response.data);
-        
-        // Parse response if it's a string
-        let responseData = response.data;
-        if (typeof responseData === 'string' && responseData.trim() !== '') {
-          try {
-            responseData = JSON.parse(responseData);
-          } catch (parseError) {
-            console.warn('Could not parse response as JSON');
-            responseData = {};
-          }
-        }
-        
-        // Update local user data
-        const updatedUser = updateLocalUserData(currentUser, {
-          ...requestData,
-          ...responseData
-        });
-        
-        // Force a UI update by dispatching a custom event
-        window.dispatchEvent(new CustomEvent('userProfileUpdated', { 
-          detail: updatedUser 
-        }));
-        
-        return updatedUser;
-      } catch (error) {
-        console.error('Error updating profile with axios:', error);
-        
-        // Xử lý lỗi trùng email
-        if (error.response && error.response.status === 500) {
-          const status = error.response.status;
-          const responseData = error.response.data || {};
-          
-          // Kiểm tra xem có phải là lỗi trùng email không
-          if (status === 500 || status === 400) {
-            const errorMessage = 
-              responseData.message || 
-              responseData.error || 
-              error.message || '';
-              
-            if (errorMessage.toLowerCase().includes('email') || 
-                errorMessage.toLowerCase().includes('duplicate') || 
-                errorMessage.toLowerCase().includes('trùng')) {
-              throw new Error('Email đã tồn tại trong hệ thống. Vui lòng sử dụng email khác.');
-            }
-          }
-          
-          throw new Error(responseData.message || `Lỗi cập nhật: ${status}`);
-        }
-        
-        // Nếu không phải lỗi response, thử fallback với fetch API
-        console.log('Trying fallback with fetch API');
-        
-        // ... phần code fetch API giữ nguyên ...
-        
-      }
+      // Use userService to update profile
+      const response = await userService.updateProfile(userId, userData);
+      console.log('Profile updated successfully:', response);
+      
+      // Update local user data
+      const updatedUser = updateLocalUserData(currentUser, {
+        ...userData,
+        ...response
+      });
+      
+      // Force a UI update by dispatching a custom event
+      window.dispatchEvent(new CustomEvent('userProfileUpdated', { 
+        detail: updatedUser 
+      }));
+      
+      return updatedUser;
     } catch (error) {
       console.error('Profile update error:', error);
-      
-      // Kiểm tra nếu lỗi có liên quan đến email
-      if (error.message && error.message.toLowerCase().includes('email')) {
-        throw error; // Giữ nguyên thông báo lỗi email
-      }
-      
-      // If it's just a parsing error, try to update locally
-      if (error.message && (
-        error.message.includes('Unexpected token') || 
-        error.message.includes('JSON')
-      )) {
-        const currentUser = authService.getCurrentUser();
-        if (currentUser) {
-          console.log('Updating user data locally due to JSON error');
-          return updateLocalUserData(currentUser, userData);
-        }
-      }
-      
       throw error;
     }
   },
@@ -493,7 +424,7 @@ const authService = {
           lastName: profileData.lastName || currentUser.lastName || '',
           phoneNumber: profileData.phoneNumber || currentUser.phoneNumber || '',
           gender: profileData.gender || currentUser.gender || '',
-          avatar: profileData.avatar || currentUser.avatar || null,
+          avatar: profileData.avatar ? decodeURIComponent(profileData.avatar) : (currentUser.avatar || null),
           dateOfBirth: profileData.dateOfBirth || currentUser.dateOfBirth || '',
           fullName: `${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || 
                     currentUser.fullName || currentUser.username
