@@ -134,7 +134,7 @@ const BlogDetail = () => {
               Không thể tải bài viết
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-            <Link to="/blog" className="text-primary-500 hover:underline flex items-center justify-center gap-2">
+            <Link to="/blog" className="text-sky-500 hover:underline flex items-center justify-center gap-2">
               <ArrowLeft size={18} />
               Quay lại trang blog
             </Link>
@@ -157,7 +157,7 @@ const BlogDetail = () => {
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
             </p>
-            <Link to="/blog" className="text-primary-500 hover:underline flex items-center justify-center gap-2">
+            <Link to="/blog" className="text-sky-500 hover:underline flex items-center justify-center gap-2">
               <ArrowLeft size={18} />
               Quay lại trang blog
             </Link>
@@ -305,7 +305,7 @@ const BlogDetail = () => {
 
           {/* Back to blog list */}
           <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <Link to="/blog" className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center gap-2">
+            <Link to="/blog" className="text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 inline-flex items-center gap-2">
               <ArrowLeft size={20} />
               <span>Quay lại danh sách bài viết</span>
             </Link>

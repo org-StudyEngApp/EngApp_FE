@@ -20,7 +20,11 @@ import {
 } from 'lucide-react';
 import newsService from '../../api/newsService';
 import azureSpeechService from '../../services/azureSpeechService';
+import dictionaryService from '../../api/dictionaryService';
 import { useUser } from '../../contexts/UserContext';
+import ArticleCard from '../../components/NewsComponent/ArticleCard';
+import SaveWordModal from '../../components/NewsComponent/SaveWordModal';
+import DictionaryModal from '../../components/NewsComponent/DictionaryModal';
 
 /**
  * ArticleDetail - Smart Reading Page
@@ -54,6 +58,14 @@ const ArticleDetail = () => {
   const [wordMeaning, setWordMeaning] = useState(null);
   const [lookingUp, setLookingUp] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showSaveWordModal, setShowSaveWordModal] = useState(false);
+  const [wordToSave, setWordToSave] = useState(null);
+  
+  // Dictionary modal state
+  const [showDictionaryModal, setShowDictionaryModal] = useState(false);
+  const [dictionaryData, setDictionaryData] = useState(null);
+  const [dictionaryLoading, setDictionaryLoading] = useState(false);
+  const [dictionaryError, setDictionaryError] = useState(null);
 
   // Reading progress
   const [readingProgress, setReadingProgress] = useState(0);
@@ -64,6 +76,10 @@ const ArticleDetail = () => {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState('');
   const [loadingComments, setLoadingComments] = useState(false);
+
+  // Related articles state
+  const [relatedArticles, setRelatedArticles] = useState([]);
+  const [loadingRelated, setLoadingRelated] = useState(false);
 
   // Level badge configuration
   const levelConfig = {
@@ -202,6 +218,33 @@ const ArticleDetail = () => {
     fetchComments();
   }, [articleId]);
 
+  // Fetch related articles
+  useEffect(() => {
+    const fetchRelatedArticles = async () => {
+      if (!article) return;
+
+      try {
+        setLoadingRelated(true);
+        const response = await newsService.getArticles({
+          page: 0,
+          size: 4,
+          topicId: article.newsTopic?.id || null,
+          level: article.level,
+        });
+        const articlesData = response.data?.data?.content || response.data?.content || [];
+        // Filter out current article
+        const filtered = articlesData.filter(a => a.id !== parseInt(articleId));
+        setRelatedArticles(filtered.slice(0, 3));
+      } catch (err) {
+        console.error('Failed to fetch related articles:', err);
+      } finally {
+        setLoadingRelated(false);
+      }
+    };
+
+    fetchRelatedArticles();
+  }, [article, articleId]);
+
   // Audio player controls
   const toggleAudio = () => {
     if (!audioRef.current) return;
@@ -283,59 +326,79 @@ const ArticleDetail = () => {
     }
   };
 
-  // Dictionary lookup (demo - replace with real API)
+  // Dictionary lookup - Sử dụng API thật
   const lookupWord = async () => {
     if (!selectedText) return;
 
-    setLookingUp(true);
+    // Đóng tooltip và mở modal dictionary
+    setShowTooltip(false);
+    setShowDictionaryModal(true);
+    setDictionaryLoading(true);
+    setDictionaryError(null);
+    setDictionaryData(null);
+
     try {
-      // Demo dictionary response - replace with real API call
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const data = await dictionaryService.lookupWord(selectedText);
+      setDictionaryData(data);
       
-      const demoMeanings = {
-        'artificial': 'nhân tạo, giả tạo',
-        'intelligence': 'trí thông minh, trí tuệ',
-        'technology': 'công nghệ, kỹ thuật',
-        'innovation': 'sự đổi mới, cải tiến',
-        'transform': 'chuyển đổi, biến đổi',
-      };
-
-      const meaning = demoMeanings[selectedText.toLowerCase()] || 
-        `Meaning of "${selectedText}" (Demo dictionary - integrate real API here)`;
-
-      setWordMeaning(meaning);
+      // Cập nhật wordMeaning cho tooltip (nếu cần dùng lại)
+      if (data.meaning) {
+        setWordMeaning(data.meaning);
+      }
     } catch (err) {
       console.error('Failed to lookup word:', err);
-      setWordMeaning('Failed to lookup word');
+      const errorMessage = err.status === 404 
+        ? `Từ "${selectedText}" không tồn tại trong từ điển`
+        : err.message || 'Không thể tra cứu từ. Vui lòng thử lại.';
+      setDictionaryError(errorMessage);
     } finally {
-      setLookingUp(false);
+      setDictionaryLoading(false);
     }
   };
 
-  // Save word to vocabulary
-  const saveWord = async () => {
+  // Phát âm thanh phát âm từ dictionary
+  const handlePlayAudio = async (audioUrl) => {
+    try {
+      await dictionaryService.playAudio(audioUrl);
+    } catch (err) {
+      console.error('Failed to play audio:', err);
+    }
+  };
+
+  // Save word to vocabulary - Mở modal để chọn flashcard set
+  const saveWord = () => {
     if (!selectedText || !user) return;
 
-    setSaving(true);
-    try {
-      // Call API to save word - implement based on your API
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // You can implement this API call:
-      // await newsService.saveWord({
-      //   word: selectedText,
-      //   meaning: wordMeaning || '',
-      //   articleId: parseInt(articleId),
-      // });
+    // Chuẩn bị dữ liệu từ vựng để lưu
+    setWordToSave({
+      word: selectedText,
+      meaning: wordMeaning || '',
+      example: '', // Có thể lấy câu ví dụ từ context nếu cần
+      articleId: parseInt(articleId),
+    });
 
-      alert(`Saved word: "${selectedText}" to your vocabulary!`);
-      setShowTooltip(false);
-    } catch (err) {
-      console.error('Failed to save word:', err);
-      alert('Failed to save word');
-    } finally {
-      setSaving(false);
-    }
+    // Mở modal chọn flashcard set
+    setShowSaveWordModal(true);
+  };
+  
+  // Save word từ DictionaryModal
+  const handleSaveWordFromDictionary = (wordData) => {
+    setWordToSave({
+      ...wordData,
+      articleId: parseInt(articleId),
+    });
+    setShowDictionaryModal(false);
+    setShowSaveWordModal(true);
+  };
+
+  // Callback khi lưu từ thành công
+  const handleSaveSuccess = () => {
+    setShowTooltip(false);
+    setShowDictionaryModal(false);
+    setSelectedText('');
+    setWordMeaning(null);
+    setDictionaryData(null);
+    window.getSelection()?.removeAllRanges();
   };
 
   // Setup text selection listener
@@ -403,9 +466,9 @@ const ArticleDetail = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-sky-50 dark:bg-gray-900">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
+          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-sky-500" />
           <p className="text-gray-600 dark:text-gray-400">Loading article...</p>
         </div>
       </div>
@@ -414,12 +477,12 @@ const ArticleDetail = () => {
 
   if (error || !article) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-sky-50 dark:bg-gray-900">
         <div className="text-center">
           <p className="mb-4 text-red-600 dark:text-red-400">{error || 'Article not found'}</p>
           <button
             onClick={() => navigate('/news')}
-            className="rounded-lg bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
+            className="rounded-lg bg-sky-500 px-6 py-2 text-white hover:bg-sky-600"
           >
             Back to News Feed
           </button>
@@ -431,11 +494,11 @@ const ArticleDetail = () => {
   const level = levelConfig[article.level] || levelConfig.BEGINNER;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-32">
+    <div className="min-h-screen bg-sky-50 dark:bg-gray-900 pb-32">
       {/* Reading Progress Bar */}
       <div className="fixed left-0 right-0 top-0 z-50 h-1 bg-gray-200 dark:bg-gray-800">
         <div
-          className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300"
+          className="h-full bg-sky-500 transition-all duration-300"
           style={{ width: `${readingProgress}%` }}
         />
       </div>
@@ -465,7 +528,7 @@ const ArticleDetail = () => {
               <button
                 onClick={lookupWord}
                 disabled={lookingUp}
-                className="flex items-center gap-1 rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50"
+                className="flex items-center gap-1 rounded-md bg-sky-500 px-3 py-1.5 text-sm text-white hover:bg-sky-600 disabled:opacity-50"
               >
                 <Book size={16} />
                 {lookingUp ? 'Looking up...' : 'Dictionary'}
@@ -478,7 +541,7 @@ const ArticleDetail = () => {
                   className="flex items-center gap-1 rounded-md bg-green-500 px-3 py-1.5 text-sm text-white hover:bg-green-600 disabled:opacity-50"
                 >
                   <Save size={16} />
-                  {saving ? 'Saving...' : 'Save Word'}
+                  Save Word
                 </button>
               )}
             </div>
@@ -533,7 +596,7 @@ const ArticleDetail = () => {
               {/* Play/Pause */}
               <button
                 onClick={toggleAudio}
-                className="rounded-full bg-blue-500 p-3 text-white hover:bg-blue-600"
+                className="rounded-full bg-sky-500 p-3 text-white hover:bg-sky-600"
               >
                 {isPlaying ? <Pause size={20} /> : <Play size={20} />}
               </button>
@@ -553,7 +616,7 @@ const ArticleDetail = () => {
                   className="group relative h-2 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700"
                 >
                   <div
-                    className="h-full rounded-full bg-blue-500 transition-all"
+                    className="h-full rounded-full bg-sky-500 transition-all"
                     style={{ width: `${(currentTime / duration) * 100}%` }}
                   />
                 </div>
@@ -616,6 +679,20 @@ const ArticleDetail = () => {
               {article.title}
             </h1>
 
+            {/* Thumbnail Cover Image */}
+            {article.thumbnailUrl && (
+              <div className="mb-6 overflow-hidden rounded-lg">
+                <img
+                  src={article.thumbnailUrl}
+                  alt={article.title}
+                  className="h-auto w-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-1">
@@ -639,7 +716,7 @@ const ArticleDetail = () => {
                   href={article.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-sm text-sky-600 hover:underline dark:text-sky-400"
                 >
                   Original Source →
                 </a>
@@ -650,7 +727,7 @@ const ArticleDetail = () => {
           {/* Article Content */}
           <div
             ref={contentRef}
-            className="prose prose-lg prose-gray max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-lg dark:prose-a:text-blue-400"
+            className="prose prose-lg prose-gray max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-sky-600 prose-img:rounded-lg dark:prose-a:text-sky-400"
             dangerouslySetInnerHTML={{ __html: article.htmlContent }}
           />
 
@@ -677,19 +754,19 @@ const ArticleDetail = () => {
                   <button
                     type="submit"
                     disabled={!commentText.trim()}
-                    className="rounded-lg bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-lg bg-sky-500 px-6 py-2 text-white hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Post Comment
                   </button>
                 </div>
               </form>
             ) : (
-              <div className="mb-8 rounded-lg bg-blue-50 p-4 text-center dark:bg-blue-900/20">
+              <div className="mb-8 rounded-lg bg-sky-50 p-4 text-center dark:bg-sky-900/20">
                 <p className="text-gray-700 dark:text-gray-300">
                   Please{' '}
                   <button
                     onClick={() => navigate('/dang-nhap')}
-                    className="font-semibold text-blue-600 hover:underline dark:text-blue-400"
+                    className="font-semibold text-sky-600 hover:underline dark:text-sky-400"
                   >
                     login
                   </button>{' '}
@@ -701,7 +778,7 @@ const ArticleDetail = () => {
             {/* Comments List */}
             {loadingComments ? (
               <div className="text-center">
-                <Loader2 className="mx-auto h-8 w-8 animate-spin text-blue-500" />
+                <Loader2 className="mx-auto h-8 w-8 animate-spin text-sky-500" />
               </div>
             ) : comments.length === 0 ? (
               <p className="text-center text-gray-500 dark:text-gray-400">
@@ -715,7 +792,7 @@ const ArticleDetail = () => {
                     className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
                   >
                     <div className="mb-2 flex items-center gap-2">
-                      <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                      <div className="h-8 w-8 rounded-full bg-sky-500 flex items-center justify-center text-white font-semibold">
                         {comment.user?.username?.[0]?.toUpperCase() || 'U'}
                       </div>
                       <div>
@@ -733,8 +810,48 @@ const ArticleDetail = () => {
               </div>
             )}
           </div>
+
+          {/* Related Articles Section */}
+          {relatedArticles.length > 0 && (
+            <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
+              <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
+                Các bài báo khác
+              </h2>
+              {loadingRelated ? (
+                <div className="text-center">
+                  <Loader2 className="mx-auto h-8 w-8 animate-spin text-sky-500" />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {relatedArticles.map((relatedArticle) => (
+                    <ArticleCard key={relatedArticle.id} article={relatedArticle} />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Dictionary Modal */}
+      <DictionaryModal
+        isOpen={showDictionaryModal}
+        onClose={() => setShowDictionaryModal(false)}
+        dictionaryData={dictionaryData}
+        loading={dictionaryLoading}
+        error={dictionaryError}
+        onPlayAudio={handlePlayAudio}
+        onSaveWord={handleSaveWordFromDictionary}
+        isAuthenticated={!!user}
+      />
+
+      {/* Save Word Modal */}
+      <SaveWordModal
+        isOpen={showSaveWordModal}
+        onClose={() => setShowSaveWordModal(false)}
+        wordData={wordToSave}
+        onSaveSuccess={handleSaveSuccess}
+      />
     </div>
   );
 };

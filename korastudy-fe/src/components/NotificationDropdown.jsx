@@ -156,7 +156,7 @@ const NotificationDropdown = ({ isOpen, onClose, onMarkAsRead, onMarkAllAsRead }
         <div className="flex gap-2">
           <button
             onClick={handleMarkAllAsRead}
-            className="p-1 text-gray-500 hover:text-primary-500 rounded-full hover:bg-gray-100 dark:hover:bg-dark-700"
+            className="p-1 text-gray-500 hover:text-sky-500 rounded-full hover:bg-gray-100 dark:hover:bg-dark-700"
             title="Đánh dấu tất cả là đã đọc"
           >
             <CheckCheck size={16} />
@@ -205,7 +205,7 @@ const NotificationDropdown = ({ isOpen, onClose, onMarkAsRead, onMarkAllAsRead }
       <div className="max-h-80 overflow-y-auto">
         {loading ? (
           <div className="flex justify-center items-center py-4">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-500"></div>
           </div>
         ) : notifications.length === 0 ? (
           <div className="py-4 text-center text-gray-500 dark:text-gray-400">
@@ -227,7 +227,7 @@ const NotificationDropdown = ({ isOpen, onClose, onMarkAsRead, onMarkAllAsRead }
                 {!notification.read && (
                   <button
                     onClick={() => handleMarkAsRead(notification.id)}
-                    className="p-1 text-xs text-primary-500 hover:text-primary-600"
+                    className="p-1 text-xs text-sky-500 hover:text-sky-600"
                   >
                     Đánh dấu đã đọc
                   </button>

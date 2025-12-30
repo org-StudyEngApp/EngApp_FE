@@ -11,7 +11,7 @@ export const Checkbox = ({
     <input 
       type="checkbox"
       id={id}
-      className={`w-4 h-4 border border-gray-300 rounded cursor-pointer accent-primary-500 ${className}`}
+      className={`w-4 h-4 border border-gray-300 rounded cursor-pointer accent-sky-500 ${className}`}
       checked={checked}
       onChange={onChange}
       {...props}

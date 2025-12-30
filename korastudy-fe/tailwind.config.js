@@ -1,52 +1,28 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./public/index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        // Định nghĩa bộ màu chuẩn để dùng khắp dự án
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#34bcf9',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          DEFAULT: '#0EA5E9', // Sky 500
+          hover: '#0284C7',   // Sky 600
+          light: '#E0F2FE',   // Sky 100 (dùng cho background nút phụ)
         },
         secondary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          DEFAULT: '#0284C7', // Sky 600
         },
-        dark: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-        }
+        dark: '#0F172A',      // Slate 900 (Text chính)
+        muted: '#64748B',     // Slate 500 (Text phụ)
+        bg: '#F0F9FF',        // Sky 50 (Nền web)
       },
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'], // Font chữ hiện đại, dễ đọc
       },
       boxShadow: {
         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -81,5 +57,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'), // Plugin cho bài đọc
+  ],
 }

@@ -280,7 +280,7 @@ const FlashCardPractice = () => {
 
   if (!currentCard && !showResult) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-sky-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Đang tải flashcard...</p>
@@ -291,14 +291,14 @@ const FlashCardPractice = () => {
 
   if (showResult) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-sky-50 dark:bg-gray-900 flex items-center justify-center p-4">
         <motion.div
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full text-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-white" />
           </div>
           
@@ -324,7 +324,7 @@ const FlashCardPractice = () => {
           <div className="flex gap-3">
             <button
               onClick={handleReset}
-              className="flex-1 bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-colors duration-300"
+              className="flex-1 bg-sky-500 text-white py-3 rounded-xl font-semibold hover:bg-sky-600 transition-colors duration-300"
             >
               Học lại
             </button>
@@ -341,7 +341,7 @@ const FlashCardPractice = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-sky-50 dark:bg-gray-900">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -386,7 +386,7 @@ const FlashCardPractice = () => {
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <motion.div
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
+                className="bg-sky-500 h-2 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3 }}
@@ -432,7 +432,7 @@ const FlashCardPractice = () => {
                           e.stopPropagation();
                           playAudio();
                         }}
-                        className="p-3 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-300"
+                        className="p-3 bg-sky-100 dark:bg-sky-900 text-sky-600 dark:text-sky-400 rounded-full hover:bg-sky-200 dark:hover:bg-sky-800 transition-colors duration-300"
                         title="Phát âm thanh"
                       >
                         <Volume2 size={20} />
@@ -446,7 +446,7 @@ const FlashCardPractice = () => {
 
                 {/* Back of card */}
                 <div
-                  className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-xl flex flex-col items-center justify-center p-8 text-white"
+                  className="absolute inset-0 w-full h-full bg-sky-500 rounded-2xl shadow-xl flex flex-col items-center justify-center p-8 text-white"
                   style={{ 
                     backfaceVisibility: "hidden",
                     transform: "rotateY(180deg)"

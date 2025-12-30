@@ -10,7 +10,7 @@ const PathHeader = ({ path, isExpanded, onToggle }) => {
 
   return (
     <section 
-      className={`bg-gradient-to-r ${path.gradient || 'from-blue-600 via-blue-500 to-sky-500'} text-white py-8 relative overflow-hidden cursor-pointer`}
+      className="bg-sky-500 text-white py-8 relative overflow-hidden cursor-pointer"
       onClick={() => onToggle(path.id)}
     >
       {/* Background decorations */}

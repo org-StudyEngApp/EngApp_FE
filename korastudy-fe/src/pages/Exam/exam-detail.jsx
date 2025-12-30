@@ -244,7 +244,7 @@ const ExamDetail = () => {
             <div className="space-y-2">
               <button 
                 onClick={() => window.location.reload()}
-                className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                className="w-full bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600"
               >
                 Thử lại
               </button>
@@ -272,7 +272,7 @@ const ExamDetail = () => {
             <p className="text-gray-600 mb-4">Không tìm thấy bài thi với ID: {id}</p>
             <button 
               onClick={() => navigate('/exam')}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600"
             >
               Quay lại danh sách bài thi
             </button>
@@ -298,7 +298,7 @@ const ExamDetail = () => {
           <div className="flex items-center gap-4 mb-4">
             <Link 
               to="/exam"
-              className="flex items-center gap-2 text-gray-600 hover:text-primary-500 transition-colors duration-300"
+              className="flex items-center gap-2 text-gray-600 hover:text-sky-500 transition-colors duration-300"
             >
               <ArrowLeft size={20} />
               <span className="font-medium">Quay lại danh sách</span>
@@ -309,8 +309,8 @@ const ExamDetail = () => {
             {/* Left Content */}
             <div className="lg:col-span-2">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <BookOpen className="w-8 h-8 text-primary-500" />
+                <div className="w-16 h-16 bg-sky-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="w-8 h-8 text-sky-500" />
                 </div>
                 <div className="flex-1">
                   <h1 className="font-inter font-bold text-3xl text-gray-800 mb-2">
@@ -323,15 +323,15 @@ const ExamDetail = () => {
                   {/* Stats */}
                   <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <Clock size={16} className="text-primary-500" />
+                      <Clock size={16} className="text-sky-500" />
                       <span>{formatDuration(exam.durationTimes)}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <BookOpen size={16} className="text-primary-500" />
+                      <BookOpen size={16} className="text-sky-500" />
                       <span>{exam.totalQuestions || 0} câu hỏi</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Users size={16} className="text-primary-500" />
+                      <Users size={16} className="text-sky-500" />
                       <span>{exam.participants || 0} người đã thi</span>
                     </div>
                     {exam.rating && (
@@ -365,7 +365,7 @@ const ExamDetail = () => {
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl p-6 shadow-sm border sticky top-4">
                 <div className="text-center mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-20 h-20 bg-sky-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Play className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="font-semibold text-lg text-gray-800 mb-2">
@@ -379,7 +379,7 @@ const ExamDetail = () => {
                 <div className="space-y-3 mb-6">
                   <Link
                     to={`/exam/${exam.id}/test`}
-                    className="w-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 px-6 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                    className="w-full bg-sky-500 hover:bg-sky-600 text-white py-3 px-6 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                   >
                     <Play size={18} />
                     Bắt đầu làm bài
@@ -393,11 +393,11 @@ const ExamDetail = () => {
                 {/* <div className="border-t pt-4">
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>
-                      <div className="text-2xl font-bold text-primary-500">{exam.listeningCount || Math.floor(exam.totalQuestions/2) || 0}</div>
+                      <div className="text-2xl font-bold text-sky-500">{exam.listeningCount || Math.floor(exam.totalQuestions/2) || 0}</div>
                       <div className="text-xs text-gray-600">Câu nghe</div>
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-secondary-500">{exam.readingCount || Math.floor(exam.totalQuestions/2) || 0}</div>
+                      <div className="text-2xl font-bold text-sky-600">{exam.readingCount || Math.floor(exam.totalQuestions/2) || 0}</div>
                       <div className="text-xs text-gray-600">Câu đọc</div>
                     </div>
                   </div>
@@ -420,7 +420,7 @@ const ExamDetail = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 py-4 px-2 border-b-2 font-medium transition-colors duration-300 ${
                     activeTab === tab.id
-                      ? 'border-primary-500 text-primary-500'
+                      ? 'border-sky-500 text-sky-500'
                       : 'border-transparent text-gray-600 hover:text-gray-800'
                   }`}
                 >
@@ -457,7 +457,7 @@ const ExamDetail = () => {
                         <ul className="space-y-2">
                           {(exam.features || mockFeatures).map((feature, index) => (
                             <li key={index} className="flex items-start gap-2 text-gray-700">
-                              <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <div className="w-1.5 h-1.5 bg-sky-500 rounded-full mt-2 flex-shrink-0"></div>
                               {feature}
                             </li>
                           ))}
@@ -486,7 +486,7 @@ const ExamDetail = () => {
                     <div className="space-y-3">
                       {(exam.instructions || mockInstructions).map((instruction, index) => (
                         <div key={index} className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                          <div className="w-6 h-6 bg-sky-500 text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                             {index + 1}
                           </div>
                           <p className="text-gray-700">{instruction}</p>
@@ -507,7 +507,7 @@ const ExamDetail = () => {
                         <div className="flex space-x-3">
                           <div className="flex-shrink-0">
                             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                              <span className="text-blue-600 font-medium">
+                              <span className="text-sky-600 font-medium">
                                 {user.username?.charAt(0).toUpperCase() || 'U'}
                               </span>
                             </div>
@@ -524,7 +524,7 @@ const ExamDetail = () => {
                               <button
                                 type="submit"
                                 disabled={isSubmittingComment || !newComment.trim()}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed"
                               >
                                 {isSubmittingComment ? 'Đang gửi...' : 'Gửi bình luận'}
                               </button>
@@ -535,7 +535,7 @@ const ExamDetail = () => {
                     ) : (
                       <div className="mb-6 p-4 bg-gray-50 rounded-lg">
                         <p className="text-gray-600 text-center">
-                          <Link to="/login" className="text-blue-600 hover:text-blue-700">
+                          <Link to="/login" className="text-sky-600 hover:text-sky-700">
                             Đăng nhập
                           </Link> để bình luận
                         </p>
@@ -640,7 +640,7 @@ const ExamDetail = () => {
                 <h3 className="font-semibold text-lg mb-4">Đề thi liên quan</h3>
                 <div className="space-y-4">
                   {[1, 2, 3].map(i => (
-                    <Link key={i} to={`/exam/${exam.id + i}`} className="block p-4 border rounded-lg hover:border-primary-500 transition-colors duration-300">
+                    <Link key={i} to={`/exam/${exam.id + i}`} className="block p-4 border rounded-lg hover:border-sky-500 transition-colors duration-300">
                       <h4 className="font-medium text-gray-800 mb-1">TOPIK I - Test {i + 1}</h4>
                       <p className="text-sm text-gray-600 mb-2">Bài thi thử TOPIK I</p>
                       <div className="flex items-center gap-4 text-xs text-gray-500">

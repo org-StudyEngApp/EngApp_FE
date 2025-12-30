@@ -222,7 +222,7 @@ const handleSubmit = async (e) => {
       
       <div className="flex flex-1 min-h-[calc(100vh-160px)]">
         {/* Mobile: Single column, Desktop: Two columns */}
-        <div className="w-full lg:w-1/2 bg-gradient-to-br from-primary-500 via-secondary-400 to-secondary-500 flex flex-col items-center justify-center p-4 lg:p-10 lg:rounded-r-custom relative shadow-custom">
+        <div className="w-full lg:w-1/2 bg-sky-500 flex flex-col items-center justify-center p-4 lg:p-10 lg:rounded-r-custom relative shadow-custom">
           {/* Registration Card */}
           <div className="w-full max-w-md bg-white dark:bg-dark-800 rounded-3xl p-6 lg:p-10 shadow-card my-4 lg:my-5 max-h-[90vh] overflow-y-auto">
             <h2 className="font-bold text-xl lg:text-2xl xl:text-3xl text-gray-800 dark:text-gray-200 mb-4 lg:mb-6 xl:mb-8 text-center">
@@ -256,7 +256,7 @@ const handleSubmit = async (e) => {
                   className={`w-full h-12 lg:h-11 bg-gray-50 dark:bg-dark-700 border-2 rounded-xl px-4 text-sm transition-all duration-300 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 ${
                     errors.username && touched.username
                       ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
-                      : 'border-gray-200 dark:border-dark-600 focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)]'
+                      : 'border-gray-200 dark:border-dark-600 focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)]'
                   }`}
                   disabled={isLoading}
                   required
@@ -291,7 +291,7 @@ const handleSubmit = async (e) => {
                   className={`w-full h-12 lg:h-11 bg-gray-50 dark:bg-dark-700 border-2 rounded-xl px-4 text-sm transition-all duration-300 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 ${
                     errors.email && touched.email
                       ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
-                      : 'border-gray-200 dark:border-dark-600 focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)]'
+                      : 'border-gray-200 dark:border-dark-600 focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)]'
                   }`}
                   disabled={isLoading}
                   required
@@ -327,7 +327,7 @@ const handleSubmit = async (e) => {
                     className={`w-full h-12 lg:h-11 bg-gray-50 dark:bg-dark-700 border-2 rounded-xl px-4 pr-12 text-sm transition-all duration-300 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 ${
                       errors.password && touched.password
                         ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
-                        : 'border-gray-200 dark:border-dark-600 focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)]'
+                        : 'border-gray-200 dark:border-dark-600 focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)]'
                     }`}
                     disabled={isLoading}
                     required
@@ -335,7 +335,7 @@ const handleSubmit = async (e) => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors duration-300"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-sky-500 transition-colors duration-300"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -417,7 +417,7 @@ const handleSubmit = async (e) => {
                     className={`w-full h-12 lg:h-11 bg-gray-50 dark:bg-dark-700 border-2 rounded-xl px-4 pr-12 text-sm transition-all duration-300 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 ${
                       errors.confirmPassword && touched.confirmPassword
                         ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
-                        : 'border-gray-200 dark:border-dark-600 focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)]'
+                        : 'border-gray-200 dark:border-dark-600 focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)]'
                     }`}
                     disabled={isLoading}
                     required
@@ -425,7 +425,7 @@ const handleSubmit = async (e) => {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors duration-300"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-sky-500 transition-colors duration-300"
                     disabled={isLoading}
                   >
                     {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -455,17 +455,17 @@ const handleSubmit = async (e) => {
                     checked={formData.agreeTerms}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                    className="w-[18px] h-[18px] border-2 border-gray-300 dark:border-dark-600 rounded cursor-pointer accent-primary-500 mt-0.5 flex-shrink-0"
+                    className="w-[18px] h-[18px] border-2 border-gray-300 dark:border-dark-600 rounded cursor-pointer accent-sky-500 mt-0.5 flex-shrink-0"
                     disabled={isLoading}
                     required
                   />
                   <label htmlFor="agreeTerms" className="text-[12px] lg:text-[13px] text-gray-700 dark:text-gray-300 cursor-pointer leading-[1.4]">
                     Tôi đồng ý với{' '}
-                    <Link to="/terms" className="text-primary-500 font-medium hover:underline">
+                    <Link to="/terms" className="text-sky-500 font-medium hover:underline">
                       Điều khoản dịch vụ
                     </Link>
                     {' '}và{' '}
-                    <Link to="/privacy" className="text-primary-500 font-medium hover:underline">
+                    <Link to="/privacy" className="text-sky-500 font-medium hover:underline">
                       Chính sách bảo mật
                     </Link>
                   </label>
@@ -481,7 +481,7 @@ const handleSubmit = async (e) => {
               {/* Register Button with Loading State */}
               <button 
                 type="submit" 
-                className="w-full h-12 bg-gradient-to-r from-primary-500 via-secondary-400 to-secondary-500 border-0 rounded-xl text-white font-semibold text-base cursor-pointer transition-all duration-300 mb-4 shadow-[0_4px_12px_rgba(52,188,249,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(52,188,249,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2"
+                className="w-full h-12 bg-sky-500 hover:bg-sky-600 border-0 rounded-xl text-white font-semibold text-base cursor-pointer transition-all duration-300 mb-4 shadow-[0_4px_12px_rgba(14,165,233,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(14,165,233,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2"
                 disabled={(Object.values(errors).some(error => error !== '') || !formData.agreeTerms) || isLoading}
               >
                 {isLoading ? (
@@ -497,7 +497,7 @@ const handleSubmit = async (e) => {
               {/* Login Link */}
               <div className="text-center my-3 lg:my-4">
                 <span className="text-sm text-gray-500 dark:text-gray-400">Bạn đã có tài khoản? </span>
-                <Link to="/dang-nhap" className="font-semibold text-sm text-primary-500 hover:text-blue-600 hover:underline transition-colors duration-300">
+                <Link to="/dang-nhap" className="font-semibold text-sm text-sky-500 hover:text-sky-600 hover:underline transition-colors duration-300">
                   Đăng nhập ngay
                 </Link>
               </div>
@@ -515,11 +515,11 @@ const handleSubmit = async (e) => {
 
             {/* Terms and Privacy */}
             <div className="text-center mt-4 lg:mt-6 pt-3 lg:pt-5 border-t border-gray-200 dark:border-dark-600">
-              <Link to="/terms" className="text-xs text-gray-500 dark:text-gray-400 hover:text-primary-500 hover:underline transition-colors duration-300">
+              <Link to="/terms" className="text-xs text-gray-500 dark:text-gray-400 hover:text-sky-500 hover:underline transition-colors duration-300">
                 Điều khoản dịch vụ
               </Link>
               <span className="text-xs text-gray-500 dark:text-gray-400 mx-1"> & </span>
-              <Link to="/privacy" className="text-xs text-gray-500 dark:text-gray-400 hover:text-primary-500 hover:underline transition-colors duration-300">
+              <Link to="/privacy" className="text-xs text-gray-500 dark:text-gray-400 hover:text-sky-500 hover:underline transition-colors duration-300">
                 Chính sách bảo mật
               </Link>
             </div>
@@ -527,7 +527,7 @@ const handleSubmit = async (e) => {
         </div>
 
         {/* Right Side - Promotional Content (Hidden on mobile) */}
-        <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-dark-800 dark:to-dark-700 relative flex-col items-center justify-center px-15 py-10 overflow-hidden">
+        <div className="hidden lg:flex w-1/2 bg-sky-50 dark:bg-dark-800 relative flex-col items-center justify-center px-15 py-10 overflow-hidden">
           {/* Background Gradients */}
           <div className="absolute -top-25 -left-25 w-75 h-75 gradient-bg-1 rounded-full"></div>
           <div className="absolute -bottom-25 -right-25 w-100 h-100 gradient-bg-2 rounded-full"></div>

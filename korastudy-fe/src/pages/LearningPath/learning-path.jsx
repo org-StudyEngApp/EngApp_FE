@@ -341,7 +341,7 @@ const LearningPath = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-dark-900 dark:to-dark-800">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-900">
       
       
       {/* Intro Section */}
@@ -374,7 +374,7 @@ const LearningPath = () => {
       ))}
       
       {/* Benefits section */}
-      <section className="py-16 bg-gradient-to-r from-blue-50 to-sky-50 dark:from-dark-800 dark:to-dark-900">
+      <section className="py-16 bg-sky-50 dark:bg-dark-800">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12 animate-on-scroll" data-id="benefits-title">
             <h2 className={`text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4 transition-all duration-500 ${animatedItems['benefits-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -408,7 +408,7 @@ const LearningPath = () => {
                 className={`bg-white dark:bg-dark-700 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-dark-600 transform transition-all duration-700 hover:-translate-y-2 hover:shadow-xl ${animatedItems['benefits-cards'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-sky-500 rounded-full flex items-center justify-center text-white mb-5 shadow-md">
+                <div className="w-16 h-16 bg-sky-500 rounded-full flex items-center justify-center text-white mb-5 shadow-md">
                   {benefit.icon}
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3">
@@ -424,7 +424,7 @@ const LearningPath = () => {
       </section>
 
       {/* CTA section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-sky-500 text-white relative overflow-hidden">
+      <section className="py-16 bg-sky-500 text-white relative overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute right-10 top-10 w-72 h-72 rounded-full bg-white opacity-10 mix-blend-overlay blur-3xl animate-blob"></div>
@@ -443,7 +443,7 @@ const LearningPath = () => {
             <div className="flex flex-wrap justify-center gap-4 animate-fade-in">
               <Link 
                 to="/dang-ky"
-                className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex items-center gap-2 group"
+                className="bg-white text-sky-600 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex items-center gap-2 group"
               >
                 Đăng ký miễn phí
                 <ArrowRight size={20} className="transform group-hover:translate-x-1 transition-transform duration-300" />

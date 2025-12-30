@@ -20,7 +20,7 @@ const ProfileTabs = ({ activeTab, handleTabChange }) => {
               onClick={() => handleTabChange(tab.id)}
               className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
                 activeTab === tab.id
-                  ? 'border-primary-500 text-primary-600 dark:text-primary-400'
+                  ? 'border-sky-500 text-sky-600 dark:text-sky-400'
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >

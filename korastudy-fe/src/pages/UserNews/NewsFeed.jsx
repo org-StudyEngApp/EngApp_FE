@@ -47,8 +47,8 @@ const NewsFeed = () => {
   const fetchTopics = async () => {
     try {
       const response = await newsService.getAllTopics();
-      // Handle different response structures
-      const topicsData = response.data?.data || response.data || [];
+      // Handle both data structures: {data: [...]} or direct array
+      const topicsData = response?.data?.data || response?.data || response || [];
       setTopics(Array.isArray(topicsData) ? topicsData : []);
     } catch (err) {
       console.error('Failed to fetch topics:', err);
@@ -80,16 +80,33 @@ const NewsFeed = () => {
         params.keyword = searchKeyword;
       }
 
+      console.log('📡 Fetching articles with params:', params);
       const response = await newsService.getArticles(params);
+      console.log('✅ Articles response:', response);
       
-      // Handle different response structures
-      const articlesData = response.data?.data || response.data || {};
-      setArticles(articlesData.content || []);
-      setTotalPages(articlesData.totalPages || 0);
-      setTotalElements(articlesData.totalElements || 0);
+      // Handle nested data structure: {data: {content: [...], totalPages, totalElements}}
+      const articlesData = response?.data || response;
+      setArticles(articlesData?.content || []);
+      setTotalPages(articlesData?.totalPages || 0);
+      setTotalElements(articlesData?.totalElements || 0);
     } catch (err) {
-      setError(err.message || 'Failed to fetch articles');
-      console.error('Failed to fetch articles:', err);
+      console.error('❌ Failed to fetch articles:', err);
+      console.error('Error details:', {
+        status: err.status,
+        message: err.message,
+        data: err.data
+      });
+      
+      // Check if it's a 404 error (endpoint not found)
+      if (err.status === 404) {
+        setError('Backend API chưa sẵn sàng. Vui lòng đảm bảo:\n1. Backend đang chạy trên port 8080\n2. Endpoint /api/v1/articles đã được implement');
+      } else if (err.message?.includes('Network Error') || err.message?.includes('ECONNREFUSED')) {
+        setError('Không thể kết nối đến server backend tại http://localhost:8080\nVui lòng khởi động backend server.');
+      } else {
+        setError(`Lỗi: ${err.message || 'Không thể tải tin tức'}`);
+      }
+      
+      setArticles([]);
     } finally {
       setLoading(false);
     }
@@ -162,7 +179,7 @@ const NewsFeed = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-sky-50 dark:bg-gray-900">
       {/* Header Section */}
       <div className="bg-white shadow-sm dark:bg-gray-800">
         <div className="container mx-auto px-4 py-6">
@@ -214,7 +231,7 @@ const NewsFeed = () => {
                   onClick={() => handleTopicClick(null)}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     selectedTopic === null
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-sky-500 text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -226,7 +243,7 @@ const NewsFeed = () => {
                     onClick={() => handleTopicClick(topic.id)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                       selectedTopic === topic.id
-                        ? 'bg-blue-500 text-white'
+                        ? 'bg-sky-500 text-white'
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -263,7 +280,7 @@ const NewsFeed = () => {
               </div>
               <button
                 onClick={clearFilters}
-                className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-sm font-medium text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
               >
                 Clear all filters
               </button>
@@ -277,20 +294,35 @@ const NewsFeed = () => {
         {loading ? (
           <div className="flex min-h-[400px] items-center justify-center">
             <div className="text-center">
-              <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent"></div>
+              <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-sky-500 border-r-transparent"></div>
               <p className="text-gray-600 dark:text-gray-400">Loading articles...</p>
             </div>
           </div>
         ) : error ? (
           <div className="flex min-h-[400px] items-center justify-center">
-            <div className="text-center">
-              <p className="mb-4 text-red-600 dark:text-red-400">{error}</p>
-              <button
-                onClick={fetchArticles}
-                className="rounded-lg bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
-              >
-                Try Again
-              </button>
+            <div className="max-w-md rounded-lg bg-white p-8 text-center shadow-lg dark:bg-gray-800">
+              <div className="mb-4 text-6xl">⚠️</div>
+              <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                Không thể tải tin tức
+              </h3>
+              <p className="mb-6 text-gray-600 dark:text-gray-400">{error}</p>
+              <div className="space-y-3">
+                <button
+                  onClick={fetchArticles}
+                  className="w-full rounded-lg bg-sky-500 px-6 py-3 text-white transition hover:bg-sky-600"
+                >
+                  Thử lại
+                </button>
+                <a
+                  href="/"
+                  className="block w-full rounded-lg border border-gray-300 bg-white px-6 py-3 text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                >
+                  Về trang chủ
+                </a>
+              </div>
+              <p className="mt-4 text-xs text-gray-500 dark:text-gray-500">
+                Chức năng tin tức đang được phát triển. Vui lòng quay lại sau!
+              </p>
             </div>
           </div>
         ) : articles.length === 0 ? (
@@ -339,7 +371,7 @@ const NewsFeed = () => {
                       onClick={() => handlePageClick(page)}
                       className={`h-10 w-10 rounded-lg text-sm font-medium transition-colors ${
                         currentPage === page
-                          ? 'bg-blue-500 text-white'
+                          ? 'bg-sky-500 text-white'
                           : 'bg-white text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                       }`}
                     >

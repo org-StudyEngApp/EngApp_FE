@@ -191,6 +191,75 @@ export const flashcardService = {
       throw error;
     }
   },
+
+  // Thêm từ vựng vào flashcard set
+  addWordToFlashcard: async (setId, wordData) => {
+    try {
+      // Lấy thông tin flashcard set hiện tại
+      const currentSet = await flashcardService.getFlashcardSet(setId);
+      
+      // Kiểm tra xem từ đã tồn tại chưa
+      const existingCard = currentSet.cards?.find(
+        card => card.term?.toLowerCase() === wordData.word?.toLowerCase()
+      );
+      
+      if (existingCard) {
+        toast.warning(`Từ "${wordData.word}" đã có trong flashcard này!`);
+        return currentSet;
+      }
+
+      // Tạo card mới
+      const newCard = {
+        term: wordData.word,
+        definition: wordData.meaning || '',
+        example: wordData.example || '',
+        imageUrl: wordData.imageUrl || null,
+      };
+
+      // Thêm card mới vào danh sách cards
+      const updatedCards = [...(currentSet.cards || []), newCard];
+
+      // Cập nhật lại toàn bộ flashcard set
+      const apiData = {
+        title: currentSet.title,
+        description: currentSet.description,
+        category: currentSet.category || "Từ vựng",
+        cards: updatedCards,
+      };
+
+      const res = await flashcardApi.put(`/${setId}`, apiData);
+      toast.success(`Đã thêm từ "${wordData.word}" vào flashcard!`);
+      return res.data;
+    } catch (error) {
+      console.error('Error adding word to flashcard:', error);
+      toast.error(error.response?.data?.message || 'Không thể thêm từ vào flashcard');
+      throw error;
+    }
+  },
+
+  // Tạo flashcard set nhanh và thêm từ (dùng khi user chưa có set nào)
+  createFlashcardWithWord: async (setTitle, wordData) => {
+    try {
+      const apiData = {
+        title: setTitle,
+        description: 'Từ vựng lưu từ bài báo',
+        category: 'Từ vựng',
+        cards: [{
+          term: wordData.word,
+          definition: wordData.meaning || '',
+          example: wordData.example || '',
+          imageUrl: wordData.imageUrl || null,
+        }],
+      };
+
+      const res = await flashcardApi.post('', apiData);
+      toast.success(`Đã tạo flashcard "${setTitle}" và thêm từ "${wordData.word}"!`);
+      return res.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Không thể tạo flashcard');
+      throw error;
+    }
+  },
 };
 
 

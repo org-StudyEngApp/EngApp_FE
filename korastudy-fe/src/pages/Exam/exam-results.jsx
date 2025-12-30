@@ -255,7 +255,7 @@ const ExamResults = () => {
   const getGradeColor = (grade) => {
     switch (grade) {
       case 'A': return 'text-green-600 bg-green-100';
-      case 'B': return 'text-blue-600 bg-blue-100';
+      case 'B': return 'text-sky-600 bg-sky-100';
       case 'C': return 'text-yellow-600 bg-yellow-100';
       default: return 'text-red-600 bg-red-100';
     }
@@ -267,7 +267,7 @@ const ExamResults = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-sky-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Đang tải kết quả bài thi...</p>
@@ -289,7 +289,7 @@ const ExamResults = () => {
             <p className="text-red-600 mb-4">{error || 'Không có dữ liệu kết quả'}</p>
             <button 
               onClick={() => navigate(`/exam/${id}`)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600"
             >
               Quay lại bài thi
             </button>
@@ -307,7 +307,7 @@ const ExamResults = () => {
         <div className="flex items-center justify-center py-20">
           <div className="text-center max-w-md">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Không có kết quả</h2>
-            <Link to="/exam" className="text-primary-500 hover:underline">
+            <Link to="/exam" className="text-sky-500 hover:underline">
               Quay lại danh sách bài thi
             </Link>
           </div>
@@ -327,7 +327,7 @@ const ExamResults = () => {
           <div className="flex items-center gap-4 mb-4">
             <Link 
               to="/exam" 
-              className="flex items-center gap-2 text-gray-600 hover:text-primary-500 transition-colors duration-300"
+              className="flex items-center gap-2 text-gray-600 hover:text-sky-500 transition-colors duration-300"
             >
               <ArrowLeft size={20} />
               Quay lại danh sách
@@ -452,12 +452,12 @@ const ExamResults = () => {
                 <div key={part.id} className="border rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-gray-800">{part.title}</h3>
-                    <span className="text-lg font-bold text-primary-600">{part.percentage}%</span>
+                    <span className="text-lg font-bold text-sky-600">{part.percentage}%</span>
                   </div>
                   
                   <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
                     <div 
-                      className="bg-primary-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-sky-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${part.percentage}%` }}
                     ></div>
                   </div>
@@ -504,7 +504,7 @@ const ExamResults = () => {
                     onClick={() => setSelectedFilter(filter.id)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 ${
                       selectedFilter === filter.id
-                        ? 'bg-primary-500 text-white'
+                        ? 'bg-sky-500 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -526,7 +526,7 @@ const ExamResults = () => {
                   {/* Question Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <span className="bg-primary-500 text-white px-3 py-1 rounded-lg text-sm font-semibold">
+                      <span className="bg-sky-500 text-white px-3 py-1 rounded-lg text-sm font-semibold">
                         문제 {index + 1}
                       </span>
                       {question.type === 'listening' || question.questionType === 'LISTENING' ? (
@@ -706,7 +706,7 @@ const ExamResults = () => {
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to={`/exam/${id}`}
-            className="bg-primary-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300 flex items-center justify-center gap-2"
+            className="bg-sky-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-sky-600 transition-colors duration-300 flex items-center justify-center gap-2"
           >
             <RotateCcw size={20} />
             Làm lại bài thi

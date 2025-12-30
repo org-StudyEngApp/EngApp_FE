@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 text-white mt-auto font-inter">
+    <footer className="bg-sky-700 text-white mt-auto font-sans">
       <div className="max-w-[1200px] mx-auto px-5">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-10 py-[60px]">
@@ -11,9 +11,9 @@ const Footer = () => {
           <div className="lg:col-span-2 max-w-[300px]">
             <div className="flex items-center gap-3 mb-5">
               
-              <div className="w-[150px] h-[90px] flex-shrink-0">
+              <div className="w-[200px] h-[110px] flex-shrink-0">
                 <img 
-                  src="bloom.png" 
+                  src="bloom_black_text.png" 
                   alt="KoraStudy Logo" 
                   className="w-full h-full object-contain rounded-lg"
                   // onError={(e) => {
@@ -201,7 +201,7 @@ const Footer = () => {
                 placeholder="Nhập địa chỉ email của bạn"
                 className="flex-1 px-4 py-3 border-0 rounded-lg text-sm outline-none bg-white text-gray-800 placeholder-gray-500"
               />
-              <button className="px-6 py-3 bg-primary-500 text-white border-0 rounded-lg text-sm font-semibold cursor-pointer transition-colors duration-300 whitespace-nowrap hover:bg-blue-600">
+              <button className="px-6 py-3 bg-sky-500 text-white border-0 rounded-lg text-sm font-semibold cursor-pointer transition-colors duration-300 whitespace-nowrap hover:bg-sky-600">
                 Đăng ký
               </button>
             </div>

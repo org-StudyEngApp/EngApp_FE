@@ -21,7 +21,7 @@ const ProfileSettings = ({
             <select
               value={preferences.testLevel || 'TOPIK I'}
               onChange={(e) => handlePreferenceChange('testLevel', e.target.value)}
-              className="w-full p-3 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full p-3 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-sky-500 focus:border-transparent"
             >
               <option value="TOPIK I">TOPIK I (Level 1-2)</option>
               <option value="TOPIK II">TOPIK II (Level 3-6)</option>
@@ -35,7 +35,7 @@ const ProfileSettings = ({
             <select
               value={preferences.interfaceLanguage || 'Vietnamese'}
               onChange={(e) => handlePreferenceChange('interfaceLanguage', e.target.value)}
-              className="w-full p-3 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full p-3 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-sky-500 focus:border-transparent"
             >
               <option value="Vietnamese">Tiếng Việt</option>
               <option value="Korean">한국어</option>
@@ -63,7 +63,7 @@ const ProfileSettings = ({
             <button
               onClick={toggleTheme}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-                theme === 'dark' ? 'bg-primary-500' : 'bg-gray-300'
+                theme === 'dark' ? 'bg-sky-500' : 'bg-gray-300'
               }`}
             >
               <span

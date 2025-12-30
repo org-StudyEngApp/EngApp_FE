@@ -200,27 +200,27 @@ useEffect(() => {
         </div>
 
         <ul className="hidden md:flex list-none m-0 p-0 gap-8 items-center">
-          <li><Link to="/news" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Đọc báo</Link></li>
-          <li><Link to="/flash-card" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FlashCard</Link></li>
-          <li><Link to="/lo-trinh" className="text-gray-800 dark:text-gray-200 text-base px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Lộ trình</Link></li>
+          <li><Link to="/news" className="text-slate-700 dark:text-gray-200 text-base px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Đọc báo</Link></li>
+          <li><Link to="/flash-card" className="text-slate-700 dark:text-gray-200 text-base px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">FlashCard</Link></li>
+          <li><Link to="/lo-trinh" className="text-slate-700 dark:text-gray-200 text-base px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Lộ trình</Link></li>
 
           <li className="relative">
-            <Link to="/blog" className="text-gray-800 dark:text-gray-200 px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</Link>
+            <Link to="/blog" className="text-slate-700 dark:text-gray-200 px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Blog</Link>
             
           </li>
 
           <li className="relative" onMouseEnter={() => setShowExamDropdown(true)} onMouseLeave={() => setShowExamDropdown(false)}>
-             <Link to="/exam" className="text-gray-800 dark:text-gray-200 px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Đề thi</Link>
+             <Link to="/exam" className="text-slate-700 dark:text-gray-200 px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Đề thi</Link>
             {showExamDropdown && (
               <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-dark-800 rounded-md shadow-lg py-1 border border-gray-200 dark:border-dark-700">
-                <Link to="/de-thi/topik1" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">TOPIK I</Link>
-                <Link to="/de-thi/topik2" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">TOPIK II</Link>
-                <Link to="/de-thi/topik-esp" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">TOPIK ESP</Link>
+                <Link to="/de-thi/topik1" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Cơ bản</Link>
+                <Link to="/de-thi/topik2" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Trung cấp</Link>
+                <Link to="/de-thi/topik-esp" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Nâng cao</Link>
               </div>
             )}
           </li>
 
-          <li><Link to="/about" className="text-gray-800 dark:text-gray-200 px-4 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Về KoraStudy</Link></li>
+          <li><Link to="/about" className="text-slate-700 dark:text-gray-200 px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Về KoraStudy</Link></li>
 
           {/* User Authentication Section */}
           <div className="flex items-center space-x-4 ml-8">
@@ -272,7 +272,7 @@ useEffect(() => {
                     />
                   ) : null}
                   <div 
-                    className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+                    className="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center text-white font-semibold text-sm"
                     style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
                   >
                     {getInitials(getDisplayName())}
@@ -304,7 +304,7 @@ useEffect(() => {
                           />
                         ) : null}
                         <div 
-                          className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold"
+                          className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center text-white font-semibold"
                           style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
                         >
                           {getInitials(getDisplayName())}
@@ -351,13 +351,13 @@ useEffect(() => {
               <div className="flex items-center gap-3">
                 <Link 
                   to="/dang-nhap" 
-                  className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium"
+                  className="text-gray-700 dark:text-gray-300 hover:text-sky-500 transition-colors font-medium"
                 >
                   Đăng nhập
                 </Link>
                 <Link 
                   to="/dang-ky" 
-                  className="bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-full px-6 py-2 shadow-md hover:shadow-lg transition-all font-medium"
+                  className="bg-sky-500 hover:bg-sky-600 text-white rounded-full px-6 py-2 shadow-md hover:shadow-lg transition-all font-medium"
                 >
                   Đăng ký
                 </Link>
@@ -455,7 +455,7 @@ useEffect(() => {
                         />
                       ) : null}
                       <div 
-                        className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-semibold"
+                        className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center text-white font-semibold"
                         style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
                       >
                         {getInitials(getDisplayName())}
@@ -492,14 +492,14 @@ useEffect(() => {
                     <Link 
                       to="/dang-nhap" 
                       onClick={closeMobileMenu} 
-                      className="block w-full text-center bg-white dark:bg-dark-700 border-2 border-primary-500 text-primary-500 font-medium px-6 py-3 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/10 transition-colors"
+                      className="block w-full text-center bg-white dark:bg-dark-700 border-2 border-sky-500 text-sky-500 font-medium px-6 py-3 rounded-full hover:bg-sky-50 dark:hover:bg-sky-900/10 transition-colors"
                     >
                       Đăng nhập
                     </Link>
                     <Link 
                       to="/dang-ky" 
                       onClick={closeMobileMenu} 
-                      className="block w-full text-center bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-medium px-6 py-3 rounded-full hover:from-primary-600 hover:to-secondary-600 transition-all"
+                      className="block w-full text-center bg-sky-500 text-white font-medium px-6 py-3 rounded-full hover:bg-sky-600 transition-all"
                     >
                       Đăng ký
                     </Link>

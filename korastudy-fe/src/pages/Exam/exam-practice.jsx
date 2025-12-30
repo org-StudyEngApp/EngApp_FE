@@ -80,7 +80,7 @@ const ExamPractice = () => {
           <p className="text-red-600 mb-4">{error || 'Không tìm thấy bài thi'}</p>
           <button 
             onClick={() => navigate('/exam')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-sky-500 text-white px-4 py-2 rounded hover:bg-sky-600"
           >
             Quay lại danh sách bài thi
           </button>
@@ -100,7 +100,7 @@ const ExamPractice = () => {
   }, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-sky-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
@@ -198,7 +198,7 @@ const ExamPractice = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Tóm tắt luyện tập</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{selectedParts.length}</div>
+                  <div className="text-2xl font-bold text-sky-600">{selectedParts.length}</div>
                   <div className="text-sm text-gray-600">Phần đã chọn</div>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-lg">

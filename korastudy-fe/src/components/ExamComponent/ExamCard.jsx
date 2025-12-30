@@ -58,7 +58,7 @@ const ExamCard = ({ exam }) => {
     <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
       {/* Card Header */}
       <div className="relative">
-        <div className="h-40 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="h-40 bg-sky-100 flex items-center justify-center">
           <div className="text-center">
             <BookOpen className="mx-auto h-12 w-12 text-blue-500 mb-2" />
             <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(examData.level)}`}>
@@ -78,7 +78,7 @@ const ExamCard = ({ exam }) => {
       {/* Card Body */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">
           {examData.title}
         </h3>
         
@@ -120,13 +120,13 @@ const ExamCard = ({ exam }) => {
         <div className="flex gap-2">
           <Link
             to={`/exam/${examData.id}`}
-            className="flex-1 px-4 py-2.5 text-center border-2 border-gray-200 text-gray-700 rounded-lg font-semibold text-sm hover:border-primary-500 hover:text-primary-500 transition-colors duration-300"
+            className="flex-1 px-4 py-2.5 text-center border-2 border-gray-200 text-gray-700 rounded-lg font-semibold text-sm hover:border-sky-500 hover:text-sky-500 transition-colors duration-300"
           >
             Xem trước
           </Link>
           <Link
             to={`/exam/${examData.id}/test`}
-            className="flex-1 px-4 py-2.5 text-center bg-primary-500 text-white rounded-lg font-semibold text-sm hover:bg-primary-600 transition-colors duration-300"
+            className="flex-1 px-4 py-2.5 text-center bg-sky-500 text-white rounded-lg font-semibold text-sm hover:bg-sky-600 transition-colors duration-300"
           >
             Làm bài
           </Link>

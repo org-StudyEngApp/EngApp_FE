@@ -32,7 +32,7 @@ const ExamNavigation = ({
       case 'flagged':
         return 'bg-yellow-500 text-white';
       case 'current':
-        return 'bg-primary-500 text-white';
+        return 'bg-sky-500 text-white';
       default:
         return 'bg-gray-200 text-gray-700 hover:bg-gray-300';
     }
@@ -58,7 +58,7 @@ const ExamNavigation = ({
             <div key={part.id} className="border rounded-lg p-3">
               <div 
                 className={`flex items-center justify-between cursor-pointer mb-3 ${
-                  currentPart === part.id ? 'text-primary-600' : 'text-gray-700'
+                  currentPart === part.id ? 'text-sky-600' : 'text-gray-700'
                 }`}
                 onClick={() => onPartSelect(part.id)}
               >
@@ -107,7 +107,7 @@ const ExamNavigation = ({
             <span>Answered</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-primary-500 rounded"></div>
+            <div className="w-4 h-4 bg-sky-500 rounded"></div>
             <span>Current</span>
           </div>
           <div className="flex items-center gap-2">

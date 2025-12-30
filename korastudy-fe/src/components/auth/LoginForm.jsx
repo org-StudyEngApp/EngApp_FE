@@ -47,7 +47,7 @@ const LoginForm = ({
             className={`w-full h-12 lg:h-11 bg-gray-50 dark:bg-dark-700 border-2 rounded-xl px-4 text-sm font-inter transition-all duration-300 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 ${
               errors.username && touched.username
                 ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
-                : 'border-gray-200 dark:border-dark-600 focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)]'
+                : 'border-gray-200 dark:border-dark-600 focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)]'
             }`}
             disabled={isLoading}
             required
@@ -83,7 +83,7 @@ const LoginForm = ({
               className={`w-full h-12 lg:h-11 bg-gray-50 dark:bg-dark-700 border-2 rounded-xl px-4 pr-12 text-sm font-inter transition-all duration-300 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100 ${
                 errors.password && touched.password
                   ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
-                  : 'border-gray-200 dark:border-dark-600 focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)]'
+                  : 'border-gray-200 dark:border-dark-600 focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)]'
               }`}
               disabled={isLoading}
               required
@@ -91,7 +91,7 @@ const LoginForm = ({
             <button
               type="button"
               onClick={toggleShowPassword}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-primary-500 transition-colors duration-300"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-sky-500 transition-colors duration-300"
               disabled={isLoading}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -114,14 +114,14 @@ const LoginForm = ({
               name="rememberMe"
               checked={formData.rememberMe}
               onChange={handleInputChange}
-              className="w-4 h-4 border-2 border-gray-300 dark:border-dark-600 rounded cursor-pointer accent-primary-500"
+              className="w-4 h-4 border-2 border-gray-300 dark:border-dark-600 rounded cursor-pointer accent-sky-500"
               disabled={isLoading}
             />
             <label htmlFor="rememberMe" className="font-inter text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
               Ghi nhớ
             </label>
           </div>
-          <Link to="/forgot-password" className="font-inter text-sm text-primary-500 hover:text-blue-600 hover:underline transition-colors duration-300">
+          <Link to="/forgot-password" className="font-sans text-sm text-sky-500 hover:text-sky-600 hover:underline transition-colors duration-300">
             Quên mật khẩu?
           </Link>
         </div>
@@ -129,7 +129,7 @@ const LoginForm = ({
         {/* Login Button with Loading State */}
         <button 
           type="submit" 
-          className="w-full h-12 lg:h-12 bg-gradient-to-r from-primary-500 via-secondary-400 to-secondary-500 border-0 rounded-xl text-white font-inter font-semibold text-base cursor-pointer transition-all duration-300 mb-4 lg:mb-5 shadow-[0_4px_12px_rgba(52,188,249,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(52,188,249,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2"
+          className="w-full h-12 lg:h-12 bg-sky-500 hover:bg-sky-600 border-0 rounded-xl text-white font-sans font-semibold text-base cursor-pointer transition-all duration-300 mb-4 lg:mb-5 shadow-[0_4px_12px_rgba(14,165,233,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(14,165,233,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2"
           disabled={Object.values(errors).some(error => error !== '') || isLoading}
         >
           {isLoading ? (
@@ -145,7 +145,7 @@ const LoginForm = ({
         {/* Register Link */}
         <div className="text-center my-4 lg:my-5">
           <span className="font-inter text-sm text-gray-500 dark:text-gray-400">Bạn chưa có tài khoản? </span>
-          <Link to="/dang-ky" className="font-inter font-semibold text-sm text-primary-500 hover:text-blue-600 hover:underline transition-colors duration-300">
+          <Link to="/dang-ky" className="font-sans font-semibold text-sm text-sky-500 hover:text-sky-600 hover:underline transition-colors duration-300">
             Đăng ký ngay
           </Link>
         </div>
@@ -163,11 +163,11 @@ const LoginForm = ({
 
       {/* Terms and Privacy */}
       <div className="text-center mt-6 lg:mt-8 pt-4 lg:pt-5 border-t border-gray-200 dark:border-dark-600">
-        <Link to="/terms" className="font-inter text-xs text-gray-500 dark:text-gray-400 hover:text-primary-500 hover:underline transition-colors duration-300">
+        <Link to="/terms" className="font-sans text-xs text-gray-500 dark:text-gray-400 hover:text-sky-500 hover:underline transition-colors duration-300">
           Điều khoản dịch vụ
         </Link>
         <span className="font-inter text-xs text-gray-500 dark:text-gray-400 mx-1"> & </span>
-        <Link to="/privacy" className="font-inter text-xs text-gray-500 dark:text-gray-400 hover:text-primary-500 hover:underline transition-colors duration-300">
+        <Link to="/privacy" className="font-sans text-xs text-gray-500 dark:text-gray-400 hover:text-sky-500 hover:underline transition-colors duration-300">
           Chính sách bảo mật
         </Link>
       </div>

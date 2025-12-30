@@ -14,7 +14,7 @@ const ProfileAchievements = ({ user }) => {
               key={badge.id}
               className={`p-6 rounded-lg border-2 text-center transition-all duration-200 ${
                 badge.earned
-                  ? 'border-primary-200 bg-primary-50 dark:border-primary-800 dark:bg-primary-900/20'
+                  ? 'border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-900/20'
                   : 'border-gray-200 bg-gray-50 dark:border-dark-600 dark:bg-dark-700 opacity-60'
               }`}
             >
@@ -24,7 +24,7 @@ const ProfileAchievements = ({ user }) => {
               </h4>
               <p className={`text-sm ${
                 badge.earned 
-                  ? 'text-primary-600 dark:text-primary-400' 
+                  ? 'text-sky-600 dark:text-sky-400' 
                   : 'text-gray-500 dark:text-gray-400'
               }`}>
                 {badge.earned ? 'Đã đạt được' : 'Chưa đạt được'}

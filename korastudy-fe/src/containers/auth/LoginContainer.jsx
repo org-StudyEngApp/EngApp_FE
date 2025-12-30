@@ -144,7 +144,7 @@ const LoginContainer = () => {
   };
 
   return (
-    <div className="w-full lg:w-1/2 bg-gradient-to-br from-primary-500 via-secondary-400 to-secondary-500 flex flex-col items-center justify-center p-4 lg:p-10 lg:rounded-r-custom relative shadow-custom">
+    <div className="w-full lg:w-1/2 bg-sky-500 flex flex-col items-center justify-center p-4 lg:p-10 lg:rounded-r-custom relative shadow-custom">
       <LoginForm
         formData={formData}
         errors={errors}

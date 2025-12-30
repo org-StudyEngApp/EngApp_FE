@@ -9,7 +9,7 @@ const PathContent = ({ path, animatedItems }) => {
       <section className="py-6 md:py-8 bg-white dark:bg-dark-800 shadow-md relative z-10 border-b border-gray-200 dark:border-dark-700">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex gap-3 md:gap-4">
-            <div className="hidden md:block w-1 bg-gradient-to-b from-blue-500 to-sky-400 rounded-full"></div>
+            <div className="hidden md:block w-1 bg-sky-500 rounded-full"></div>
             <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
               {path.description}
             </p>

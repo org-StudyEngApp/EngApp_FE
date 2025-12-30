@@ -106,7 +106,7 @@ const CourseCard = ({ course }) => {
         <div className="mt-3">
           <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300"
+              className="h-full rounded-full bg-sky-500 transition-all duration-300"
               style={{ width: `${course.progress}%` }}
             />
           </div>

@@ -399,7 +399,7 @@ const ExamTest = () => {
   const totalQuestions = questions.length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-sky-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
@@ -420,7 +420,7 @@ const ExamTest = () => {
               </div>
               
               <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${
-                timeLeft < 300 ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+                timeLeft < 300 ? 'bg-red-100 text-red-600' : 'bg-sky-100 text-sky-600'
               }`}>
                 <Clock className="h-4 w-4" />
                 <span className="font-medium">{formatTime(timeLeft)}</span>
@@ -458,7 +458,7 @@ const ExamTest = () => {
                       onClick={() => handleQuestionJump(index)}
                       className={`w-10 h-10 rounded-lg text-sm font-medium transition-all relative ${
                         isCurrent
-                          ? 'bg-blue-600 text-white'
+                          ? 'bg-sky-600 text-white'
                           : isAnswered
                           ? 'bg-green-100 text-green-800 hover:bg-green-200'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -481,7 +481,7 @@ const ExamTest = () => {
               {/* Legend */}
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                  <div className="w-4 h-4 bg-sky-600 rounded"></div>
                   <span>Câu hiện tại</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -524,7 +524,7 @@ const ExamTest = () => {
               {/* Question Header */}
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                  <div className="w-8 h-8 bg-sky-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
                     {currentQuestion + 1}
                   </div>
                   <h3 className="text-lg font-medium text-gray-900">

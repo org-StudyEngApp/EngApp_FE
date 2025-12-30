@@ -21,14 +21,14 @@ const ForgotPassword = () => {
       
       <div className="flex flex-1 min-h-[calc(100vh-160px)]">
         {/* Mobile: Single column, Desktop: Two columns */}
-        <div className="w-full lg:w-1/2 bg-gradient-to-br from-primary-500 via-secondary-400 to-secondary-500 flex flex-col items-center justify-center p-4 lg:p-10 lg:rounded-r-custom relative shadow-custom">
+        <div className="w-full lg:w-1/2 bg-sky-500 flex flex-col items-center justify-center p-4 lg:p-10 lg:rounded-r-custom relative shadow-custom">
           {/* Forgot Password Card */}
           <div className="w-full max-w-md bg-white dark:bg-dark-800 rounded-3xl p-6 lg:p-10 shadow-card">
             {/* Back to Login Link */}
             <div className="mb-4 lg:mb-6">
               <Link 
                 to="/dang-nhap" 
-                className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors duration-300 text-sm font-medium"
+                className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-sky-500 transition-colors duration-300 text-sm font-medium"
               >
                 <ArrowLeft size={16} />
                 Quay lại đăng nhập
@@ -39,8 +39,8 @@ const ForgotPassword = () => {
               <>
                 {/* Title and Description */}
                 <div className="text-center mb-6 lg:mb-8">
-                  <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Mail className="w-8 h-8 text-primary-500" />
+                  <div className="w-16 h-16 bg-sky-100 dark:bg-sky-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Mail className="w-8 h-8 text-sky-500" />
                   </div>
                   <h2 className="font-inter font-bold text-xl lg:text-2xl text-gray-800 dark:text-gray-200 mb-3">
                     Quên mật khẩu?
@@ -65,15 +65,15 @@ const ForgotPassword = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Nhập địa chỉ email của bạn"
-                      className="w-full h-12 bg-gray-50 dark:bg-dark-700 border-2 border-gray-200 dark:border-dark-600 rounded-xl px-4 text-sm font-inter transition-all duration-300 outline-none focus:border-primary-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(52,188,249,0.1)] placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100"
+                      className="w-full h-12 bg-gray-50 dark:bg-dark-700 border-2 border-gray-200 dark:border-dark-600 rounded-xl px-4 text-sm font-inter transition-all duration-300 outline-none focus:border-sky-500 focus:bg-white dark:focus:bg-dark-600 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.1)] placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100"
                       required
                     />
                   </div>
 
                   {/* Submit Button */}
-                  <button 
-                    type="submit" 
-                    className="w-full h-12 bg-gradient-to-r from-primary-500 via-secondary-400 to-secondary-500 border-0 rounded-xl text-white font-inter font-semibold text-base cursor-pointer transition-all duration-300 mb-6 shadow-[0_4px_12px_rgba(52,188,249,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(52,188,249,0.4)]"
+                  <button
+                    type="submit"
+                    className="w-full h-12 bg-sky-500 hover:bg-sky-600 border-0 rounded-xl text-white font-sans font-semibold text-base cursor-pointer transition-all duration-300 mb-6 shadow-[0_4px_12px_rgba(14,165,233,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(14,165,233,0.4)]"
                   >
                     Gửi link đặt lại mật khẩu
                   </button>
@@ -85,7 +85,7 @@ const ForgotPassword = () => {
                     </p>
                     <Link 
                       to="/dang-nhap" 
-                      className="font-inter font-semibold text-sm text-primary-500 hover:text-blue-600 hover:underline transition-colors duration-300"
+                      className="font-sans font-semibold text-sm text-sky-500 hover:text-sky-600 hover:underline transition-colors duration-300"
                     >
                       Đăng nhập ngay
                     </Link>
@@ -115,7 +115,7 @@ const ForgotPassword = () => {
                   <div className="space-y-3">
                     <button 
                       onClick={() => setIsSubmitted(false)}
-                      className="w-full h-12 bg-gradient-to-r from-primary-500 via-secondary-400 to-secondary-500 border-0 rounded-xl text-white font-inter font-semibold text-base cursor-pointer transition-all duration-300 shadow-[0_4px_12px_rgba(52,188,249,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(52,188,249,0.4)]"
+                      className="w-full h-12 bg-sky-500 hover:bg-sky-600 border-0 rounded-xl text-white font-sans font-semibold text-base cursor-pointer transition-all duration-300 shadow-[0_4px_12px_rgba(14,165,233,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(14,165,233,0.4)]"
                     >
                       Gửi lại email
                     </button>
@@ -132,7 +132,7 @@ const ForgotPassword = () => {
                     <p className="font-inter text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
                       <strong>Không nhận được email?</strong><br />
                       Kiểm tra thư mục spam hoặc liên hệ với chúng tôi qua{' '}
-                      <Link to="/lien-he" className="text-primary-500 hover:underline">
+                      <Link to="/lien-he" className="text-sky-500 hover:underline">
                         support@korastudy.com
                       </Link>
                     </p>
@@ -144,7 +144,7 @@ const ForgotPassword = () => {
         </div>
 
         {/* Right Side - Promotional Content (Hidden on mobile) */}
-        <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-dark-800 dark:to-dark-700 relative flex-col items-center justify-center px-15 py-10 overflow-hidden">
+        <div className="hidden lg:flex w-1/2 bg-sky-50 dark:bg-dark-800 relative flex-col items-center justify-center px-15 py-10 overflow-hidden">
           {/* Background Gradients */}
           <div className="absolute -top-25 -left-25 w-75 h-75 gradient-bg-1 rounded-full"></div>
           <div className="absolute -bottom-25 -right-25 w-100 h-100 gradient-bg-2 rounded-full"></div>
@@ -163,8 +163,8 @@ const ForgotPassword = () => {
           {/* Illustration */}
           <div className="w-full max-w-lg z-10">
             <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-8 text-center">
-              <div className="w-24 h-24 bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Mail className="w-12 h-12 text-primary-500" />
+              <div className="w-24 h-24 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Mail className="w-12 h-12 text-sky-500" />
               </div>
               <h3 className="font-inter font-semibold text-xl text-gray-700 dark:text-gray-300 mb-2">
                 Bảo mật tài khoản

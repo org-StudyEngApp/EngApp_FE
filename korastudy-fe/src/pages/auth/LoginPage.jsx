@@ -12,7 +12,7 @@ const LoginPage = () => {
         <LoginContainer />
 
         {/* Right Side - Promotional Content (Hidden on mobile) */}
-        <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-dark-800 dark:to-dark-700 relative flex-col items-center justify-center px-15 py-10 overflow-hidden">
+        <div className="hidden lg:flex w-1/2 bg-sky-50 dark:bg-dark-800 relative flex-col items-center justify-center px-15 py-10 overflow-hidden">
           {/* Background Gradients */}
           <div className="absolute -top-25 -left-25 w-75 h-75 gradient-bg-1 rounded-full"></div>
           <div className="absolute -bottom-25 -right-25 w-100 h-100 gradient-bg-2 rounded-full"></div>

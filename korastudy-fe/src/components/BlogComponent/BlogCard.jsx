@@ -22,7 +22,7 @@ const BlogCard = ({ post }) => {
             className="w-full h-48 object-cover"
           />
         ) : (
-          <div className="w-full h-48 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center">
+          <div className="w-full h-48 bg-sky-400 flex items-center justify-center">
             <h2 className="text-4xl font-bold text-white">
               {/* Hiển thị chữ cái đầu tiên của tiêu đề nếu có */}
               {(post.postTitle || post.post_title || "A").charAt(0)}

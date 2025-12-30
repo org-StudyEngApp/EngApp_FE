@@ -75,7 +75,7 @@ const Chatbox = () => {
       {isOpen && (
         <div className="mb-4 w-[480px] h-[680px] bg-white dark:bg-dark-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-200/50 dark:border-dark-700 animate-in slide-in-from-bottom-10 fade-in duration-300">
           {/* Header with Gradient */}
-          <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-6 relative overflow-hidden">
+          <div className="bg-sky-600 p-6 relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
             <div className="relative flex justify-between items-start">
               <div>
@@ -99,12 +99,12 @@ const Chatbox = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white dark:from-dark-900 dark:to-dark-800 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-dark-600">
+          <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-dark-900 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-dark-600">
             {showWelcome && messages.length === 0 ? (
               <div className="space-y-6 pt-4">
                 {/* Welcome Section */}
                 <div className="text-center space-y-2">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg mb-3">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-sky-500 shadow-lg mb-3">
                     <Sparkles className="text-white" size={32} />
                   </div>
                   <h4 className="text-xl font-bold text-gray-800 dark:text-white">
@@ -153,7 +153,7 @@ const Chatbox = () => {
                   >
                     <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm leading-relaxed ${
                       msg.sender === 'user' 
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
+                        ? 'bg-sky-500 text-white' 
                         : 'bg-white dark:bg-dark-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-dark-600'
                     } ${msg.isError ? 'bg-red-50 text-red-600 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30' : ''}`}>
                       <ReactMarkdown
@@ -214,7 +214,7 @@ const Chatbox = () => {
               <button 
                 type="submit" 
                 disabled={!inputMessage.trim() || isLoading}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2.5 rounded-lg transition-all duration-200 flex items-center justify-center shadow-md active:scale-95"
+                className="bg-sky-500 hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2.5 rounded-lg transition-all duration-200 flex items-center justify-center shadow-md active:scale-95"
               >
                 {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
               </button>
@@ -226,7 +226,7 @@ const Chatbox = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'} transition-all duration-300 absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 hover:shadow-2xl hover:shadow-purple-500/50 text-white rounded-full shadow-xl flex items-center justify-center group z-50 hover:scale-110`}
+        className={`${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'} transition-all duration-300 absolute bottom-0 right-0 w-16 h-16 bg-sky-600 hover:shadow-2xl hover:shadow-sky-500/50 text-white rounded-full shadow-xl flex items-center justify-center group z-50 hover:scale-110`}
       >
         <Sparkles size={28} className="group-hover:rotate-12 transition-transform duration-200" />
       </button>

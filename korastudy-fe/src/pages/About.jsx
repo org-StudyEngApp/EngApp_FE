@@ -95,10 +95,10 @@ const About = () => {
      
       
       {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500 text-white overflow-hidden">
+      <section className="relative py-24 bg-sky-500 text-white overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-60 -left-40 w-96 h-96 bg-secondary-400/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-60 -left-40 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl"></div>
         </div>
         
         <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -130,7 +130,7 @@ const About = () => {
             <h2 className={`font-inter font-bold text-4xl text-gray-800 dark:text-white mb-4 transition-all duration-700 ${animatedItems['mission-vision-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               Sứ mệnh & Tầm nhìn
             </h2>
-            <div className={`w-20 h-1 bg-primary-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['mission-vision-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
+            <div className={`w-20 h-1 bg-sky-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['mission-vision-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
           </div>
           
           <div className="grid md:grid-cols-2 gap-10">
@@ -138,7 +138,7 @@ const About = () => {
               className="bg-white dark:bg-dark-800 p-8 rounded-xl shadow-lg transition-all duration-700"
               data-id="mission-card"
             >
-              <div className={`w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center text-primary-500 mb-6 transition-all duration-700 ${animatedItems['mission-card'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className={`w-16 h-16 bg-sky-100 dark:bg-sky-900/30 rounded-xl flex items-center justify-center text-sky-500 mb-6 transition-all duration-700 ${animatedItems['mission-card'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <Target size={32} />
               </div>
               <h3 className={`font-semibold text-2xl text-gray-800 dark:text-white mb-4 transition-all duration-700 delay-100 ${animatedItems['mission-card'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -153,7 +153,7 @@ const About = () => {
               className="bg-white dark:bg-dark-800 p-8 rounded-xl shadow-lg transition-all duration-700"
               data-id="vision-card"
             >
-              <div className={`w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center text-primary-500 mb-6 transition-all duration-700 ${animatedItems['vision-card'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className={`w-16 h-16 bg-sky-100 dark:bg-sky-900/30 rounded-xl flex items-center justify-center text-sky-500 mb-6 transition-all duration-700 ${animatedItems['vision-card'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <BookMarked size={32} />
               </div>
               <h3 className={`font-semibold text-2xl text-gray-800 dark:text-white mb-4 transition-all duration-700 delay-100 ${animatedItems['vision-card'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -177,7 +177,7 @@ const About = () => {
             <h2 className={`font-inter font-bold text-4xl text-gray-800 dark:text-white mb-4 transition-all duration-700 ${animatedItems['core-values-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               Giá trị cốt lõi
             </h2>
-            <div className={`w-20 h-1 bg-primary-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['core-values-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
+            <div className={`w-20 h-1 bg-sky-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['core-values-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
             <p className={`text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-all duration-700 delay-500 ${animatedItems['core-values-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               Những giá trị định hướng mọi hoạt động của KoraStudy
             </p>
@@ -191,7 +191,7 @@ const About = () => {
                 data-id={`core-value-${index}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <div className={`text-primary-500 mx-auto mb-6 transition-all duration-700 transform ${animatedItems[`core-value-${index}`] ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 translate-y-10 rotate-45'}`}>
+                <div className={`text-sky-500 mx-auto mb-6 transition-all duration-700 transform ${animatedItems[`core-value-${index}`] ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 translate-y-10 rotate-45'}`}>
                   {value.icon}
                 </div>
                 <h3 className={`font-semibold text-xl text-gray-800 dark:text-white mb-4 transition-all duration-700 delay-200 ${animatedItems[`core-value-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -216,14 +216,14 @@ const About = () => {
             <h2 className={`font-inter font-bold text-4xl text-gray-800 dark:text-white mb-4 transition-all duration-700 ${animatedItems['future-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               Định hướng tương lai
             </h2>
-            <div className={`w-20 h-1 bg-primary-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['future-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
+            <div className={`w-20 h-1 bg-sky-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['future-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
             <p className={`text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-all duration-700 delay-500 ${animatedItems['future-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               Những bước tiến tiếp theo của KoraStudy
             </p>
           </div>
           
           <div 
-            className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl p-8 md:p-12 text-white shadow-xl"
+            className="bg-sky-500 rounded-2xl p-8 md:p-12 text-white shadow-xl"
             data-id="future-card"
           >
             <div className="grid md:grid-cols-2 gap-10">
@@ -233,7 +233,7 @@ const About = () => {
                 </h3>
                 <ul className="space-y-4">
                   <li className={`flex items-start gap-3 transition-all duration-700 delay-100 ${animatedItems['future-card'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-                    <div className="w-6 h-6 bg-white text-primary-500 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                    <div className="w-6 h-6 bg-white text-sky-500 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       1
                     </div>
                     <p className="text-white/90">
@@ -241,7 +241,7 @@ const About = () => {
                     </p>
                   </li>
                   <li className={`flex items-start gap-3 transition-all duration-700 delay-200 ${animatedItems['future-card'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-                    <div className="w-6 h-6 bg-white text-primary-500 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                    <div className="w-6 h-6 bg-white text-sky-500 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       2
                     </div>
                     <p className="text-white/90">
@@ -249,7 +249,7 @@ const About = () => {
                     </p>
                   </li>
                   <li className={`flex items-start gap-3 transition-all duration-700 delay-300 ${animatedItems['future-card'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-                    <div className="w-6 h-6 bg-white text-primary-500 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                    <div className="w-6 h-6 bg-white text-sky-500 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       3
                     </div>
                     <p className="text-white/90">
@@ -296,7 +296,7 @@ const About = () => {
         <h2 className={`font-inter font-bold text-4xl text-gray-800 dark:text-white mb-4 transition-all duration-700 ${animatedItems['team-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             Đội ngũ phát triển
         </h2>
-        <div className={`w-20 h-1 bg-primary-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['team-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
+        <div className={`w-20 h-1 bg-sky-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['team-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
         <p className={`text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-all duration-700 delay-500 ${animatedItems['team-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             Đội ngũ phát triển KoraStudy TOEIC gồm các chuyên gia công nghệ và đạt điểm TOEIC cao
         </p>
@@ -306,13 +306,13 @@ const About = () => {
         {teamMembers.map((member, index) => (
             <div 
             key={index}
-            className={`bg-white dark:bg-dark-700 rounded-xl overflow-hidden shadow-lg transition-all duration-700 ${member.isLeader ? 'md:col-span-3 lg:col-span-1 ring-4 ring-primary-500 transform hover:-translate-y-2' : 'transform hover:-translate-y-1'}`}
+            className={`bg-white dark:bg-dark-700 rounded-xl overflow-hidden shadow-lg transition-all duration-700 ${member.isLeader ? 'md:col-span-3 lg:col-span-1 ring-4 ring-sky-500 transform hover:-translate-y-2' : 'transform hover:-translate-y-1'}`}
             data-id={`team-member-${index}`}
             style={{ transitionDelay: `${index * 100}ms` }}
             >
-            <div className={`h-64 bg-gradient-to-r ${member.isLeader ? 'from-yellow-400 via-primary-500 to-secondary-500' : 'from-primary-500 to-secondary-500'} flex items-center justify-center transition-all duration-700 ${animatedItems[`team-member-${index}`] ? 'opacity-100' : 'opacity-0'} relative`}>
+            <div className={`h-64 ${member.isLeader ? 'bg-yellow-400' : 'bg-sky-500'} flex items-center justify-center transition-all duration-700 ${animatedItems[`team-member-${index}`] ? 'opacity-100' : 'opacity-0'} relative`}>
                 {member.isLeader && (
-                <div className="absolute top-4 right-4 bg-white text-primary-600 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                <div className="absolute top-4 right-4 bg-white text-sky-600 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
                     Founder
                 </div>
                 )}
@@ -324,11 +324,11 @@ const About = () => {
                     />
                 </div>
             </div>
-            <div className={`p-6 ${member.isLeader ? 'bg-gradient-to-br from-white to-blue-50 dark:from-dark-700 dark:to-primary-900/10' : ''}`}>
+            <div className={`p-6 ${member.isLeader ? 'bg-blue-50 dark:bg-dark-700' : ''}`}>
                 <h3 className={`font-semibold ${member.isLeader ? 'text-2xl' : 'text-xl'} text-gray-800 dark:text-white mb-1 transition-all duration-700 delay-200 ${animatedItems[`team-member-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 {member.name}
                 </h3>
-                <p className={`${member.isLeader ? 'text-primary-600 font-semibold' : 'text-primary-500'} mb-2 transition-all duration-700 delay-300 ${animatedItems[`team-member-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <p className={`${member.isLeader ? 'text-sky-600 font-semibold' : 'text-sky-500'} mb-2 transition-all duration-700 delay-300 ${animatedItems[`team-member-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 {member.title}
                 </p>
                 <p className={`text-sm text-gray-500 dark:text-gray-400 mb-4 transition-all duration-700 delay-400 ${animatedItems[`team-member-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -339,10 +339,10 @@ const About = () => {
                 </p>
                 {member.isLeader && (
                 <div className={`mt-4 flex justify-end transition-all duration-700 delay-600 ${animatedItems[`team-member-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:text-primary-600 mr-4">
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-600 mr-4">
                     LinkedIn
                     </a>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:text-primary-600">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-600">
                     GitHub
                     </a>
                 </div>
@@ -365,7 +365,7 @@ const About = () => {
             <h2 className={`font-inter font-bold text-4xl text-gray-800 dark:text-white mb-4 transition-all duration-700 ${animatedItems['roadmap-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 Lộ trình luyện thi TOEIC
             </h2>
-            <div className={`w-20 h-1 bg-primary-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['roadmap-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
+            <div className={`w-20 h-1 bg-sky-500 mx-auto mb-6 transition-all duration-700 delay-300 ${animatedItems['roadmap-title'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></div>
             <p className={`text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-all duration-700 delay-500 ${animatedItems['roadmap-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 Con đường chinh phục điểm số TOEIC từ người mới bắt đầu đến 990+ tuyệt đối
             </p>
@@ -374,7 +374,7 @@ const About = () => {
             {/* Timeline */}
             <div className="relative">
             {/* Middle line */}
-            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-500 via-secondary-500 to-blue-500"></div>
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-sky-500"></div>
             
             {/* Timeline items */}
             <div className="space-y-12">
@@ -385,7 +385,7 @@ const About = () => {
                 >
                 <div className={`md:w-1/2 md:pr-16 transition-all duration-700 ${animatedItems['roadmap-level1'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
                     <div className="bg-white dark:bg-dark-800 p-6 rounded-xl shadow-lg">
-                    <div className="bg-primary-100 dark:bg-primary-900/30 text-primary-500 inline-block px-4 py-1 rounded-full text-sm font-medium mb-4">
+                    <div className="bg-sky-100 dark:bg-sky-900/30 text-sky-500 inline-block px-4 py-1 rounded-full text-sm font-medium mb-4">
                         Level 1 - Mức độ cơ bản (200-400)
                     </div>
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Nền tảng tiếng Anh</h3>
@@ -400,7 +400,7 @@ const About = () => {
                 
                 {/* Circle in middle */}
                 <div className="hidden md:flex absolute left-1/2 top-6 transform -translate-x-1/2 items-center justify-center">
-                    <div className={`w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center z-10 text-white font-bold transition-all duration-700 ${animatedItems['roadmap-level1'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
+                    <div className={`w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center z-10 text-white font-bold transition-all duration-700 ${animatedItems['roadmap-level1'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
                     1
                     </div>
                 </div>
@@ -421,14 +421,14 @@ const About = () => {
                 
                 {/* Circle in middle */}
                 <div className="hidden md:flex absolute left-1/2 top-6 transform -translate-x-1/2 items-center justify-center">
-                    <div className={`w-10 h-10 rounded-full bg-secondary-500 flex items-center justify-center z-10 text-white font-bold transition-all duration-700 ${animatedItems['roadmap-level2'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
+                    <div className={`w-10 h-10 rounded-full bg-sky-600 flex items-center justify-center z-10 text-white font-bold transition-all duration-700 ${animatedItems['roadmap-level2'] ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}>
                     2
                     </div>
                 </div>
                 
                 <div className={`md:w-1/2 md:pl-16 md:mt-0 mt-6 transition-all duration-700 ${animatedItems['roadmap-level2'] ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
                     <div className="bg-white dark:bg-dark-800 p-6 rounded-xl shadow-lg">
-                    <div className="bg-secondary-100 dark:bg-secondary-900/30 text-secondary-500 inline-block px-4 py-1 rounded-full text-sm font-medium mb-4">
+                    <div className="bg-sky-100 dark:bg-sky-900/30 text-sky-600 inline-block px-4 py-1 rounded-full text-sm font-medium mb-4">
                         Level 2 - Mức độ trung bình (450-600)
                     </div>
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Nâng cao kỹ năng TOEIC</h3>
@@ -544,7 +544,7 @@ const About = () => {
             <div className={`flex justify-center mt-12 transition-all duration-700 ${animatedItems['roadmap-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '700ms' }}>
             <a 
                 href="/courses"
-                className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg inline-flex items-center justify-center gap-2"
+                className="bg-sky-500 hover:bg-sky-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg inline-flex items-center justify-center gap-2"
             >
                 Xem khóa học TOEIC
             </a>
@@ -553,7 +553,7 @@ const About = () => {
         </section>
       
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-500 to-secondary-500 text-white">
+      <section className="py-20 bg-sky-500 text-white">
         <div 
           className="max-w-4xl mx-auto text-center px-4"
           data-id="cta-section"
@@ -568,7 +568,7 @@ const About = () => {
           <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-500 ${animatedItems['cta-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <a 
               href="/dang-ky"
-              className="bg-white text-primary-500 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg inline-flex items-center justify-center gap-2"
+              className="bg-white text-sky-500 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg inline-flex items-center justify-center gap-2"
             >
               Đăng ký miễn phí
             </a>

@@ -150,9 +150,9 @@ const FlashCard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-sky-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-purple-600 to-cyan-600 py-20 px-4 relative overflow-hidden">
+      <section className="bg-sky-500 py-20 px-4 relative overflow-hidden">
         <motion.div
           className="absolute inset-0 opacity-10"
           animate={{
@@ -244,7 +244,7 @@ const FlashCard = () => {
                 </h2>
                 <motion.button
                   onClick={handleCreateWordList}
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:shadow-lg transition-all duration-300"
+                  className="bg-sky-500 hover:bg-sky-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:shadow-lg transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -308,11 +308,11 @@ const FlashCard = () => {
                       <div className="mb-4">
                         <div className="flex justify-between text-sm mb-1">
                           <span className="text-gray-600 dark:text-gray-300">Tiến độ</span>
-                          <span className="text-blue-600 dark:text-blue-400">{list.progress}%</span>
+                          <span className="text-sky-600 dark:text-sky-400">{list.progress}%</span>
                         </div>
                         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                           <motion.div
-                            className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
+                            className="bg-sky-500 h-2 rounded-full"
                             initial={{ width: 0 }}
                             animate={{ width: `${list.progress}%` }}
                             transition={{ duration: 1, delay: index * 0.1 }}
@@ -322,7 +322,7 @@ const FlashCard = () => {
                       
                       <button
                         onClick={() => navigate(`/flash-card/practice/user/${list.id}`)}
-                        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                        className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
                       >
                         Tiếp tục học
                       </button>
@@ -350,7 +350,7 @@ const FlashCard = () => {
                 {/* Quick Practice */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
                       <Brain className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
@@ -360,7 +360,7 @@ const FlashCard = () => {
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Ôn tập 20 từ ngẫu nhiên từ các danh sách đã học
                   </p>
-                  <button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
+                  <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
                     Bắt đầu luyện tập
                   </button>
                 </div>
@@ -368,7 +368,7 @@ const FlashCard = () => {
                 {/* Mixed Practice */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
                       <Shuffle className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
@@ -378,7 +378,7 @@ const FlashCard = () => {
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Kết hợp nhiều danh sách để luyện tập toàn diện
                   </p>
-                  <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
+                  <button className="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
                     Chọn danh sách
                   </button>
                 </div>
@@ -406,7 +406,7 @@ const FlashCard = () => {
                     </p>
                     <button
                       onClick={() => navigate(`/flash-card/practice/user/${list.id}`)}
-                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors duration-300"
+                      className="w-full bg-sky-500 text-white py-2 rounded-lg font-semibold hover:bg-sky-600 transition-colors duration-300"
                     >
                       Tiếp tục
                     </button>
@@ -446,13 +446,13 @@ const FlashCard = () => {
                     onClick={() => handleTopicClick(topic.id)}
                   >
                     {topic.popular && (
-                      <div className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
+                      <div className="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
                         Phổ biến
                       </div>
                     )}
                     
                     <div className="relative overflow-hidden h-48">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${topic.color} opacity-90`} />
+                      <div className={`absolute inset-0 ${topic.color} opacity-90`} />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <BookOpen className="w-16 h-16 text-white" />
                       </div>
@@ -465,7 +465,7 @@ const FlashCard = () => {
                     
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                        <h3 className="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors duration-300">
                           {topic.title}
                         </h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
@@ -503,7 +503,7 @@ const FlashCard = () => {
                         </div>
                         
                         <motion.div
-                          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold"
+                          className="flex items-center gap-2 text-sky-600 dark:text-sky-400 font-semibold"
                           whileHover={{ x: 5 }}
                         >
                           {isAuthenticated() ? 'Học ngay' : 'Đăng nhập để học'}
@@ -518,7 +518,7 @@ const FlashCard = () => {
               {/* CTA Section for non-authenticated users */}
               {!isAuthenticated() && (
                 <motion.div
-                  className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white"
+                  className="mt-16 bg-sky-500 rounded-2xl p-8 text-center text-white"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
@@ -532,7 +532,7 @@ const FlashCard = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                       to="/dang-ky"
-                      className="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
+                      className="bg-white text-sky-600 px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
                     >
                       Đăng ký miễn phí
                     </Link>

@@ -322,7 +322,7 @@ const Blog = () => {
 
       {/* Banner quảng cáo (tương tự Study4) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl overflow-hidden">
+        <div className="bg-sky-500 rounded-xl overflow-hidden">
           <div className="p-8 sm:p-12 flex flex-col md:flex-row items-center">
             <div className="md:w-2/3 mb-6 md:mb-0">
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
@@ -523,7 +523,7 @@ const Blog = () => {
                               className="w-full h-48 object-cover"
                             />
                           ) : (
-                            <div className="w-full h-48 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center">
+                            <div className="w-full h-48 bg-sky-400 flex items-center justify-center">
                               <h2 className="text-4xl font-bold text-white">
                                 {(post.postTitle || post.post_title || "A").charAt(0)}
                               </h2>
@@ -781,7 +781,7 @@ const Blog = () => {
                     
                     return (
                       <div key={postId || Math.random().toString(36).substr(2, 9)} className="flex items-start space-x-3">
-                        <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-md flex items-center justify-center">
+                        <div className="flex-shrink-0 w-16 h-16 bg-sky-400 rounded-md flex items-center justify-center">
                           <span className="text-white font-bold">{post.post_title?.charAt(0) || 'A'}</span>
                         </div>
                         <div className="flex-grow min-w-0">

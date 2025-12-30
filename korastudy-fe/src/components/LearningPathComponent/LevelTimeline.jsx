@@ -7,10 +7,10 @@ const LevelTimeline = ({ level, levelIndex, animatedItems }) => {
     <div key={level.id} className="mb-12 last:mb-0 animate-on-scroll" data-id={`level-${levelIndex}`}>
       <div className="relative">
         {/* Vertical line connecting levels - chỉ hiển thị trên tablet trở lên */}
-        <div className="hidden sm:block absolute left-8 top-16 w-1 h-[calc(100%+4rem)] bg-gradient-to-b from-blue-500 to-blue-100 dark:to-blue-900 rounded-full"></div>
+        <div className="hidden sm:block absolute left-8 top-16 w-1 h-[calc(100%+4rem)] bg-sky-500 rounded-full"></div>
         
         {/* Circle with number - cải thiện responsive */}
-        <div className={`absolute left-0 sm:left-0 top-0 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-sky-500 text-white rounded-full flex items-center justify-center text-lg sm:text-2xl font-bold shadow-lg transform transition-all duration-700 ${animatedItems[`level-${levelIndex}`] ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
+        <div className={`absolute left-0 sm:left-0 top-0 w-12 h-12 sm:w-16 sm:h-16 bg-sky-500 text-white rounded-full flex items-center justify-center text-lg sm:text-2xl font-bold shadow-lg transform transition-all duration-700 ${animatedItems[`level-${levelIndex}`] ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
           {levelIndex + 1}
         </div>
         

@@ -155,7 +155,7 @@ const Exams = () => {
       
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500 py-16">
+      <section className="bg-sky-500 py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-white">
             <h1 className="font-inter font-bold text-4xl lg:text-5xl mb-4">
@@ -191,7 +191,7 @@ const Exams = () => {
             <div className="lg:w-1/4">
               <div className="bg-white rounded-xl p-6 shadow-sm sticky top-4">
                 <div className="flex items-center gap-2 mb-6">
-                  <Filter size={20} className="text-primary-500" />
+                  <Filter size={20} className="text-sky-500" />
                   <h3 className="font-semibold text-lg text-gray-800">Bộ lọc</h3>
                 </div>
 
@@ -205,7 +205,7 @@ const Exams = () => {
                         onClick={() => setSelectedLevel(level.id)}
                         className={`w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 ${
                           selectedLevel === level.id 
-                            ? 'bg-primary-500 text-white' 
+                            ? 'bg-sky-500 text-white' 
                             : 'hover:bg-gray-100 text-gray-700'
                         }`}
                       >
@@ -225,7 +225,7 @@ const Exams = () => {
                         onClick={() => setSelectedType(type.id)}
                         className={`w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 ${
                           selectedType === type.id 
-                            ? 'bg-primary-500 text-white' 
+                            ? 'bg-sky-500 text-white' 
                             : 'hover:bg-gray-100 text-gray-700'
                         }`}
                       >
@@ -239,7 +239,7 @@ const Exams = () => {
                 <div className="flex flex-col gap-2 mt-6">
                   <button
                     onClick={handleSearch}
-                    className="w-full bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors"
+                    className="w-full bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600 transition-colors"
                   >
                     Áp dụng bộ lọc
                   </button>
@@ -252,13 +252,13 @@ const Exams = () => {
                 </div>
 
                 {/* CTA */}
-                <div className="bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl p-4 text-white text-center mt-6">
+                <div className="bg-sky-500 rounded-xl p-4 text-white text-center mt-6">
                   <Clock className="w-8 h-8 mx-auto mb-2" />
                   <h4 className="font-semibold mb-2">Luyện tập hàng ngày</h4>
                   <p className="text-sm mb-3 opacity-90">Tạo lịch học và nhận nhắc nhở</p>
                   <Link 
                     to="/dang-ky"
-                    className="bg-white text-primary-500 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors duration-300"
+                    className="bg-white text-sky-500 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors duration-300"
                   >
                     Tạo lịch học
                   </Link>
@@ -294,7 +294,7 @@ const Exams = () => {
                   <p className="text-gray-600 mb-6">Thử thay đổi bộ lọc hoặc tìm kiếm với từ khóa khác</p>
                   <button
                     onClick={handleReset}
-                    className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+                    className="px-6 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors"
                   >
                     Xem tất cả bài thi
                   </button>
@@ -318,7 +318,7 @@ const Exams = () => {
                       onClick={() => setCurrentPage(index + 1)}
                       className={`px-4 py-2 rounded-lg font-medium ${
                         currentPage === index + 1
-                          ? 'bg-primary-500 text-white'
+                          ? 'bg-sky-500 text-white'
                           : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
                       }`}
                     >

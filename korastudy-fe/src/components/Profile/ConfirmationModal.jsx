@@ -21,7 +21,7 @@ const ConfirmationModal = ({ showConfirmModal, setShowConfirmModal, handleConfir
           </button>
           <button
             onClick={handleConfirmSave}
-            className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200"
+            className="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors duration-200"
           >
             Xác nhận
           </button>
