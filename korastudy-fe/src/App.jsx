@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import './App.css';
 // Import react-toastify
 import { ToastContainer } from 'react-toastify';
@@ -24,9 +24,6 @@ import Exams from '@pages/Exam/exam.jsx';
 import ExamDetail from '@pages/Exam/exam-detail.jsx';
 import ExamTest from '@pages/Exam/exam-test.jsx';
 import ExamResults from '@pages/Exam/exam-results.jsx';
-import LearningPath from '@pages/LearningPath/learning-path.jsx';
-// Import About page
-import About from '@pages/About.jsx';
 import Blog from '@pages/blog/blog.jsx';
 import CreatePost from './pages/blog/CreatePost';
 // Import Blog pages
@@ -42,13 +39,24 @@ import NewsFeed from '@/pages/UserNews/NewsFeed.jsx';
 import ArticleDetail from '@/pages/UserNews/ArticleDetail.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
+// Component để điều khiển hiển thị Chatbox
+function ChatboxWrapper() {
+  const location = useLocation();
+  const isExamTest = location.pathname.includes('/exam/') && location.pathname.includes('/test');
+  
+  // Không hiển thị chatbox khi đang làm bài thi
+  if (isExamTest) return null;
+  
+  return <Chatbox />;
+}
+
 function App() {
   return (
       <ThemeProvider>
         <UserProvider>
           <Router>
             <ScrollToTop />
-            <Chatbox />
+            <ChatboxWrapper />
             {/* Thêm ToastContainer */}
             <ToastContainer
               position="top-right"
@@ -72,12 +80,10 @@ function App() {
                   <Route path="news/:articleId" element={<ArticleDetail />} />
                   <Route path="flash-card" element={<FlashCard />} />
                   <Route path="ly-thuyet" element={<LyThuyet />} />
-                  <Route path="lo-trinh" element={<LearningPath />} />
                   <Route path="topik1" element={<Topik1 />} />
                   <Route path="topik2" element={<Topik2 />} />
                   <Route path="topik-esp" element={<TopikESP />} />
                   <Route path="nang-cap" element={<NangCap />} />
-                  <Route path="about" element={<About />} />
                   <Route path="terms" element={<Terms />} />
                   <Route path="privacy" element={<Privacy />} />
                   <Route path="lien-he" element={<Contact />} />
@@ -108,6 +114,9 @@ function App() {
                 {/* Protected Exam routes */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/exam" element={<><NavBar /><Exams /><Footer /></>} />
+                  <Route path="/de-thi/listening" element={<><NavBar /><Exams /><Footer /></>} />
+                  <Route path="/de-thi/reading" element={<><NavBar /><Exams /><Footer /></>} />
+                  <Route path="/de-thi/full-test" element={<><NavBar /><Exams /><Footer /></>} />
                   <Route path="/exam/:id" element={<ExamDetail />} />
                   <Route path="/exam/:id/test" element={<ExamTest />} /> 
                   <Route path="/exam/:id/result" element={<ExamResults />} />

@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "exam-taking-collection-2026",
+		"name": "TOEIC Exam - Làm Bài Thi",
+		"description": "Collection để test chức năng làm bài thi TOEIC (Reading, Listening, Full Test)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Lấy danh sách tất cả bài thi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams"]
+				},
+				"description": "Lấy danh sách tất cả bài thi có sẵn"
+			},
+			"response": []
+		},
+		{
+			"name": "2. Lấy danh sách bài thi Reading",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams?examType=READING",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams"],
+					"query": [
+						{
+							"key": "examType",
+							"value": "READING",
+							"description": "Lọc chỉ bài thi Reading"
+						}
+					]
+				},
+				"description": "Lấy danh sách các bài thi Reading"
+			},
+			"response": []
+		},
+		{
+			"name": "3. Lấy danh sách bài thi Listening",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams?examType=LISTENING",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams"],
+					"query": [
+						{
+							"key": "examType",
+							"value": "LISTENING",
+							"description": "Lọc chỉ bài thi Listening"
+						}
+					]
+				},
+				"description": "Lấy danh sách các bài thi Listening"
+			},
+			"response": []
+		},
+		{
+			"name": "4. Lấy danh sách đề thi thật (Full Test)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams?examType=FULL_TEST",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams"],
+					"query": [
+						{
+							"key": "examType",
+							"value": "FULL_TEST",
+							"description": "Lọc chỉ đề thi thật"
+						}
+					]
+				},
+				"description": "Lấy danh sách các đề thi thật (Full Test)"
+			},
+			"response": []
+		},
+		{
+			"name": "5. Lấy chi tiết bài thi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}"]
+				},
+				"description": "Lấy chi tiết đầy đủ của một bài thi bao gồm các phần và câu hỏi"
+			},
+			"response": []
+		},
+		{
+			"name": "6. Nộp bài thi - Full Test (7 Parts)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Script này giúp tạo timestamp cho mỗi lần submit",
+							"pm.environment.set(\"timestamp\", Date.now());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"answers\": [\n    // Part 1 - Listening (Câu 1-6)\n    { \"questionId\": 1, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 2, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 3, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 4, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 5, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 6, \"selectedAnswer\": \"C\" },\n    \n    // Part 2 - Listening Q&A (Câu 7-31)\n    { \"questionId\": 7, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 8, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 9, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 10, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 11, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 12, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 13, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 14, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 15, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 16, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 17, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 18, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 19, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 20, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 21, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 22, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 23, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 24, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 25, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 26, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 27, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 28, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 29, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 30, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 31, \"selectedAnswer\": \"A\" },\n    \n    // Part 3 - Listening Conversations (Câu 32-70)\n    { \"questionId\": 32, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 33, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 34, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 35, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 36, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 37, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 38, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 39, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 40, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 41, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 42, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 43, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 44, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 45, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 46, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 47, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 48, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 49, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 50, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 51, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 52, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 53, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 54, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 55, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 56, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 57, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 58, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 59, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 60, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 61, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 62, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 63, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 64, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 65, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 66, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 67, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 68, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 69, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 70, \"selectedAnswer\": \"C\" },\n    \n    // Part 4 - Listening Talks (Câu 71-100)\n    { \"questionId\": 71, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 72, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 73, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 74, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 75, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 76, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 77, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 78, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 79, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 80, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 81, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 82, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 83, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 84, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 85, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 86, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 87, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 88, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 89, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 90, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 91, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 92, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 93, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 94, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 95, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 96, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 97, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 98, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 99, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 100, \"selectedAnswer\": \"B\" },\n    \n    // Part 5 - Reading Grammar (Câu 101-130)\n    { \"questionId\": 101, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 102, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 103, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 104, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 105, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 106, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 107, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 108, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 109, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 110, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 111, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 112, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 113, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 114, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 115, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 116, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 117, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 118, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 119, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 120, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 121, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 122, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 123, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 124, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 125, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 126, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 127, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 128, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 129, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 130, \"selectedAnswer\": \"B\" },\n    \n    // Part 6 - Reading Text Completion (Câu 131-146)\n    { \"questionId\": 131, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 132, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 133, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 134, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 135, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 136, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 137, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 138, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 139, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 140, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 141, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 142, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 143, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 144, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 145, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 146, \"selectedAnswer\": \"D\" },\n    \n    // Part 7 - Reading Comprehension (Câu 147-200)\n    { \"questionId\": 147, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 148, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 149, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 150, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 151, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 152, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 153, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 154, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 155, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 156, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 157, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 158, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 159, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 160, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 161, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 162, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 163, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 164, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 165, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 166, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 167, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 168, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 169, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 170, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 171, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 172, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 173, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 174, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 175, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 176, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 177, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 178, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 179, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 180, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 181, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 182, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 183, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 184, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 185, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 186, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 187, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 188, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 189, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 190, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 191, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 192, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 193, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 194, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 195, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 196, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 197, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 198, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 199, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 200, \"selectedAnswer\": \"B\" }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}/submit?userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}", "submit"],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}",
+							"description": "ID của user đang làm bài thi"
+						}
+					]
+				},
+				"description": "Nộp bài thi Full Test với 200 câu hỏi (7 parts)"
+			},
+			"response": []
+		},
+		{
+			"name": "7. Nộp bài thi - Reading Only (30 câu)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"answers\": [\n    // Part 5 - Grammar (Câu 1-15)\n    { \"questionId\": 1, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 2, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 3, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 4, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 5, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 6, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 7, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 8, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 9, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 10, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 11, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 12, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 13, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 14, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 15, \"selectedAnswer\": \"C\" },\n    \n    // Part 6 - Text Completion (Câu 16-20)\n    { \"questionId\": 16, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 17, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 18, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 19, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 20, \"selectedAnswer\": \"A\" },\n    \n    // Part 7 - Comprehension (Câu 21-30)\n    { \"questionId\": 21, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 22, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 23, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 24, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 25, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 26, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 27, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 28, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 29, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 30, \"selectedAnswer\": \"C\" }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}/submit?userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}", "submit"],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}"
+						}
+					]
+				},
+				"description": "Nộp bài thi Reading với 30 câu hỏi mẫu"
+			},
+			"response": []
+		},
+		{
+			"name": "8. Nộp bài thi - Listening Only (25 câu)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"answers\": [\n    // Part 1 - Photos (Câu 1-6)\n    { \"questionId\": 1, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 2, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 3, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 4, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 5, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 6, \"selectedAnswer\": \"B\" },\n    \n    // Part 2 - Q&A (Câu 7-16)\n    { \"questionId\": 7, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 8, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 9, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 10, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 11, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 12, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 13, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 14, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 15, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 16, \"selectedAnswer\": \"A\" },\n    \n    // Part 3 - Conversations (Câu 17-22)\n    { \"questionId\": 17, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 18, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 19, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 20, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 21, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 22, \"selectedAnswer\": \"C\" },\n    \n    // Part 4 - Talks (Câu 23-25)\n    { \"questionId\": 23, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 24, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 25, \"selectedAnswer\": \"B\" }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}/submit?userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}", "submit"],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}"
+						}
+					]
+				},
+				"description": "Nộp bài thi Listening với 25 câu hỏi mẫu"
+			},
+			"response": []
+		},
+		{
+			"name": "9. Nộp bài Practice Test (theo phần)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"answers\": [\n    { \"questionId\": 1, \"selectedAnswer\": \"A\" },\n    { \"questionId\": 2, \"selectedAnswer\": \"B\" },\n    { \"questionId\": 3, \"selectedAnswer\": \"C\" },\n    { \"questionId\": 4, \"selectedAnswer\": \"D\" },\n    { \"questionId\": 5, \"selectedAnswer\": \"A\" }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}/submit-practice?partIds=1,2&userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}", "submit-practice"],
+					"query": [
+						{
+							"key": "partIds",
+							"value": "1,2",
+							"description": "Danh sách ID các phần muốn làm"
+						},
+						{
+							"key": "userId",
+							"value": "{{user_id}}"
+						}
+					]
+				},
+				"description": "Nộp bài practice test cho một hoặc nhiều phần cụ thể"
+			},
+			"response": []
+		},
+		{
+			"name": "10. Lấy lịch sử làm bài của user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/history?userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "history"],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}",
+							"description": "ID của user cần xem lịch sử"
+						}
+					]
+				},
+				"description": "Lấy lịch sử tất cả các lần làm bài thi của user"
+			},
+			"response": []
+		},
+		{
+			"name": "11. Lấy thống kê bài thi của user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/statistics?userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "statistics"],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}",
+							"description": "ID của user cần xem thống kê"
+						}
+					]
+				},
+				"description": "Lấy thống kê chi tiết bài thi của user:\n- Reading: bao gồm Reading-only + phần Reading từ Full Test\n- Listening: bao gồm Listening-only + phần Listening từ Full Test\n- Full Test: thống kê riêng cho đề thi thật (200 câu)\n- Overall: thống kê tổng hợp tất cả\n\nLưu ý: Full Test được tách thành 2 phần (100 Reading + 100 Listening) để thống kê chính xác kỹ năng từng phần"
+			},
+			"response": [
+				{
+					"name": "Success Response - User with multiple exam types",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/exams/statistics?userId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "exams", "statistics"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"userId\": 1,\n  \"readingStatistics\": {\n    \"examType\": \"READING\",\n    \"numberOfExamsTaken\": 8,\n    \"accuracy\": 87.5,\n    \"averageTimeMinutes\": null,\n    \"averageScore\": 85.25,\n    \"totalQuestionsAttempted\": 320,\n    \"totalCorrectAnswers\": 280,\n    \"highestScore\": 95.0,\n    \"lowestScore\": 76.67\n  },\n  \"listeningStatistics\": {\n    \"examType\": \"LISTENING\",\n    \"numberOfExamsTaken\": 6,\n    \"accuracy\": 82.0,\n    \"averageTimeMinutes\": null,\n    \"averageScore\": 80.5,\n    \"totalQuestionsAttempted\": 250,\n    \"totalCorrectAnswers\": 205,\n    \"highestScore\": 92.0,\n    \"lowestScore\": 68.0\n  },\n  \"fullTestStatistics\": {\n    \"examType\": \"FULL_TEST\",\n    \"numberOfExamsTaken\": 3,\n    \"accuracy\": 84.67,\n    \"averageTimeMinutes\": null,\n    \"averageScore\": 83.33,\n    \"totalQuestionsAttempted\": 600,\n    \"totalCorrectAnswers\": 508,\n    \"highestScore\": 88.5,\n    \"lowestScore\": 79.0\n  },\n  \"overallStatistics\": {\n    \"examType\": \"OVERALL\",\n    \"numberOfExamsTaken\": 17,\n    \"accuracy\": 84.87,\n    \"averageTimeMinutes\": null,\n    \"averageScore\": 83.0,\n    \"totalQuestionsAttempted\": 1170,\n    \"totalCorrectAnswers\": 993,\n    \"highestScore\": 95.0,\n    \"lowestScore\": 68.0\n  }\n}"
+				}
+			]
+		},
+		{
+			"name": "12. Lấy kết quả chi tiết một lần thi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/result/{{result_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "result", "{{result_id}}"]
+				},
+				"description": "Lấy kết quả chi tiết của một lần thi cụ thể"
+			},
+			"response": []
+		},
+		{
+			"name": "13. Tìm kiếm bài thi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/search?title=TOEIC&level=Intermediate&page=0&size=10",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "search"],
+					"query": [
+						{
+							"key": "title",
+							"value": "TOEIC",
+							"description": "Tìm theo tiêu đề"
+						},
+						{
+							"key": "level",
+							"value": "Intermediate",
+							"description": "Tìm theo level"
+						},
+						{
+							"key": "type",
+							"value": "",
+							"description": "Tìm theo type",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "0",
+							"description": "Số trang (bắt đầu từ 0)"
+						},
+						{
+							"key": "size",
+							"value": "10",
+							"description": "Số lượng kết quả mỗi trang"
+						}
+					]
+				},
+				"description": "Tìm kiếm bài thi theo nhiều tiêu chí"
+			},
+			"response": []
+		},
+		{
+			"name": "13. Lấy bài thi theo level",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/level/{{level}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "level", "{{level}}"]
+				},
+				"description": "Lấy danh sách bài thi theo level (Beginner, Intermediate, Advanced)"
+			},
+			"response": []
+		},
+		{
+			"name": "14. Lấy thống kê kết quả thi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/statistics?userId={{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "statistics"],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}",
+							"description": "ID của user cần xem thống kê"
+						}
+					]
+				},
+				"description": "Lấy thống kê tổng hợp kết quả thi của user"
+			},
+			"response": []
+		},
+		{
+			"name": "15. Lấy comments của bài thi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}/comments",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}", "comments"]
+				},
+				"description": "Lấy danh sách comments của một bài thi"
+			},
+			"response": []
+		},
+		{
+			"name": "16. Thêm comment cho bài thi",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"context\": \"Bài thi này rất hay và hữu ích! Các câu hỏi phù hợp với mức độ của tôi.\",\n  \"userId\": {{user_id}}\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/exams/{{exam_id}}/comments",
+					"host": ["{{base_url}}"],
+					"path": ["api", "v1", "exams", "{{exam_id}}", "comments"]
+				},
+				"description": "Thêm comment mới cho bài thi"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "exam_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "result_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "level",
+			"value": "Intermediate",
+			"type": "string"
+		}
+	]
+}

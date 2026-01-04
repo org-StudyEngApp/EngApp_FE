@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { X, Volume2, BookOpen, Loader2, AlertCircle, Save } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Volume2, BookOpen, Loader2, AlertCircle, Save, Move } from 'lucide-react';
 
 /**
- * DictionaryModal - Modal hiển thị thông tin từ điển đầy đủ
+ * DictionaryModal - Modal hiển thị thông tin từ điển đầy đủ (Draggable)
  * @param {boolean} isOpen - Trạng thái mở/đóng modal
  * @param {function} onClose - Hàm đóng modal
  * @param {object} dictionaryData - Dữ liệu từ điển từ API
@@ -23,6 +23,66 @@ const DictionaryModal = ({
   isAuthenticated,
 }) => {
   const [playingAudio, setPlayingAudio] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const modalRef = useRef(null);
+
+  // Center modal on first open
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      const modalWidth = modalRef.current.offsetWidth;
+      const modalHeight = modalRef.current.offsetHeight;
+      const centerX = (window.innerWidth - modalWidth) / 2;
+      const centerY = (window.innerHeight - modalHeight) / 2;
+      setPosition({ x: centerX, y: centerY });
+    }
+  }, [isOpen]);
+
+  // Handle mouse down on header to start dragging
+  const handleMouseDown = (e) => {
+    // Không drag nếu click vào nút close
+    if (e.target.closest('button')) return;
+    
+    setIsDragging(true);
+    setDragOffset({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    });
+  };
+
+  // Handle mouse move for dragging
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging) return;
+      
+      const newX = e.clientX - dragOffset.x;
+      const newY = e.clientY - dragOffset.y;
+      
+      // Giới hạn không cho kéo ra ngoài viewport
+      const modalWidth = modalRef.current?.offsetWidth || 0;
+      const modalHeight = modalRef.current?.offsetHeight || 0;
+      
+      const boundedX = Math.max(0, Math.min(newX, window.innerWidth - modalWidth));
+      const boundedY = Math.max(0, Math.min(newY, window.innerHeight - modalHeight));
+      
+      setPosition({ x: boundedX, y: boundedY });
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, dragOffset, position]);
 
   if (!isOpen) return null;
 
@@ -50,24 +110,42 @@ const DictionaryModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative max-h-[90vh] w-full max-w-lg overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-gray-800">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4 dark:border-gray-700">
-          <div className="flex items-center gap-3">
-            <BookOpen className="h-6 w-6 text-white" />
-            <h2 className="text-xl font-bold text-white">Dictionary</h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="rounded-lg p-1 text-white/80 transition-colors hover:bg-white/20 hover:text-white"
+    <div className="fixed inset-0 z-50 pointer-events-none">
+      <div 
+        ref={modalRef}
+        className={`absolute w-full max-w-lg pointer-events-auto transition-shadow ${
+          isDragging ? 'shadow-2xl scale-[1.02]' : 'shadow-xl'
+        }`}
+        style={{
+          left: `${position.x}px`,
+          top: `${position.y}px`,
+          maxHeight: '85vh',
+          transition: isDragging ? 'none' : 'box-shadow 0.2s, transform 0.2s',
+        }}
+      >
+        <div className="overflow-hidden rounded-xl bg-white dark:bg-gray-800 border-2 border-blue-500/20 dark:border-blue-400/20">
+          {/* Header - Draggable */}
+          <div 
+            className={`flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4 dark:border-gray-700 select-none ${
+              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
+            onMouseDown={handleMouseDown}
           >
-            <X size={24} />
-          </button>
-        </div>
+            <div className="flex items-center gap-3">
+              <BookOpen className="h-6 w-6 text-white" />
+              <h2 className="text-xl font-bold text-white">Dictionary</h2>
+              <Move className="h-4 w-4 text-white/60 animate-pulse" title="Kéo để di chuyển" />
+            </div>
+            <button
+              onClick={onClose}
+              className="rounded-lg p-1 text-white/80 transition-colors hover:bg-white/20 hover:text-white cursor-pointer"
+            >
+              <X size={24} />
+            </button>
+          </div>
 
-        {/* Content */}
-        <div className="max-h-[calc(90vh-140px)] overflow-y-auto p-6">
+          {/* Content */}
+          <div className="max-h-[calc(85vh-140px)] overflow-y-auto p-6">
           {/* Loading State */}
           {loading && (
             <div className="flex flex-col items-center justify-center py-12">
@@ -203,6 +281,7 @@ const DictionaryModal = ({
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

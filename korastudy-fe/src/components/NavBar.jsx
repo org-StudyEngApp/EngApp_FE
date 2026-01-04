@@ -192,7 +192,7 @@ useEffect(() => {
         <div className="nav-logo flex items-center">
           <Link to="/" className="flex items-center">
             <img
-              src="bloom_black.png"
+              src="/bloom_black.png"
               alt="KoraStudy Logo"
               className="h-12 md:h-16 w-auto mr-2 dark:filter dark:brightness-0 dark:invert"
             />
@@ -202,7 +202,6 @@ useEffect(() => {
         <ul className="hidden md:flex list-none m-0 p-0 gap-8 items-center">
           <li><Link to="/news" className="text-slate-700 dark:text-gray-200 text-base px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Đọc báo</Link></li>
           <li><Link to="/flash-card" className="text-slate-700 dark:text-gray-200 text-base px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">FlashCard</Link></li>
-          <li><Link to="/lo-trinh" className="text-slate-700 dark:text-gray-200 text-base px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Lộ trình</Link></li>
 
           <li className="relative">
             <Link to="/blog" className="text-slate-700 dark:text-gray-200 px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Blog</Link>
@@ -213,14 +212,12 @@ useEffect(() => {
              <Link to="/exam" className="text-slate-700 dark:text-gray-200 px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Đề thi</Link>
             {showExamDropdown && (
               <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-dark-800 rounded-md shadow-lg py-1 border border-gray-200 dark:border-dark-700">
-                <Link to="/de-thi/topik1" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Cơ bản</Link>
-                <Link to="/de-thi/topik2" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Trung cấp</Link>
-                <Link to="/de-thi/topik-esp" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Nâng cao</Link>
+                <Link to="/de-thi/listening" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Listening</Link>
+                <Link to="/de-thi/reading" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Reading</Link>
+                <Link to="/de-thi/full-test" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">Thi thật</Link>
               </div>
             )}
           </li>
-
-          <li><Link to="/about" className="text-slate-700 dark:text-gray-200 px-4 py-2 hover:text-sky-500 dark:hover:text-sky-400 transition-colors">Về KoraStudy</Link></li>
 
           {/* User Authentication Section */}
           <div className="flex items-center space-x-4 ml-8">
@@ -393,7 +390,7 @@ useEffect(() => {
             <div className="flex flex-col h-full">
               {/* Mobile Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-700">
-                <img src="bloom_black.png" alt="KoraStudy Logo" className="h-10 w-auto dark:filter dark:brightness-0 dark:invert" />
+                <img src="/bloom_black.png" alt="KoraStudy Logo" className="h-10 w-auto dark:filter dark:brightness-0 dark:invert" />
                 <button onClick={closeMobileMenu} className="text-gray-800 dark:text-gray-200 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors">
                   <X size={20} />
                 </button>
@@ -404,16 +401,14 @@ useEffect(() => {
                 <nav className="space-y-2 px-4">
                   <Link to="/news" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Đọc báo</Link>
                   <Link to="/flash-card" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">FlashCard</Link>
-                  <Link to="/lo-trinh" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Lộ trình</Link>
                   <Link to="/blog" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Blog</Link>
                   
                   <Link to="/exam" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Đề thi</Link>
                   <div className="ml-4 space-y-1">
-                    <Link to="/de-thi/topik1" onClick={closeMobileMenu} className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">TOPIK I</Link>
-                    <Link to="/de-thi/topik2" onClick={closeMobileMenu} className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">TOPIK II</Link>
-                    <Link to="/de-thi/topik-esp" onClick={closeMobileMenu} className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">TOPIK ESP</Link>
+                    <Link to="/de-thi/listening" onClick={closeMobileMenu} className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Listening</Link>
+                    <Link to="/de-thi/reading" onClick={closeMobileMenu} className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Reading</Link>
+                    <Link to="/de-thi/full-test" onClick={closeMobileMenu} className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Thi thật</Link>
                   </div>
-                  <Link to="/about" onClick={closeMobileMenu} className="block px-4 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors">Về KoraStudy</Link>
                 </nav>
               </div>
               

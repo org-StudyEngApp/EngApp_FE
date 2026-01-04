@@ -7,11 +7,23 @@ import axiosClient from './axiosClient';
 
 const newsService = {
   /**
-   * Get all news topics
-   * @returns {Promise} List of news topics
+   * Get all news topics with pagination
+   * @param {Object} params - Query parameters
+   * @param {number} params.page - Page number (default: 0)
+   * @param {number} params.size - Page size (default: 100)
+   * @param {string} params.sortBy - Sort field (default: title)
+   * @param {string} params.sortDir - Sort direction (ASC, DESC)
+   * @returns {Promise} Paginated topics
    */
-  getAllTopics: async () => {
-    const response = await axiosClient.get('/api/v1/news-topics');
+  getAllTopics: async (params = {}) => {
+    const defaultParams = {
+      page: 0,
+      size: 100, // Get all topics by default
+      sortBy: 'title',
+      sortDir: 'ASC',
+      ...params
+    };
+    const response = await axiosClient.get('/api/v1/news-topics', { params: defaultParams });
     return response.data;
   },
 
@@ -71,6 +83,16 @@ const newsService = {
    */
   getArticlesBySeries: async (seriesId, params = {}) => {
     const response = await axiosClient.get(`/api/v1/articles/series/${seriesId}`, { params });
+    return response.data;
+  },
+
+  /**
+   * Increment article view count
+   * @param {number} articleId - Article ID
+   * @returns {Promise} Response with status and message
+   */
+  incrementViewCount: async (articleId) => {
+    const response = await axiosClient.post(`/api/v1/articles/${articleId}/view`);
     return response.data;
   },
 

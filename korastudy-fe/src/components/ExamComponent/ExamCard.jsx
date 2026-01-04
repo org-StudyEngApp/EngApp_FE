@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Clock, Users, Star, BookOpen } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Clock, Users, Star, BookOpen, AlertCircle, X } from 'lucide-react';
 
 const ExamCard = ({ exam }) => {
+  const navigate = useNavigate();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const getDifficultyColor = (difficulty) => {
     switch (difficulty?.toLowerCase()) {
       case 'dễ':
@@ -23,17 +25,43 @@ const ExamCard = ({ exam }) => {
   };
 
   const getLevelColor = (level) => {
-    switch (level?.toLowerCase()) {
-      case 'topik i':
-        return 'bg-blue-100 text-blue-800';
-      case 'topik ii':
-        return 'bg-purple-100 text-purple-800';
+    const levelLower = level?.toLowerCase();
+    switch (levelLower) {
       case 'beginner':
+      case 'cơ bản':
         return 'bg-green-100 text-green-800';
       case 'intermediate':
+      case 'trung cấp':
         return 'bg-yellow-100 text-yellow-800';
       case 'advanced':
+      case 'nâng cao':
         return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getExamTypeLabel = (examType) => {
+    switch (examType?.toUpperCase()) {
+      case 'LISTENING':
+        return 'Listening';
+      case 'READING':
+        return 'Reading';
+      case 'FULL_TEST':
+        return 'Full Test';
+      default:
+        return 'Practice';
+    }
+  };
+
+  const getExamTypeColor = (examType) => {
+    switch (examType?.toUpperCase()) {
+      case 'LISTENING':
+        return 'bg-blue-100 text-blue-800';
+      case 'READING':
+        return 'bg-purple-100 text-purple-800';
+      case 'FULL_TEST':
+        return 'bg-pink-100 text-pink-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -44,95 +72,197 @@ const ExamCard = ({ exam }) => {
     id: exam.id,
     title: exam.title || 'Đề thi không có tiêu đề',
     subtitle: exam.description || exam.subtitle || 'Không có mô tả',
-    level: exam.level || 'Trung cấp',
-    duration: typeof exam.duration === 'number' ? `${exam.duration} phút` : (exam.duration || '100 phút'),
+    level: exam.level,
+    duration: typeof exam.durationTimes === 'number' ? `${exam.durationTimes} phút` : (exam.duration || '120 phút'),
     questions: exam.totalQuestions || exam.questions || 0,
     participants: exam.totalTaken || exam.participants || 0,
     rating: exam.averageRating || exam.rating || 0,
-    difficulty: exam.difficulty || 'Trung bình',
+    difficulty: exam.difficulty,
     price: exam.price || 'Miễn phí',
-    type: exam.type || 'practice'
+    type: exam.type || 'practice',
+    examType: exam.examType || 'PRACTICE'
+  };
+
+  const handleViewDetail = () => {
+    navigate(`/exam/${examData.id}`);
+  };
+
+  const handleStartExam = (e) => {
+    e.stopPropagation(); // Prevent card click event
+    setShowConfirmModal(true);
+  };
+
+  const confirmStartExam = () => {
+    setShowConfirmModal(false);
+    navigate(`/exam/${examData.id}/test`);
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
-      {/* Card Header */}
-      <div className="relative">
-        <div className="h-40 bg-sky-100 flex items-center justify-center">
-          <div className="text-center">
-            <BookOpen className="mx-auto h-12 w-12 text-blue-500 mb-2" />
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(examData.level)}`}>
-              {examData.level}
+    <>
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowConfirmModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <AlertCircle className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">Xác nhận làm bài</h3>
+              </div>
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <h4 className="font-semibold text-gray-900 mb-2">{examData.title}</h4>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Clock size={16} className="text-gray-400" />
+                  <span>Thời gian: <strong>{examData.duration}</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <BookOpen size={16} className="text-gray-400" />
+                  <span>Số câu hỏi: <strong>{examData.questions} câu</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getExamTypeColor(examData.examType)}`}>
+                    {getExamTypeLabel(examData.examType)}
+                  </span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getLevelColor(examData.level)}`}>
+                    {examData.level}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-yellow-800">
+                <strong>Lưu ý:</strong> Sau khi bắt đầu, đồng hồ đếm ngược sẽ chạy. Hãy đảm bảo bạn có đủ thời gian để hoàn thành bài thi.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={confirmStartExam}
+                className="flex-1 px-4 py-3 bg-sky-500 text-white rounded-lg font-semibold hover:bg-sky-600 transition-colors shadow-lg"
+              >
+                Bắt đầu ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Exam Card */}
+      <div 
+        onClick={handleViewDetail}
+        className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer border-2 border-transparent hover:border-sky-200 aspect-square flex flex-col"
+      >
+        {/* Card Header */}
+        <div className="relative flex-1">
+          <div className="absolute inset-0 bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                backgroundSize: '20px 20px'
+              }}></div>
+            </div>
+            
+            <div className="text-center relative z-10 px-4">
+              <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-3 mb-2 inline-block">
+                <BookOpen className="h-12 w-12 text-white drop-shadow-lg" />
+              </div>
+              <div className="flex gap-2 justify-center flex-wrap">
+                <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getLevelColor(examData.level)}`}>
+                  {examData.level}
+                </span>
+                <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getExamTypeColor(examData.examType)}`}>
+                  {getExamTypeLabel(examData.examType)}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Price Badge */}
+          <div className="absolute top-3 right-3">
+            <span className="bg-green-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">
+              {examData.price}
             </span>
           </div>
         </div>
-        
-        {/* Price Badge */}
-        <div className="absolute top-3 right-3">
-          <span className="bg-white bg-opacity-90 text-green-600 px-2 py-1 rounded-lg text-sm font-semibold">
-            {examData.price}
-          </span>
-        </div>
-      </div>
 
-      {/* Card Body */}
-      <div className="p-6">
-        {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">
-          {examData.title}
-        </h3>
-        
-        {/* Subtitle */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-          {examData.subtitle}
-        </p>
+        {/* Card Body */}
+        <div className="p-4 flex flex-col">
+          {/* Title */}
+          <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">
+            {examData.title}
+          </h3>
+          
+          {/* Stats Row */}
+          <div className="flex items-center justify-between text-xs text-gray-600 mb-3 gap-2">
+            <div className="flex items-center gap-1">
+              <Clock size={14} className="text-gray-400" />
+              <span>{examData.duration}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <BookOpen size={14} className="text-gray-400" />
+              <span>{examData.questions} câu</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Users size={14} className="text-gray-400" />
+              <span>{examData.participants}</span>
+            </div>
+          </div>
 
-        {/* Stats */}
-        <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
-          <div className="flex items-center gap-1">
-            <Clock size={16} />
-            <span>{examData.duration}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <BookOpen size={16} />
-            <span>{examData.questions} câu</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Users size={16} />
-            <span>{examData.participants}</span>
-          </div>
-        </div>
-
-        {/* Rating and Difficulty */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-1">
-            <Star size={16} className="text-yellow-400 fill-current" />
-            <span className="text-sm font-medium text-gray-700">
-              {examData.rating.toFixed(1)}
+          {/* Rating and Difficulty */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1 bg-yellow-50 px-2 py-0.5 rounded">
+              <Star size={14} className="text-yellow-500 fill-current" />
+              <span className="text-xs font-bold text-gray-900">
+                {examData.rating.toFixed(1)}
+              </span>
+            </div>
+            <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${getDifficultyColor(examData.difficulty)}`}>
+              {examData.difficulty}
             </span>
           </div>
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(examData.difficulty)}`}>
-            {examData.difficulty}
-          </span>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Link
-            to={`/exam/${examData.id}`}
-            className="flex-1 px-4 py-2.5 text-center border-2 border-gray-200 text-gray-700 rounded-lg font-semibold text-sm hover:border-sky-500 hover:text-sky-500 transition-colors duration-300"
-          >
-            Xem trước
-          </Link>
-          <Link
-            to={`/exam/${examData.id}/test`}
-            className="flex-1 px-4 py-2.5 text-center bg-sky-500 text-white rounded-lg font-semibold text-sm hover:bg-sky-600 transition-colors duration-300"
-          >
-            Làm bài
-          </Link>
+          {/* Action Button */}
+          <div className="flex gap-2">
+            <button 
+              onClick={handleViewDetail}
+              className="flex-1 px-4 py-2.5 text-center bg-white border-2 border-sky-500 text-sky-600 rounded-lg font-bold text-sm hover:bg-sky-50 transition-all duration-300 shadow-sm"
+            >
+              Xem chi tiết
+            </button>
+            <button 
+              onClick={handleStartExam}
+              className="flex-1 px-4 py-2.5 text-center bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-lg font-bold text-sm hover:from-sky-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg"
+            >
+              Làm bài
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

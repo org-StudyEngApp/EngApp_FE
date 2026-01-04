@@ -53,6 +53,36 @@ export const examService = {
     }
   },
 
+  // Lấy danh sách bài thi theo loại
+  getExamsByType: async (examType) => {
+    try {
+      console.log(`Calling API: GET /exams?examType=${examType}`);
+      const response = await api.get(`/exams`, {
+        params: { examType }
+      });
+      console.log('API Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching ${examType} exams:`, error);
+      throw error;
+    }
+  },
+
+  // Lấy bài thi Reading
+  getReadingExams: async () => {
+    return examService.getExamsByType('READING');
+  },
+
+  // Lấy bài thi Listening
+  getListeningExams: async () => {
+    return examService.getExamsByType('LISTENING');
+  },
+
+  // Lấy đề thi thật (Full Test)
+  getFullTestExams: async () => {
+    return examService.getExamsByType('FULL_TEST');
+  },
+
   // Lấy chi tiết bài thi
   getExamDetail: async (id) => {
     try {
@@ -165,6 +195,36 @@ export const examService = {
       return response.data;
     } catch (error) {
       console.error('Error submitting practice test:', error);
+      throw error;
+    }
+  },
+
+  // Lấy thống kê bài thi của user
+  getStatistics: async (userId) => {
+    try {
+      console.log(`Getting statistics for user ${userId}`);
+      const response = await api.get('/exams/statistics', {
+        params: { userId }
+      });
+      console.log('Statistics response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching statistics:', error);
+      throw error;
+    }
+  },
+
+  // Lấy lịch sử làm bài thi của user
+  getExamHistory: async (userId) => {
+    try {
+      console.log(`Getting exam history for user ${userId}`);
+      const response = await api.get('/exams/history', {
+        params: { userId }
+      });
+      console.log('Exam history response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching exam history:', error);
       throw error;
     }
   },

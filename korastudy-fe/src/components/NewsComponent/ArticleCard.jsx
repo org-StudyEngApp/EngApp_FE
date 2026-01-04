@@ -6,7 +6,7 @@ import { Clock, Eye } from 'lucide-react';
  * ArticleCard Component
  * Displays article information in a card format
  */
-const ArticleCard = ({ article }) => {
+const ArticleCard = ({ article, topicsMap = {} }) => {
   const navigate = useNavigate();
 
   // Level badge configuration
@@ -27,6 +27,17 @@ const ArticleCard = ({ article }) => {
 
   const level = levelConfig[article.level] || levelConfig.BEGINNER;
 
+  // Get topic name
+  const getTopicName = () => {
+    if (article.newsTopicName) return article.newsTopicName;
+    if (article.newsTopic?.title) return article.newsTopic.title;
+    if (article.newsTopic?.name) return article.newsTopic.name;
+    if (article.newsTopicId && topicsMap[article.newsTopicId]) {
+      return topicsMap[article.newsTopicId];
+    }
+    return null;
+  };
+
   // Format date
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -38,6 +49,18 @@ const ArticleCard = ({ article }) => {
     });
   };
 
+  // Format view count
+  const formatViewCount = (count) => {
+    if (!count && count !== 0) return '0';
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    }
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toLocaleString();
+  };
+
   const handleClick = () => {
     navigate(`/news/${article.id}`);
   };
@@ -45,29 +68,29 @@ const ArticleCard = ({ article }) => {
   return (
     <div
       onClick={handleClick}
-      className="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+      className="group cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
     >
       {/* Thumbnail */}
-      <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
         {article.thumbnailUrl ? (
           <img
             src={article.thumbnailUrl}
             alt={article.title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             onError={(e) => {
               e.target.src = '/img_social/default-news.jpg';
             }}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="text-4xl text-gray-400">📰</span>
+            <span className="text-5xl text-gray-400">📰</span>
           </div>
         )}
 
         {/* Level Badge */}
         <div className="absolute left-3 top-3">
           <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${level.className}`}
+            className={`rounded-lg px-3 py-1 text-xs font-bold shadow-md ${level.className}`}
           >
             {level.label}
           </span>
@@ -76,7 +99,7 @@ const ArticleCard = ({ article }) => {
         {/* Trial Badge */}
         {article.isTrial && (
           <div className="absolute right-3 top-3">
-            <span className="rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white">
+            <span className="rounded-lg bg-blue-500 px-3 py-1 text-xs font-bold text-white shadow-md">
               Free
             </span>
           </div>
@@ -84,44 +107,44 @@ const ArticleCard = ({ article }) => {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5">
+        {/* Source/Topic Label */}
+        {getTopicName() && (
+          <div className="mb-3">
+            <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+              {getTopicName()}
+            </span>
+          </div>
+        )}
+
         {/* Title */}
-        <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
+        <h3 className="mb-3 line-clamp-2 text-lg font-bold leading-snug text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
           {article.title}
         </h3>
 
         {/* Description */}
         {article.description && (
-          <p className="mb-3 line-clamp-3 text-sm text-gray-600 dark:text-gray-300">
+          <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
             {article.description}
           </p>
         )}
 
         {/* Footer Info */}
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400">
           {/* Published Date */}
-          <div className="flex items-center gap-1">
-            <Clock size={14} />
+          <div className="flex items-center gap-1.5">
+            <Clock size={14} className="flex-shrink-0" />
             <span>{formatDate(article.publishedAt)}</span>
           </div>
 
-          {/* Read Count */}
-          {article.readCount !== undefined && (
-            <div className="flex items-center gap-1">
-              <Eye size={14} />
-              <span>{article.readCount} lượt đọc</span>
+          {/* View Count */}
+          {article.viewCount !== undefined && (
+            <div className="flex items-center gap-1.5">
+              <Eye size={14} className="flex-shrink-0" />
+              <span className="font-medium">{formatViewCount(article.viewCount)}</span>
             </div>
           )}
         </div>
-
-        {/* Topic Tag */}
-        {article.newsTopic && (
-          <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-            <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-              {article.newsTopic.title}
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );

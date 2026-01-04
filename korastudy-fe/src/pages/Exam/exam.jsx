@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Search, Filter, Clock, Users, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import ExamCard from '../../components/ExamComponent/ExamCard';
 import { examService } from '../../api/ExamService';
@@ -8,6 +8,7 @@ import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 
 const Exams = () => {
+  const location = useLocation();
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,15 +19,31 @@ const Exams = () => {
   const itemsPerPage = 12;
   const { user } = useUser();
 
+  // Xác định loại bài thi từ URL
+  const examType = location.pathname.includes('listening') ? 'LISTENING' : 
+                   location.pathname.includes('reading') ? 'READING' :
+                   location.pathname.includes('full-test') ? 'FULL_TEST' : 'all';
+
   // Fetch danh sách bài thi từ API
   useEffect(() => {
     fetchExams();
-  }, []);
+  }, [examType]);
 
   const fetchExams = async () => {
     try {
       setLoading(true);
-      const data = await examService.getAllExams();
+      let data;
+      
+      if (examType === 'LISTENING') {
+        data = await examService.getListeningExams();
+      } else if (examType === 'READING') {
+        data = await examService.getReadingExams();
+      } else if (examType === 'FULL_TEST') {
+        data = await examService.getFullTestExams();
+      } else {
+        data = await examService.getAllExams();
+      }
+      
       setExams(data);
       setError(null);
     } catch (err) {
@@ -40,11 +57,25 @@ const Exams = () => {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const data = await examService.searchExams(
-        searchTerm,
-        getLevelForApi(selectedLevel),
-        getTypeForApi(selectedType)
-      );
+      let data;
+      
+      // Nếu có bộ lọc examType, fetch theo type trước
+      if (examType !== 'all') {
+        if (examType === 'LISTENING') {
+          data = await examService.getListeningExams();
+        } else if (examType === 'READING') {
+          data = await examService.getReadingExams();
+        } else if (examType === 'FULL_TEST') {
+          data = await examService.getFullTestExams();
+        }
+      } else {
+        data = await examService.searchExams(
+          searchTerm,
+          getLevelForApi(selectedLevel),
+          null
+        );
+      }
+      
       setExams(data);
       setError(null);
     } catch (err) {
@@ -64,33 +95,46 @@ const Exams = () => {
 
   const getLevelForApi = (levelId) => {
     switch(levelId) {
-      case 'beginner': return 'Sơ cấp';
-      case 'intermediate': return 'Trung cấp';
-      case 'advanced': return 'Cao cấp';
-      default: return '';
-    }
-  };
-
-  const getTypeForApi = (typeId) => {
-    switch(typeId) {
-      case 'topik1': return 'TOPIK I';
-      case 'topik2': return 'TOPIK II';
+      case 'beginner': return 'Beginner';
+      case 'intermediate': return 'Intermediate';
+      case 'advanced': return 'Advanced';
       default: return '';
     }
   };
 
   const levels = [
     { id: 'all', name: 'Tất cả cấp độ' },
-    { id: 'beginner', name: 'Sơ cấp' },
+    { id: 'beginner', name: 'Cơ bản' },
     { id: 'intermediate', name: 'Trung cấp' },
-    { id: 'advanced', name: 'Cao cấp' }
+    { id: 'advanced', name: 'Nâng cao' }
   ];
 
+  // Cập nhật examTypes để phù hợp với TOEIC
   const examTypes = [
     { id: 'all', name: 'Tất cả loại' },
-    { id: 'topik1', name: 'TOPIK I' },
-    { id: 'topik2', name: 'TOPIK II' },
+    { id: 'listening', name: 'Listening' },
+    { id: 'reading', name: 'Reading' },
+    { id: 'full_test', name: 'Thi thật' }
   ];
+
+  // Helper để lấy tiêu đề và mô tả theo examType
+  const getPageTitle = () => {
+    switch(examType) {
+      case 'LISTENING': return 'Bài thi Listening';
+      case 'READING': return 'Bài thi Reading';
+      case 'FULL_TEST': return 'Đề thi thật';
+      default: return 'Thư viện đề thi';
+    }
+  };
+
+  const getPageDescription = () => {
+    switch(examType) {
+      case 'LISTENING': return 'Luyện tập kỹ năng nghe với các bài thi TOEIC Listening';
+      case 'READING': return 'Luyện tập kỹ năng đọc với các bài thi TOEIC Reading';
+      case 'FULL_TEST': return 'Thi thử TOEIC đầy đủ với cả phần Listening và Reading';
+      default: return 'Luyện tập với hàng trăm đề thi thử TOEIC và bài kiểm tra chuyên sâu';
+    }
+  };
 
   // Filter exams based on search and filters (client-side filtering as backup)
   const filteredExams = exams.filter(exam => {
@@ -98,13 +142,11 @@ const Exams = () => {
                          (exam.title && exam.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
                          (exam.description && exam.description.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesLevel = selectedLevel === 'all' || 
-                        (selectedLevel === 'beginner' && exam.level === 'Sơ cấp') ||
-                        (selectedLevel === 'intermediate' && exam.level === 'Trung cấp') ||
-                        (selectedLevel === 'advanced' && exam.level === 'Cao cấp');
-    const matchesType = selectedType === 'all' || 
-                       (exam.type && exam.type.toLowerCase().includes(getTypeForApi(selectedType).toLowerCase()));
+                        (selectedLevel === 'beginner' && (exam.level === 'Beginner' || exam.level === 'Cơ bản')) ||
+                        (selectedLevel === 'intermediate' && (exam.level === 'Intermediate' || exam.level === 'Trung cấp')) ||
+                        (selectedLevel === 'advanced' && (exam.level === 'Advanced' || exam.level === 'Nâng cao'));
     
-    return matchesSearch && matchesLevel && matchesType;
+    return matchesSearch && matchesLevel;
   });
 
   // Pagination
@@ -159,10 +201,10 @@ const Exams = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-white">
             <h1 className="font-inter font-bold text-4xl lg:text-5xl mb-4">
-              Thư viện đề thi
+              {getPageTitle()}
             </h1>
             <p className="text-xl lg:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
-              Luyện tập với hàng trăm đề thi thử TOPIK và bài kiểm tra chuyên sâu
+              {getPageDescription()}
             </p>
             
             {/* Search Bar */}
@@ -215,54 +257,38 @@ const Exams = () => {
                   </div>
                 </div>
 
-                {/* Type Filter */}
-                <div className="mb-6">
-                  <h4 className="font-medium text-gray-800 mb-3">Loại bài thi</h4>
-                  <div className="space-y-2">
-                    {examTypes.map(type => (
-                      <button
-                        key={type.id}
-                        onClick={() => setSelectedType(type.id)}
-                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 ${
-                          selectedType === type.id 
-                            ? 'bg-sky-500 text-white' 
-                            : 'hover:bg-gray-100 text-gray-700'
-                        }`}
+                {/* Type Filter - Ẩn khi đang ở trang cụ thể */}
+                {examType === 'all' && (
+                  <div className="mb-6">
+                    <h4 className="font-medium text-gray-800 mb-3">Loại bài thi</h4>
+                    <div className="space-y-2">
+                      <Link
+                        to="/exam"
+                        className="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors duration-200"
                       >
-                        {type.name}
-                      </button>
-                    ))}
+                        Tất cả loại
+                      </Link>
+                      <Link
+                        to="/de-thi/listening"
+                        className="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors duration-200"
+                      >
+                        Listening
+                      </Link>
+                      <Link
+                        to="/de-thi/reading"
+                        className="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors duration-200"
+                      >
+                        Reading
+                      </Link>
+                      <Link
+                        to="/de-thi/full-test"
+                        className="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors duration-200"
+                      >
+                        Thi thật
+                      </Link>
+                    </div>
                   </div>
-                </div>
-
-                {/* Action buttons */}
-                <div className="flex flex-col gap-2 mt-6">
-                  <button
-                    onClick={handleSearch}
-                    className="w-full bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600 transition-colors"
-                  >
-                    Áp dụng bộ lọc
-                  </button>
-                  <button
-                    onClick={handleReset}
-                    className="w-full border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Đặt lại bộ lọc
-                  </button>
-                </div>
-
-                {/* CTA */}
-                <div className="bg-sky-500 rounded-xl p-4 text-white text-center mt-6">
-                  <Clock className="w-8 h-8 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-2">Luyện tập hàng ngày</h4>
-                  <p className="text-sm mb-3 opacity-90">Tạo lịch học và nhận nhắc nhở</p>
-                  <Link 
-                    to="/dang-ky"
-                    className="bg-white text-sky-500 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors duration-300"
-                  >
-                    Tạo lịch học
-                  </Link>
-                </div>
+                )}
               </div>
             </div>
 

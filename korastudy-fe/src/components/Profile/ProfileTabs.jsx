@@ -1,9 +1,10 @@
 import React from 'react';
-import { User, BookOpen, Trophy, Settings } from 'lucide-react';
+import { User, BookOpen, Trophy, Settings, BarChart3 } from 'lucide-react';
 
 const ProfileTabs = ({ activeTab, handleTabChange }) => {
   const tabs = [
     { id: 'overview', name: 'Tổng quan', icon: User },
+    { id: 'statistics', name: 'Thống kê', icon: BarChart3 },
     { id: 'history', name: 'Lịch sử thi', icon: BookOpen },
     { id: 'achievements', name: 'Thành tích', icon: Trophy },
     { id: 'settings', name: 'Cài đặt', icon: Settings }

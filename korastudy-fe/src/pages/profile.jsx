@@ -4,6 +4,7 @@ import ProfileContainer from '../containers/ProfileContainer';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import ProfileTabs from '../components/Profile/ProfileTabs';
 import ProfileOverview from '../components/Profile/ProfileOverview';
+import ProfileStatistics from '../components/Profile/ProfileStatistics';
 import ProfileHistory from '../components/Profile/ProfileHistory';
 import ProfileAchievements from '../components/Profile/ProfileAchievements';
 import ProfileSettings from '../components/Profile/ProfileSettings';
@@ -48,6 +49,7 @@ const Profile = () => {
                   {/* Tab Content */}
                   <div className="p-6">
                     {activeTab === 'overview' && <ProfileOverview {...profileUtils} />}
+                    {activeTab === 'statistics' && <ProfileStatistics userId={user?.id} />}
                     {activeTab === 'history' && <ProfileHistory {...profileUtils} />}
                     {activeTab === 'achievements' && <ProfileAchievements {...profileUtils} />}
                     {activeTab === 'settings' && <ProfileSettings {...profileUtils} />}

@@ -25,6 +25,7 @@ import { useUser } from '../../contexts/UserContext';
 import ArticleCard from '../../components/NewsComponent/ArticleCard';
 import SaveWordModal from '../../components/NewsComponent/SaveWordModal';
 import DictionaryModal from '../../components/NewsComponent/DictionaryModal';
+import VocabularySection from '../../components/NewsComponent/VocabularySection';
 
 /**
  * ArticleDetail - Smart Reading Page
@@ -40,6 +41,7 @@ const ArticleDetail = () => {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [topicName, setTopicName] = useState(null); // Store fetched topic name
 
   // Audio state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -97,6 +99,18 @@ const ArticleDetail = () => {
     },
   };
 
+  // Format view count
+  const formatViewCount = (count) => {
+    if (!count && count !== 0) return '0';
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    }
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toLocaleString();
+  };
+
   // Generate audio using Azure Speech if article doesn't have audioUrl
   useEffect(() => {
     if (article && !article.audioUrl && article.content) {
@@ -132,7 +146,26 @@ const ArticleDetail = () => {
         const articleData = response.data?.data || response.data;
         setArticle(articleData);
 
-        // Mark as read in reading history
+        // Fetch topic name if only newsTopicId is available
+        if (articleData.newsTopicId && !articleData.newsTopicName && !articleData.newsTopic) {
+          try {
+            const topicResponse = await newsService.getTopicById(articleData.newsTopicId);
+            const topicData = topicResponse.data?.data || topicResponse.data;
+            setTopicName(topicData?.title || topicData?.name);
+          } catch (err) {
+            console.error('Failed to fetch topic:', err);
+          }
+        }
+
+        // Increment view count (for all users, including guests)
+        try {
+          await newsService.incrementViewCount(parseInt(articleId));
+          console.log('✅ View count incremented for article:', articleId);
+        } catch (err) {
+          console.error('⚠️ Failed to increment view count:', err.message);
+        }
+
+        // Mark as read in reading history (only for logged-in users)
         if (user) {
           newsService.trackReadingProgress({
             articleId: parseInt(articleId),
@@ -409,6 +442,7 @@ const ArticleDetail = () => {
 
     const handleClickOutside = (e) => {
       const tooltipElement = document.querySelector('.tooltip-container');
+      // Chỉ đóng tooltip, không đóng dictionary modal để user có thể tương tác với bài báo
       if (showTooltip && tooltipElement && !tooltipElement.contains(e.target)) {
         setShowTooltip(false);
         setSelectedText('');
@@ -462,6 +496,15 @@ const ArticleDetail = () => {
       month: 'long',
       day: 'numeric',
     });
+  };
+
+  // Helper function to get topic name
+  const getTopicName = () => {
+    if (article.newsTopicName) return article.newsTopicName;
+    if (article.newsTopic?.title) return article.newsTopic.title;
+    if (article.newsTopic?.name) return article.newsTopic.name;
+    if (topicName) return topicName; // From fetched topic data
+    return null;
   };
 
   if (loading) {
@@ -664,14 +707,22 @@ const ArticleDetail = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+            {/* Main Article Content - Left Side */}
+            <div className="lg:col-span-8">
           {/* Article Header */}
           <div className="mb-8">
-            {/* Level Badge */}
-            <div className="mb-4">
+            {/* Level Badge and Topic */}
+            <div className="mb-4 flex flex-wrap items-center gap-3">
               <span className={`inline-block rounded-full px-4 py-1 text-sm font-semibold ${level.className}`}>
                 {level.label}
               </span>
+              {getTopicName() && (
+                <span className="inline-flex items-center rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                  {getTopicName()}
+                </span>
+              )}
             </div>
 
             {/* Title */}
@@ -705,7 +756,7 @@ const ArticleDetail = () => {
               </div>
               <div className="flex items-center gap-1">
                 <Eye size={16} />
-                <span>{article.readCount || 0} views</span>
+                <span>{formatViewCount(article.viewCount || 0)} lượt xem</span>
               </div>
             </div>
 
@@ -727,9 +778,23 @@ const ArticleDetail = () => {
           {/* Article Content */}
           <div
             ref={contentRef}
-            className="prose prose-lg prose-gray max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-sky-600 prose-img:rounded-lg dark:prose-a:text-sky-400"
+            className="prose prose-lg prose-gray max-w-none text-justify dark:prose-invert prose-headings:font-bold prose-a:text-sky-600 prose-img:rounded-lg dark:prose-a:text-sky-400"
             dangerouslySetInnerHTML={{ __html: article.htmlContent }}
           />
+
+          {/* Vocabulary Section */}
+          <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
+            <VocabularySection 
+              articleId={parseInt(articleId)} 
+              onSaveToFlashcard={(wordData) => {
+                setWordToSave({
+                  ...wordData,
+                  articleId: parseInt(articleId),
+                });
+                setShowSaveWordModal(true);
+              }}
+            />
+          </div>
 
           {/* Comments Section */}
           <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
@@ -810,28 +875,61 @@ const ArticleDetail = () => {
               </div>
             )}
           </div>
-
-          {/* Related Articles Section */}
-          {relatedArticles.length > 0 && (
-            <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
-              <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-                Các bài báo khác
-              </h2>
-              {loadingRelated ? (
-                <div className="text-center">
-                  <Loader2 className="mx-auto h-8 w-8 animate-spin text-sky-500" />
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {relatedArticles.map((relatedArticle) => (
-                    <ArticleCard key={relatedArticle.id} article={relatedArticle} />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </div>
+
+        {/* Related Articles Sidebar - Right Side */}
+        <aside className="lg:col-span-4">
+          <div>
+            {relatedArticles.length > 0 && (
+              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white">
+                  <Book className="h-5 w-5" />
+                  Các bài báo khác
+                </h2>
+                {loadingRelated ? (
+                  <div className="text-center">
+                    <Loader2 className="mx-auto h-8 w-8 animate-spin text-sky-500" />
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {relatedArticles.map((relatedArticle) => (
+                      <div
+                        key={relatedArticle.id}
+                        onClick={() => navigate(`/news/${relatedArticle.id}`)}
+                        className="group cursor-pointer rounded-lg border border-gray-100 p-3 transition-all hover:border-sky-300 hover:shadow-md dark:border-gray-700 dark:hover:border-sky-600"
+                      >
+                        {relatedArticle.thumbnailUrl && (
+                          <img
+                            src={relatedArticle.thumbnailUrl}
+                            alt={relatedArticle.title}
+                            className="mb-2 h-32 w-full rounded object-cover"
+                          />
+                        )}
+                        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-sky-600 dark:text-white dark:group-hover:text-sky-400">
+                          {relatedArticle.title}
+                        </h3>
+                        <div className="mt-2 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                            levelConfig[relatedArticle.level]?.className || ''
+                          }`}>
+                            {levelConfig[relatedArticle.level]?.label || relatedArticle.level}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Eye size={12} />
+                            {formatViewCount(relatedArticle.viewCount || 0)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </aside>
       </div>
+      </div>
+    </div>
 
       {/* Dictionary Modal */}
       <DictionaryModal
