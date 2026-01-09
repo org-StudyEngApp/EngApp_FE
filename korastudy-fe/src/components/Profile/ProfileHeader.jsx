@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { User, Mail, Camera, Edit3, Save, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { User, Mail, Camera, Edit3, Save, X, Upload, Image as ImageIcon, Crown } from 'lucide-react';
 import { getAvatarUrl } from '../../utils/avatarUtils';
+import PremiumBadge from '../Premium/PremiumBadge';
+import { usePremiumStatus } from '../../hooks/usePremiumFeatures';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileHeader = ({ 
   user, 
@@ -22,6 +25,8 @@ const ProfileHeader = ({
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [avatarError, setAvatarError] = useState(false);
+  const { isPremium } = usePremiumStatus();
+  const navigate = useNavigate();
 
   const handleCameraClick = () => {
     setShowAvatarModal(true);
@@ -269,6 +274,7 @@ const ProfileHeader = ({
                   <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {getFullName(user.firstName, user.lastName)}
                   </h1>
+                  <PremiumBadge isPremium={isPremium} />
                   <button
                     onClick={() => setIsEditing(true)}
                     className="text-gray-500 hover:text-sky-500 transition-colors duration-200"
@@ -276,7 +282,26 @@ const ProfileHeader = ({
                     <Edit3 size={18} />
                   </button>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">{user.email || 'Chưa có email'}</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-2">{user.email || 'Chưa có email'}</p>
+                
+                {/* Premium Status/CTA */}
+                {isPremium ? (
+                  <button
+                    onClick={() => navigate('/premium/subscription')}
+                    className="mb-4 inline-flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300 px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200"
+                  >
+                    <Crown size={16} className="text-yellow-500" />
+                    <span className="font-semibold">Quản lý Premium</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => navigate('/premium/pricing')}
+                    className="mb-4 inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                  >
+                    <Crown size={16} />
+                    <span className="font-semibold">Nâng cấp Premium</span>
+                  </button>
+                )}
 
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

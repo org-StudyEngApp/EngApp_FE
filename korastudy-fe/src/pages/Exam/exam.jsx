@@ -44,6 +44,10 @@ const Exams = () => {
         data = await examService.getAllExams();
       }
       
+      console.log('📊 Exam data from API:', data);
+      console.log('📊 First exam structure:', data[0]);
+      console.log('📊 Exams with isLocked:', data.filter(e => e.isLocked).length);
+      
       setExams(data);
       setError(null);
     } catch (err) {

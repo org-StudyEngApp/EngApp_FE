@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Calendar, Phone, Users, BookOpen } from 'lucide-react';
+import { User, Mail, Calendar, Phone, Users, BookOpen, Crown } from 'lucide-react';
 
 const ProfileOverview = ({ 
   user, 
@@ -63,6 +63,26 @@ const ProfileOverview = ({
           Hoạt động gần đây
         </h3>
         <div className="space-y-3">
+          {/* Premium Subscription Activity */}
+          {user.subscriptionStartDate && (
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
+                  <Crown className="text-white" size={20} />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900 dark:text-white">Nâng cấp tài khoản Premium</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{formatDate(user.subscriptionStartDate)}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-bold text-yellow-600 dark:text-yellow-400">Đang hoạt động</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Premium</p>
+              </div>
+            </div>
+          )}
+          
+          {/* Test History Activities */}
           {user.testHistory && user.testHistory.length > 0 ? (
             user.testHistory.slice(0, 3).map((test) => (
               <div key={test.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-dark-700 rounded-lg">
@@ -82,11 +102,13 @@ const ProfileOverview = ({
               </div>
             ))
           ) : (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <BookOpen size={48} className="mx-auto mb-4 opacity-50" />
-              <p>Chưa có hoạt động nào</p>
-              <p className="text-sm">Hãy bắt đầu làm bài thi đầu tiên của bạn!</p>
-            </div>
+            !user.subscriptionStartDate && (
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <BookOpen size={48} className="mx-auto mb-4 opacity-50" />
+                <p>Chưa có hoạt động nào</p>
+                <p className="text-sm">Hãy bắt đầu làm bài thi đầu tiên của bạn!</p>
+              </div>
+            )
           )}
         </div>
       </div>

@@ -83,15 +83,30 @@ export const examService = {
     return examService.getExamsByType('FULL_TEST');
   },
 
-  // Lấy chi tiết bài thi
+  // Lấy chi tiết bài thi với error handling cho HTTP 403
   getExamDetail: async (id) => {
     try {
-      console.log(`Calling API: GET /exams/${id}`); // Debug log
+      console.log(`Calling API: GET /exams/${id}`);
       const response = await api.get(`/exams/${id}`);
-      console.log('Exam detail response:', response.data); // Debug log
-      return response.data;
+      console.log('Exam detail response:', response.data);
+      return { data: response.data, error: null };
     } catch (error) {
       console.error('Error fetching exam detail:', error);
+      
+      // Handle HTTP 403 - Locked content (Premium required)
+      if (error.response?.status === 403) {
+        return {
+          data: null,
+          error: {
+            status: 403,
+            code: 'EXAM_ACCESS_DENIED',
+            message: error.response.data?.message || 'Bài thi này chỉ dành cho tài khoản Premium. Vui lòng nâng cấp để tiếp tục!',
+            upgradeUrl: '/premium/pricing'
+          }
+        };
+      }
+      
+      // Other errors
       throw error;
     }
   },

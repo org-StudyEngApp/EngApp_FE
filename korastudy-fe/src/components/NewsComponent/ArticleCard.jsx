@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, Eye } from 'lucide-react';
+import { Clock, Eye, Lock } from 'lucide-react';
+import PremiumBadge from '../Premium/PremiumBadge';
 
 /**
  * ArticleCard Component
@@ -65,6 +66,18 @@ const ArticleCard = ({ article, topicsMap = {} }) => {
     navigate(`/news/${article.id}`);
   };
 
+  // Debug: Log article data
+  React.useEffect(() => {
+    console.log(`Article ${article.id}:`, {
+      title: article.title?.substring(0, 30),
+      isLocked: article.isLocked,
+      type: typeof article.isLocked
+    });
+  }, [article]);
+
+  // Check if locked - handle multiple formats
+  const isArticleLocked = article.isLocked === true || article.isLocked === 1 || article.isLocked === "true";
+
   return (
     <div
       onClick={handleClick}
@@ -87,6 +100,16 @@ const ArticleCard = ({ article, topicsMap = {} }) => {
           </div>
         )}
 
+        {/* Locked Overlay */}
+        {isArticleLocked && (
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center">
+            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-lg font-bold text-sm shadow-lg flex items-center gap-2">
+              <Lock size={16} />
+              <span>Premium</span>
+            </div>
+          </div>
+        )}
+
         {/* Level Badge */}
         <div className="absolute left-3 top-3">
           <span
@@ -96,8 +119,15 @@ const ArticleCard = ({ article, topicsMap = {} }) => {
           </span>
         </div>
 
-        {/* Trial Badge */}
-        {article.isTrial && (
+        {/* Premium Badge for Locked Content */}
+        {isArticleLocked && (
+          <div className="absolute right-3 top-3">
+            <PremiumBadge isLocked={true} size="small" />
+          </div>
+        )}
+
+        {/* Trial Badge (only if not locked) */}
+        {!isArticleLocked && article.isTrial && (
           <div className="absolute right-3 top-3">
             <span className="rounded-lg bg-blue-500 px-3 py-1 text-xs font-bold text-white shadow-md">
               Free
@@ -117,9 +147,14 @@ const ArticleCard = ({ article, topicsMap = {} }) => {
           </div>
         )}
 
-        {/* Title */}
-        <h3 className="mb-3 line-clamp-2 text-lg font-bold leading-snug text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
-          {article.title}
+        {/* Title with Lock Icon */}
+        <h3 className="mb-3 text-lg font-bold leading-snug text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
+          <div className="flex items-start gap-2">
+            <span className="flex-1">{article.title}</span>
+            {isArticleLocked && (
+              <Lock size={20} className="text-yellow-500 flex-shrink-0 mt-1" />
+            )}
+          </div>
         </h3>
 
         {/* Description */}

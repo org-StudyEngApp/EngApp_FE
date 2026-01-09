@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Sun, Moon, User, Settings, LogOut, ChevronDown, Bell } from 'lucide-react';
+import { Menu, X, Sun, Moon, User, Settings, LogOut, ChevronDown, Bell, Crown, Receipt } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useUser } from '../contexts/UserContext';
 import notificationService from '../api/notificationService';
 import websocketService from '../api/websocketService';
 import NotificationDropdown from './NotificationDropdown';
+import PremiumBadge from './Premium/PremiumBadge';
+import { usePremiumStatus } from '../hooks/usePremiumFeatures';
 import { toast } from 'react-toastify';
 import { getAvatarUrl } from '../utils/avatarUtils';
 
@@ -21,6 +23,7 @@ const NavBar = () => {
 
   const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated, logout } = useUser();
+  const { isPremium } = usePremiumStatus();
   const navigate = useNavigate();
 
   // Các hàm xử lý hiện có
@@ -261,7 +264,11 @@ useEffect(() => {
                     <img
                       src={getAvatarUrl(user)}
                       alt={getDisplayName()}
-                      className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 dark:ring-dark-600"
+                      className={`w-8 h-8 rounded-full object-cover ring-2 ${
+                        isPremium 
+                          ? 'ring-yellow-400 dark:ring-yellow-500' 
+                          : 'ring-gray-200 dark:ring-dark-600'
+                      }`}
                       onError={(e) => {
                         e.target.style.display = 'none';
                         e.target.nextElementSibling.style.display = 'flex';
@@ -269,7 +276,11 @@ useEffect(() => {
                     />
                   ) : null}
                   <div 
-                    className="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+                    className={`w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center text-white font-semibold text-sm ring-2 ${
+                      isPremium 
+                        ? 'ring-yellow-400 dark:ring-yellow-500' 
+                        : 'ring-gray-200 dark:ring-dark-600'
+                    }`}
                     style={{ display: getAvatarUrl(user) ? 'none' : 'flex' }}
                   >
                     {getInitials(getDisplayName())}
@@ -313,6 +324,7 @@ useEffect(() => {
                           <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                             {user?.email || 'Không có email'}
                           </p>
+                          <PremiumBadge isPremium={isPremium} className="mt-1" />
                         </div>
                       </div>
                     </div>
@@ -325,6 +337,35 @@ useEffect(() => {
                     >
                       <User size={16} className="mr-3" /> Hồ sơ cá nhân
                     </Link>
+                    
+                    {isPremium ? (
+                      <Link 
+                        to="/premium/subscription" 
+                        onClick={() => setShowUserMenu(false)} 
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors"
+                      >
+                        <Crown size={16} className="mr-3 text-yellow-500" /> Quản lý Premium
+                      </Link>
+                    ) : (
+                      <Link 
+                        to="/premium/pricing" 
+                        onClick={() => setShowUserMenu(false)} 
+                        className="flex items-center px-4 py-2 text-sm bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 transition-colors"
+                      >
+                        <Crown size={16} className="mr-3" /> Nâng cấp Premium
+                      </Link>
+                    )}
+                    
+                    {isPremium && (
+                      <Link 
+                        to="/premium/history" 
+                        onClick={() => setShowUserMenu(false)} 
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors"
+                      >
+                        <Receipt size={16} className="mr-3" /> Lịch sử giao dịch
+                      </Link>
+                    )}
+                    
                     <Link 
                       to="/profile?tab=settings" 
                       onClick={() => setShowUserMenu(false)} 

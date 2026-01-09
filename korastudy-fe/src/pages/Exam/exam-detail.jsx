@@ -17,6 +17,7 @@ import { examService } from '../../api/ExamService';
 import { useUser } from '../../contexts/UserContext';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
+import UpgradeModal from '../../components/Premium/UpgradeModal';
 
 // Cấu trúc TOEIC theo parts
 const TOEIC_STRUCTURE = {
@@ -51,6 +52,8 @@ const ExamDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showStartModal, setShowStartModal] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Lấy cấu trúc parts theo loại bài thi
   const getExamStructure = () => {
@@ -114,14 +117,28 @@ const ExamDetail = () => {
           throw new Error('ExamService not available');
         }
         
-        const examData = await examService.getExamDetail(id);
-        console.log('Exam data received:', examData);
+        const result = await examService.getExamDetail(id);
+        console.log('Exam data received:', result);
         
-        if (!examData) {
+        // Check for HTTP 403 - Locked content
+        if (result.error && result.error.status === 403) {
+          setErrorMessage(result.error.message);
+          setShowUpgradeModal(true);
+          setLoading(false);
+          
+          // Navigate back after 3 seconds
+          setTimeout(() => {
+            navigate('/exam');
+          }, 3000);
+          
+          return;
+        }
+        
+        if (!result.data) {
           throw new Error('No exam data received');
         }
         
-        setExam(examData);
+        setExam(result.data);
         
       } catch (err) {
         console.error('Error fetching exam detail:', err);
@@ -137,7 +154,7 @@ const ExamDetail = () => {
       setError('ID bài thi không hợp lệ');
       setLoading(false);
     }
-  }, [id]);
+  }, [id, navigate]);
 
   // Handle start exam
   const handleStartExam = () => {
@@ -474,6 +491,17 @@ const ExamDetail = () => {
           </div>
         </div>
       )}
+
+      {/* Upgrade Modal for Locked Content */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => {
+          setShowUpgradeModal(false);
+          navigate('/exam');
+        }}
+        message={errorMessage}
+        contentType="exam"
+      />
     </div>
   );
 };

@@ -26,6 +26,8 @@ import ArticleCard from '../../components/NewsComponent/ArticleCard';
 import SaveWordModal from '../../components/NewsComponent/SaveWordModal';
 import DictionaryModal from '../../components/NewsComponent/DictionaryModal';
 import VocabularySection from '../../components/NewsComponent/VocabularySection';
+import TranslationSection from '../../components/NewsComponent/TranslationSection';
+import UpgradeModal from '../../components/Premium/UpgradeModal';
 
 /**
  * ArticleDetail - Smart Reading Page
@@ -82,6 +84,17 @@ const ArticleDetail = () => {
   // Related articles state
   const [relatedArticles, setRelatedArticles] = useState([]);
   const [loadingRelated, setLoadingRelated] = useState(false);
+
+  // Translation state
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [translation, setTranslation] = useState(null);
+  const [translationLoading, setTranslationLoading] = useState(false);
+  const [translationError, setTranslationError] = useState(null);
+  const [quotaInfo, setQuotaInfo] = useState(null);
+
+  // Upgrade modal state
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Level badge configuration
   const levelConfig = {
@@ -143,6 +156,21 @@ const ArticleDetail = () => {
       try {
         setLoading(true);
         const response = await newsService.getArticleById(articleId);
+        
+        // Check for HTTP 403 - Locked content
+        if (response.error && response.error.status === 403) {
+          setErrorMessage(response.error.message);
+          setShowUpgradeModal(true);
+          setLoading(false);
+          
+          // Navigate back after 3 seconds
+          setTimeout(() => {
+            navigate('/news');
+          }, 3000);
+          
+          return;
+        }
+        
         const articleData = response.data?.data || response.data;
         setArticle(articleData);
 
@@ -487,6 +515,123 @@ const ArticleDetail = () => {
     }
   };
 
+  // ====================== TRANSLATION HANDLERS ======================
+  
+  /**
+   * Toggle translation section visibility
+   * When opened, automatically fetch stored translation if not already loaded
+   */
+  const handleToggleTranslation = async () => {
+    const newShowState = !showTranslation;
+    setShowTranslation(newShowState);
+
+    // If opening and no translation loaded yet, try to fetch stored translation
+    if (newShowState && !translation && !translationLoading && !translationError) {
+      await fetchStoredTranslation();
+    }
+  };
+
+  /**
+   * Fetch stored translation (FREE - no quota)
+   * This is called first when user opens translation section
+   */
+  const fetchStoredTranslation = async () => {
+    if (!articleId) return;
+
+    try {
+      setTranslationLoading(true);
+      setTranslationError(null);
+
+      const response = await newsService.getStoredTranslation(articleId);
+      const data = response.data?.data || response.data;
+
+      setTranslation(data.vietnameseTranslation);
+      setQuotaInfo({
+        translationType: data.translationType,
+        cached: data.cached,
+        quotaMessage: data.quotaMessage,
+      });
+
+      console.log('✅ Stored translation loaded (FREE)');
+    } catch (error) {
+      // 404 means no stored translation available - not an error
+      if (error.status === 404) {
+        console.log('ℹ️ No stored translation available');
+        setTranslation(null);
+        setTranslationError(null); // Don't show error for 404
+      } else {
+        console.error('❌ Failed to fetch stored translation:', error);
+        setTranslationError({
+          message: error.message || 'Không thể tải bản dịch',
+        });
+      }
+    } finally {
+      setTranslationLoading(false);
+    }
+  };
+
+  /**
+   * Request AI translation (Quota limited: 10/day)
+   * Called when user clicks "Translate with AI" button
+   */
+  const handleRequestAITranslation = async () => {
+    if (!articleId || !user) {
+      alert('Vui lòng đăng nhập để sử dụng tính năng dịch AI');
+      navigate('/dang-nhap');
+      return;
+    }
+
+    try {
+      setTranslationLoading(true);
+      setTranslationError(null);
+
+      const response = await newsService.translateWithAI(articleId);
+      const data = response.data?.data || response.data;
+
+      setTranslation(data.vietnameseTranslation);
+      setQuotaInfo({
+        translationType: data.translationType,
+        cached: data.cached,
+        remainingAiTranslations: data.remainingAiTranslations,
+        dailyLimit: data.dailyLimit,
+        quotaMessage: data.quotaMessage,
+        usedTranslations: data.dailyLimit - data.remainingAiTranslations,
+      });
+
+      console.log(`✅ AI translation completed. Remaining: ${data.remainingAiTranslations}/${data.dailyLimit}`);
+      
+      // Show success message
+      if (data.remainingAiTranslations !== undefined) {
+        alert(`Dịch thành công! Còn ${data.remainingAiTranslations}/${data.dailyLimit} lượt dịch hôm nay.`);
+      }
+    } catch (error) {
+      console.error('❌ Failed to translate with AI:', error);
+      
+      // Handle quota exceeded (429)
+      if (error.status === 429) {
+        setTranslationError({
+          status: 429,
+          message: error.message || 'Đã hết lượt dịch hôm nay',
+        });
+        // Extract quota info from error message if available
+        const errorData = error.data;
+        if (errorData) {
+          setQuotaInfo({
+            usedTranslations: 10,
+            dailyLimit: 10,
+            remainingAiTranslations: 0,
+          });
+        }
+      } else {
+        setTranslationError({
+          message: error.message || 'Không thể dịch bài viết. Vui lòng thử lại sau.',
+        });
+      }
+    } finally {
+      setTranslationLoading(false);
+    }
+  };
+
   // Format date
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -782,6 +927,18 @@ const ArticleDetail = () => {
             dangerouslySetInnerHTML={{ __html: article.htmlContent }}
           />
 
+          {/* Translation Section */}
+          <TranslationSection
+            article={article}
+            translation={translation}
+            showTranslation={showTranslation}
+            translationLoading={translationLoading}
+            translationError={translationError}
+            quotaInfo={quotaInfo}
+            onToggleTranslation={handleToggleTranslation}
+            onRequestAITranslation={handleRequestAITranslation}
+          />
+
           {/* Vocabulary Section */}
           <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
             <VocabularySection 
@@ -949,6 +1106,17 @@ const ArticleDetail = () => {
         onClose={() => setShowSaveWordModal(false)}
         wordData={wordToSave}
         onSaveSuccess={handleSaveSuccess}
+      />
+
+      {/* Upgrade Modal for Locked Content */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => {
+          setShowUpgradeModal(false);
+          navigate('/news');
+        }}
+        message={errorMessage}
+        contentType="article"
       />
     </div>
   );

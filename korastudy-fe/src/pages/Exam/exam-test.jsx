@@ -117,6 +117,8 @@ const ExamTest = () => {
   const [timeLeft, setTimeLeft] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
+  const [premiumRequired, setPremiumRequired] = useState(false); // Track if Premium is required
+  const [premiumMessage, setPremiumMessage] = useState(''); // Store Premium error message
 
   // Check authentication
   useEffect(() => {
@@ -136,8 +138,26 @@ const ExamTest = () => {
         setLoading(true);
         console.log('🔄 Fetching exam data for ID:', id);
         
-        const examData = await examService.getExamDetail(id);
-        console.log('✅ Exam data received:', examData);
+        const response = await examService.getExamDetail(id);
+        console.log('✅ Raw response from API:', response);
+        
+        // Check for Premium required error (403)
+        if (response.error && response.error.status === 403) {
+          console.warn('🔒 Premium required for this exam');
+          setPremiumRequired(true);
+          setPremiumMessage(response.error.message || 'Bài thi này chỉ dành cho tài khoản Premium');
+          setLoading(false);
+          return;
+        }
+        
+        // Handle response structure from ExamService
+        const examData = response.data || response;
+        console.log('✅ Exam data extracted:', examData);
+        
+        // Check if exam data exists
+        if (!examData) {
+          throw new Error('Không có dữ liệu bài thi');
+        }
         
         setExam(examData);
         
@@ -150,9 +170,19 @@ const ExamTest = () => {
         const formattedQuestions = [];
         console.log('🔍 Processing exam parts:', examData.parts?.length || 0);
         
+        if (!examData.parts || examData.parts.length === 0) {
+          console.warn('⚠️ No parts found in exam data');
+          throw new Error('Bài thi không có câu hỏi');
+        }
+        
         if (examData.parts && examData.parts.length > 0) {
           examData.parts.forEach((part, partIndex) => {
             console.log(`📑 Part ${partIndex + 1}:`, part.title, '- Questions:', part.questions?.length || 0);
+            
+            if (!part.questions || part.questions.length === 0) {
+              console.warn(`⚠️ Part ${partIndex + 1} has no questions`);
+              return;
+            }
             
             if (part.questions && part.questions.length > 0) {
               part.questions.forEach((question, qIndex) => {
@@ -190,13 +220,18 @@ const ExamTest = () => {
         console.log('  - Questions with options:', formattedQuestions.filter(q => q.options && q.options.length > 0).length);
         console.log('  - Questions WITHOUT options:', formattedQuestions.filter(q => !q.options || q.options.length === 0).length);
         
+        if (formattedQuestions.length === 0) {
+          throw new Error('Không có câu hỏi nào được tải thành công');
+        }
+        
         setQuestions(formattedQuestions);
         console.log('✅ All formatted questions:', formattedQuestions);
         
       } catch (err) {
         console.error('❌ Error fetching exam data:', err);
-        setError('Không thể tải dữ liệu bài thi. Vui lòng thử lại.');
-        toast.error('Không thể tải dữ liệu bài thi');
+        const errorMessage = err.message || 'Không thể tải dữ liệu bài thi. Vui lòng thử lại.';
+        setError(errorMessage);
+        toast.error(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -492,6 +527,89 @@ const ExamTest = () => {
     );
   }
 
+  // Premium Required State
+  if (premiumRequired) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+        <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
+          {/* Header with gradient */}
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-center">
+            <div className="text-6xl mb-4">👑</div>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Nội dung Premium
+            </h1>
+            <p className="text-blue-100">
+              Nâng cấp để mở khóa tất cả tính năng
+            </p>
+          </div>
+
+          {/* Content */}
+          <div className="p-8">
+            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded">
+              <div className="flex items-start">
+                <AlertCircle className="text-amber-600 mr-3 flex-shrink-0 mt-0.5" size={24} />
+                <div>
+                  <h3 className="font-semibold text-amber-800 mb-1">
+                    Bài thi yêu cầu Premium
+                  </h3>
+                  <p className="text-amber-700">
+                    {premiumMessage}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                Lợi ích của Premium:
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-start">
+                  <CheckCircle className="text-green-500 mr-3 flex-shrink-0 mt-0.5" size={20} />
+                  <p className="text-gray-700">Truy cập <strong>không giới hạn</strong> tất cả bài thi</p>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="text-green-500 mr-3 flex-shrink-0 mt-0.5" size={20} />
+                  <p className="text-gray-700">Đề thi <strong>chất lượng cao</strong> từ các nguồn uy tín</p>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="text-green-500 mr-3 flex-shrink-0 mt-0.5" size={20} />
+                  <p className="text-gray-700">Phân tích kết quả <strong>chi tiết</strong> và đề xuất cải thiện</p>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="text-green-500 mr-3 flex-shrink-0 mt-0.5" size={20} />
+                  <p className="text-gray-700">Không quảng cáo, trải nghiệm <strong>mượt mà</strong></p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => navigate('/premium/pricing')}
+                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                ✨ Nâng cấp Premium ngay
+              </button>
+              <button
+                onClick={() => navigate('/exam')}
+                className="flex-1 bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+              >
+                Quay lại danh sách
+              </button>
+            </div>
+
+            {/* Footer note */}
+            <p className="text-center text-sm text-gray-500 mt-6">
+              💡 Chỉ từ <span className="font-semibold text-blue-600">99.000đ/tháng</span> để học không giới hạn
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Error state
   if (error) {
     return (
@@ -513,11 +631,26 @@ const ExamTest = () => {
   if (!exam || questions.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600 mb-4">Không tìm thấy câu hỏi cho bài thi này</p>
+        <div className="max-w-md mx-auto text-center bg-white p-8 rounded-lg shadow-lg">
+          <div className="text-6xl mb-4">📝</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Không tìm thấy câu hỏi
+          </h2>
+          <p className="text-gray-600 mb-4">
+            {!exam 
+              ? 'Bài thi không tồn tại hoặc đã bị xóa.'
+              : 'Bài thi này chưa có câu hỏi nào. Vui lòng liên hệ quản trị viên.'}
+          </p>
+          <div className="space-y-2 text-sm text-left bg-gray-50 p-4 rounded mb-4">
+            <p className="font-semibold text-gray-700">Thông tin debug:</p>
+            <p className="text-gray-600">- Exam ID: {id}</p>
+            <p className="text-gray-600">- Exam loaded: {exam ? '✅ Yes' : '❌ No'}</p>
+            <p className="text-gray-600">- Parts count: {exam?.parts?.length || 0}</p>
+            <p className="text-gray-600">- Questions loaded: {questions.length}</p>
+          </div>
           <button 
             onClick={() => navigate('/exam')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Quay lại danh sách bài thi
           </button>

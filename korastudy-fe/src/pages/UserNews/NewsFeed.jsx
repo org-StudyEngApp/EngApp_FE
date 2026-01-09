@@ -193,15 +193,24 @@ const NewsFeed = () => {
       const articlesData = response?.data || response;
       const articles = articlesData?.content || [];
       
-      // Debug: Log first article to check topic data
+      // Debug: Log first article to check isLocked field
       if (articles.length > 0) {
         console.log('🔍 First article data:', {
           id: articles[0].id,
-          title: articles[0].title,
+          title: articles[0].title?.substring(0, 40),
+          isLocked: articles[0].isLocked,
+          hasIsLockedField: 'isLocked' in articles[0],
           newsTopicId: articles[0].newsTopicId,
           newsTopicName: articles[0].newsTopicName,
           newsTopic: articles[0].newsTopic
         });
+        
+        // Log ALL articles with isLocked field
+        console.log('📋 All articles isLocked status:', articles.map(a => ({
+          id: a.id,
+          title: a.title?.substring(0, 30),
+          isLocked: a.isLocked
+        })));
       }
       
       // Extract unique topics from articles

@@ -1,0 +1,1214 @@
+{
+	"info": {
+		"_postman_id": "content-locking-admin-test",
+		"name": "Admin Content Locking & Access Grant Test",
+		"description": "Test chức năng khóa bài thi/bài báo và cấp quyền truy cập cho FREE users\n\nLOGIC V13:\n- Admin lock/unlock content bằng cách update isLocked flag\n- Admin grant/revoke access cho FREE users\n- FREE users chỉ access được unlocked content hoặc locked content có grant\n- PREMIUM users access tất cả",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{admin_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "0. Setup - Get Tokens",
+			"item": [
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.accessToken) {",
+									"        pm.collectionVariables.set(\"admin_token\", jsonData.data.accessToken);",
+									"        console.log(\"✅ Admin token saved\");",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login FREE User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.accessToken) {",
+									"        pm.collectionVariables.set(\"free_user_token\", jsonData.data.accessToken);",
+									"        pm.collectionVariables.set(\"free_user_id\", jsonData.data.id);",
+									"        console.log(\"✅ FREE user token saved, userId=\" + jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"freeuser\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login với FREE user để test access bị block"
+					},
+					"response": []
+				},
+				{
+					"name": "Login PREMIUM User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.accessToken) {",
+									"        pm.collectionVariables.set(\"premium_user_token\", jsonData.data.accessToken);",
+									"        console.log(\"✅ PREMIUM user token saved\");",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"premiumuser\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login với PREMIUM user để test full access"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1. Admin Lock/Unlock Exam",
+			"item": [
+				{
+					"name": "Get All Exams",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.content && jsonData.data.content.length > 0) {",
+									"        var firstExam = jsonData.data.content[0];",
+									"        pm.collectionVariables.set(\"test_exam_id\", firstExam.id);",
+									"        console.log(\"✅ Test exam ID saved: \" + firstExam.id);",
+									"        console.log(\"Exam title: \" + firstExam.title);",
+									"        console.log(\"Is locked: \" + firstExam.isLocked);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/exams?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"exams"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Lấy danh sách exams để chọn 1 exam test"
+					},
+					"response": []
+				},
+				{
+					"name": "Lock Exam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Exam is locked\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isLocked).to.eql(true);",
+									"    console.log(\"✅ Exam locked successfully\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/exams/{{test_exam_id}}/lock?isLocked=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"exams",
+								"{{test_exam_id}}",
+								"lock"
+							],
+							"query": [
+								{
+									"key": "isLocked",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Admin khóa bài thi - chỉ PREMIUM users mới access được (hoặc FREE users có grant)"
+					},
+					"response": []
+				},
+				{
+					"name": "Unlock Exam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Exam is unlocked\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isLocked).to.eql(false);",
+									"    console.log(\"✅ Exam unlocked - public for all users\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/exams/{{test_exam_id}}/lock?isLocked=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"exams",
+								"{{test_exam_id}}",
+								"lock"
+							],
+							"query": [
+								{
+									"key": "isLocked",
+									"value": "false"
+								}
+							]
+						},
+						"description": "Admin mở khóa bài thi - tất cả users đều access được"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Admin Lock/Unlock Article",
+			"item": [
+				{
+					"name": "Get All Articles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.content && jsonData.data.content.length > 0) {",
+									"        var firstArticle = jsonData.data.content[0];",
+									"        pm.collectionVariables.set(\"test_article_id\", firstArticle.id);",
+									"        console.log(\"✅ Test article ID saved: \" + firstArticle.id);",
+									"        console.log(\"Article title: \" + firstArticle.title);",
+									"        console.log(\"Is locked: \" + firstArticle.isLocked);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/articles?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"articles"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Lấy danh sách articles để chọn 1 article test"
+					},
+					"response": []
+				},
+				{
+					"name": "Lock Article",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Article is locked\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.isLocked).to.eql(true);",
+									"    console.log(\"✅ Article locked successfully\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/articles/{{test_article_id}}/lock?isLocked=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"articles",
+								"{{test_article_id}}",
+								"lock"
+							],
+							"query": [
+								{
+									"key": "isLocked",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Admin khóa bài báo - chỉ PREMIUM users mới đọc được"
+					},
+					"response": []
+				},
+				{
+					"name": "Unlock Article",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Article is unlocked\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.isLocked).to.eql(false);",
+									"    console.log(\"✅ Article unlocked - public for all users\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/articles/{{test_article_id}}/lock?isLocked=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"articles",
+								"{{test_article_id}}",
+								"lock"
+							],
+							"query": [
+								{
+									"key": "isLocked",
+									"value": "false"
+								}
+							]
+						},
+						"description": "Admin mở khóa bài báo - tất cả users đều đọc được"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Admin Grant Access (Exam)",
+			"item": [
+				{
+					"name": "Grant Exam Access to FREE User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.collectionVariables.set(\"exam_grant_id\", jsonData.data.id);",
+									"        console.log(\"✅ Exam grant created, grantId=\" + jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": {{free_user_id}},\n    \"examId\": {{test_exam_id}},\n    \"expiresAt\": \"2026-02-01T23:59:59\",\n    \"reason\": \"Promotion - Free access for 1 month\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/exam",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"exam"
+							]
+						},
+						"description": "Admin cấp quyền truy cập bài thi locked cho FREE user\n\n⚠️ Trước khi chạy: Lock exam trước (isLocked=true)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User's Exam Grants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has at least 1 grant\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.length).to.be.above(0);",
+									"    console.log(\"✅ User has \" + jsonData.data.length + \" exam grant(s)\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/user/{{free_user_id}}/exams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"user",
+								"{{free_user_id}}",
+								"exams"
+							]
+						},
+						"description": "Xem tất cả grants của user (active + revoked)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Exam's User Grants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/exam/{{test_exam_id}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"exam",
+								"{{test_exam_id}}",
+								"users"
+							]
+						},
+						"description": "Xem tất cả users được grant access vào bài thi này"
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke Exam Access",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ Exam grant revoked\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/exam/{{exam_grant_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"exam",
+								"{{exam_grant_id}}"
+							]
+						},
+						"description": "Admin thu hồi quyền truy cập - User sẽ bị block ngay lập tức"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Admin Grant Access (Article)",
+			"item": [
+				{
+					"name": "Grant Article Access to FREE User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.collectionVariables.set(\"article_grant_id\", jsonData.data.id);",
+									"        console.log(\"✅ Article grant created, grantId=\" + jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": {{free_user_id}},\n    \"articleId\": {{test_article_id}},\n    \"expiresAt\": \"2026-02-01T23:59:59\",\n    \"reason\": \"Special access for study group\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/article",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"article"
+							]
+						},
+						"description": "Admin cấp quyền đọc bài báo locked cho FREE user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User's Article Grants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/user/{{free_user_id}}/articles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"user",
+								"{{free_user_id}}",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Article's User Grants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/article/{{test_article_id}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"article",
+								"{{test_article_id}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke Article Access",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ Article grant revoked\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/access-grants/article/{{article_grant_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"access-grants",
+								"article",
+								"{{article_grant_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Test User Access (Exam)",
+			"item": [
+				{
+					"name": "FREE User - Access Unlocked Exam (OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ FREE user can access unlocked exam\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{free_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/exams/{{test_exam_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"exams",
+								"{{test_exam_id}}"
+							]
+						},
+						"description": "⚠️ Trước khi chạy: Unlock exam (isLocked=false)\n\n✅ Expected: 200 OK"
+					},
+					"response": []
+				},
+				{
+					"name": "FREE User - Access Locked Exam (403 BLOCKED)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Has premium upgrade message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Premium\");",
+									"    console.log(\"✅ FREE user blocked from locked exam\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{free_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/exams/{{test_exam_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"exams",
+								"{{test_exam_id}}"
+							]
+						},
+						"description": "⚠️ Trước khi chạy:\n1. Lock exam (isLocked=true)\n2. Revoke grant (nếu có)\n\n❌ Expected: 403 Forbidden"
+					},
+					"response": []
+				},
+				{
+					"name": "FREE User - Access Locked Exam WITH Grant (OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ FREE user with grant can access locked exam\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{free_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/exams/{{test_exam_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"exams",
+								"{{test_exam_id}}"
+							]
+						},
+						"description": "⚠️ Trước khi chạy:\n1. Lock exam (isLocked=true)\n2. Grant access cho FREE user\n\n✅ Expected: 200 OK"
+					},
+					"response": []
+				},
+				{
+					"name": "PREMIUM User - Access Locked Exam (OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ PREMIUM user can access all exams\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{premium_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/exams/{{test_exam_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"exams",
+								"{{test_exam_id}}"
+							]
+						},
+						"description": "PREMIUM user access tất cả - không cần check isLocked\n\n✅ Expected: Always 200 OK"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Test User Access (Article)",
+			"item": [
+				{
+					"name": "FREE User - Read Unlocked Article (OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ FREE user can read unlocked article\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{free_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles/{{test_article_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"{{test_article_id}}"
+							]
+						},
+						"description": "⚠️ Unlock article trước (isLocked=false)"
+					},
+					"response": []
+				},
+				{
+					"name": "FREE User - Read Locked Article (403 BLOCKED)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Has premium message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Premium\");",
+									"    console.log(\"✅ FREE user blocked from locked article\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{free_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles/{{test_article_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"{{test_article_id}}"
+							]
+						},
+						"description": "⚠️ Lock article + revoke grant\n\n❌ Expected: 403"
+					},
+					"response": []
+				},
+				{
+					"name": "FREE User - Read Locked Article WITH Grant (OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ FREE user with grant can read locked article\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{free_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles/{{test_article_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"{{test_article_id}}"
+							]
+						},
+						"description": "⚠️ Lock article + grant access"
+					},
+					"response": []
+				},
+				{
+					"name": "PREMIUM User - Read Locked Article (OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"console.log(\"✅ PREMIUM user can read all articles\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{premium_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/articles/{{test_article_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"articles",
+								"{{test_article_id}}"
+							]
+						},
+						"description": "PREMIUM luôn OK"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "free_user_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "free_user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "premium_user_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_exam_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_article_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "exam_grant_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "article_grant_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -55,13 +55,31 @@ const newsService = {
   },
 
   /**
-   * Get article by ID
+   * Get article by ID with error handling for HTTP 403
    * @param {number} articleId - Article ID
-   * @returns {Promise} Article details
+   * @returns {Promise} Article details or error object
    */
   getArticleById: async (articleId) => {
-    const response = await axiosClient.get(`/api/v1/articles/${articleId}`);
-    return response.data;
+    try {
+      const response = await axiosClient.get(`/api/v1/articles/${articleId}`);
+      return { data: response.data, error: null };
+    } catch (error) {
+      // Handle HTTP 403 - Locked content (Premium required)
+      if (error.response?.status === 403) {
+        return {
+          data: null,
+          error: {
+            status: 403,
+            code: 'ARTICLE_ACCESS_DENIED',
+            message: error.response.data?.message || 'Bài báo này chỉ dành cho tài khoản Premium. Vui lòng nâng cấp để đọc toàn bộ!',
+            upgradeUrl: '/premium/pricing'
+          }
+        };
+      }
+      
+      // Other errors
+      throw error;
+    }
   },
 
   /**
@@ -192,6 +210,45 @@ const newsService = {
    */
   getMyComments: async (params = {}) => {
     const response = await axiosClient.get('/api/v1/article-comments/my-comments', { params });
+    return response.data;
+  },
+
+  // ====================== TRANSLATION APIS ======================
+
+  /**
+   * Get stored translation (FREE - no quota required)
+   * Returns pre-translated or cached translation from database
+   * @param {number} articleId - Article ID
+   * @returns {Promise} Translation data
+   * Response: {
+   *   vietnameseTranslation: string,
+   *   translationType: "stored",
+   *   cached: true,
+   *   quotaMessage: string
+   * }
+   */
+  getStoredTranslation: async (articleId) => {
+    const response = await axiosClient.get(`/api/v1/articles/${articleId}/translation/stored`);
+    return response.data;
+  },
+
+  /**
+   * Translate article with AI (Quota limited: 1/day for free users)
+   * Requires authentication. Calls Gemini API and caches result.
+   * @param {number} articleId - Article ID
+   * @returns {Promise} Translation data with quota info
+   * Response: {
+   *   vietnameseTranslation: string,
+   *   translationType: "ai",
+   *   cached: false,
+   *   remainingAiTranslations: number,
+   *   dailyLimit: number,
+   *   quotaMessage: string
+   * }
+   * @throws {Error} 429 when daily quota exceeded
+   */
+  translateWithAI: async (articleId) => {
+    const response = await axiosClient.post(`/api/v1/articles/${articleId}/translation/ai`);
     return response.data;
   },
 };

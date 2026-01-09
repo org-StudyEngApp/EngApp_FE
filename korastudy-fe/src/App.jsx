@@ -37,6 +37,12 @@ import EditWordList from '@pages/FlashCard/edit-word-list.jsx';
 // Import News pages
 import NewsFeed from '@/pages/UserNews/NewsFeed.jsx';
 import ArticleDetail from '@/pages/UserNews/ArticleDetail.jsx';
+// Import Premium pages
+import PricingPage from '@/pages/Premium/PricingPage.jsx';
+import PaymentSuccess from '@/pages/Premium/PaymentSuccess.jsx';
+import PaymentFailure from '@/pages/Premium/PaymentFailure.jsx';
+import SubscriptionPage from '@/pages/Premium/SubscriptionPage.jsx';
+import TransactionHistory from '@/pages/Premium/TransactionHistory.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Component để điều khiển hiển thị Chatbox
@@ -99,6 +105,11 @@ function App() {
                   <Route path="blog/:id" element={<PostDetail />} />
                   <Route path="blog" element={<Blog />} />
                   
+                  {/* Premium routes - public pricing page */}
+                  <Route path="premium/pricing" element={<PricingPage />} />
+                  <Route path="premium/payment-success" element={<PaymentSuccess />} />
+                  <Route path="premium/payment-failure" element={<PaymentFailure />} />
+                  
                 </Route>
 
                 {/* FlashCard routes - some protected, some public */}
@@ -133,9 +144,18 @@ function App() {
                 <Route path="/dang-ky" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
 
+                {/* Premium public routes - payment callback từ VNPay */}
+                <Route path="/payment/success" element={<><NavBar /><PaymentSuccess /><Footer /></>} />
+                <Route path="/payment/failure" element={<><NavBar /><PaymentFailure /><Footer /></>} />
+                <Route path="/premium/payment-success" element={<><NavBar /><PaymentSuccess /><Footer /></>} />
+                <Route path="/premium/payment-failure" element={<><NavBar /><PaymentFailure /><Footer /></>} />
+                <Route path="/premium/pricing" element={<><NavBar /><PricingPage /><Footer /></>} />
+
                 {/* Các trang yêu cầu đăng nhập */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/profile" element={<><NavBar /><Profile /><Footer /></>} />
+                  <Route path="/premium/subscription" element={<><NavBar /><SubscriptionPage /><Footer /></>} />
+                  <Route path="/premium/history" element={<><NavBar /><TransactionHistory /><Footer /></>} />
                 </Route>
               </Routes>
             </div>

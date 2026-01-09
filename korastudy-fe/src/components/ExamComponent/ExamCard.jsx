@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, Users, Star, BookOpen, AlertCircle, X } from 'lucide-react';
+import { Clock, Users, Star, BookOpen, AlertCircle, X, Lock } from 'lucide-react';
+import PremiumBadge from '../Premium/PremiumBadge';
+import { usePremiumStatus } from '../../hooks/usePremiumFeatures';
 
 const ExamCard = ({ exam }) => {
   const navigate = useNavigate();
+  const { isPremium } = usePremiumStatus();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  
   const getDifficultyColor = (difficulty) => {
     switch (difficulty?.toLowerCase()) {
       case 'dễ':
@@ -78,9 +82,10 @@ const ExamCard = ({ exam }) => {
     participants: exam.totalTaken || exam.participants || 0,
     rating: exam.averageRating || exam.rating || 0,
     difficulty: exam.difficulty,
-    price: exam.price || 'Miễn phí',
+    price: exam.price || (exam.isLocked ? null : 'Miễn phí'), // Chỉ hiển thị "Miễn phí" nếu không locked
     type: exam.type || 'practice',
-    examType: exam.examType || 'PRACTICE'
+    examType: exam.examType || 'PRACTICE',
+    isLocked: exam.isLocked === true  // Xử lý strict: chỉ true mới locked, null/undefined/false đều là unlocked
   };
 
   const handleViewDetail = () => {
@@ -89,6 +94,13 @@ const ExamCard = ({ exam }) => {
 
   const handleStartExam = (e) => {
     e.stopPropagation(); // Prevent card click event
+    
+    // If exam is locked, redirect to premium pricing page
+    if (examData.isLocked) {
+      navigate('/premium/pricing');
+      return;
+    }
+    
     setShowConfirmModal(true);
   };
 
@@ -173,11 +185,16 @@ const ExamCard = ({ exam }) => {
       {/* Exam Card */}
       <div 
         onClick={handleViewDetail}
-        className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer border-2 border-transparent hover:border-sky-200 aspect-square flex flex-col"
+        className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer border border-gray-200 hover:border-sky-300 aspect-square flex flex-col"
       >
         {/* Card Header */}
         <div className="relative flex-1">
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center overflow-hidden">
+          {/* Base gradient background */}
+          <div className={`absolute inset-0 flex items-center justify-center overflow-hidden ${
+            examData.isLocked 
+              ? 'bg-gradient-to-br from-sky-400 to-blue-600' 
+              : 'bg-gradient-to-br from-sky-400 to-blue-600'
+          }`}>
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute inset-0" style={{
@@ -186,34 +203,68 @@ const ExamCard = ({ exam }) => {
               }}></div>
             </div>
             
-            <div className="text-center relative z-10 px-4">
+            {/* Premium Overlay - Darker overlay for locked exams */}
+            {examData.isLocked && (
+              <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-10" />
+            )}
+            
+            <div className="text-center relative z-20 px-4">
               <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-3 mb-2 inline-block">
                 <BookOpen className="h-12 w-12 text-white drop-shadow-lg" />
               </div>
-              <div className="flex gap-2 justify-center flex-wrap">
-                <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getLevelColor(examData.level)}`}>
-                  {examData.level}
-                </span>
-                <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getExamTypeColor(examData.examType)}`}>
-                  {getExamTypeLabel(examData.examType)}
-                </span>
-              </div>
+              
+              {/* Level & Type badges */}
+              {!examData.isLocked && (
+                <div className="flex gap-2 justify-center flex-wrap mt-2">
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getLevelColor(examData.level)}`}>
+                    {examData.level}
+                  </span>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getExamTypeColor(examData.examType)}`}>
+                    {getExamTypeLabel(examData.examType)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
           
-          {/* Price Badge */}
-          <div className="absolute top-3 right-3">
-            <span className="bg-green-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">
-              {examData.price}
-            </span>
-          </div>
+          {/* Simple Premium Badge - Top right corner */}
+          {examData.isLocked && (
+            <div className="absolute top-3 right-3 z-30">
+              <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+                <Lock size={12} />
+                Premium
+              </span>
+            </div>
+          )}
+          
+          {/* Free Badge - Top right corner */}
+          {!examData.isLocked && examData.price && (
+            <div className="absolute top-3 right-3 z-30">
+              <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                {examData.price}
+              </span>
+            </div>
+          )}
+          
+          {/* Level & Type badges for locked - Bottom left */}
+          {examData.isLocked && (
+            <div className="absolute bottom-3 left-3 z-30 flex gap-2">
+              <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getLevelColor(examData.level)}`}>
+                {examData.level}
+              </span>
+              <span className={`px-2.5 py-1 rounded-full text-xs font-bold shadow-md ${getExamTypeColor(examData.examType)}`}>
+                {getExamTypeLabel(examData.examType)}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Card Body */}
         <div className="p-4 flex flex-col">
-          {/* Title */}
-          <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">
+          {/* Title with Lock Icon */}
+          <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors flex items-center gap-2">
             {examData.title}
+            {examData.isLocked && <Lock size={16} className="text-yellow-500 flex-shrink-0" />}
           </h3>
           
           {/* Stats Row */}
@@ -253,12 +304,24 @@ const ExamCard = ({ exam }) => {
             >
               Xem chi tiết
             </button>
-            <button 
-              onClick={handleStartExam}
-              className="flex-1 px-4 py-2.5 text-center bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-lg font-bold text-sm hover:from-sky-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              Làm bài
-            </button>
+            {/* Show Upgrade button only if exam is locked AND user doesn't have Premium */}
+            {/* Premium users always see Làm bài button */}
+            {examData.isLocked && !isPremium ? (
+              <button 
+                onClick={handleStartExam}
+                className="flex-1 px-4 py-2.5 text-center rounded-lg font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:from-yellow-500 hover:to-orange-600"
+              >
+                <Lock size={14} />
+                <span className="hidden sm:inline">Nâng cấp</span>
+              </button>
+            ) : (
+              <button 
+                onClick={handleStartExam}
+                className="flex-1 px-4 py-2.5 text-center rounded-lg font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-1 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-600 hover:to-blue-700"
+              >
+                Làm bài
+              </button>
+            )}
           </div>
         </div>
       </div>
